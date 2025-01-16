@@ -128,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 207555440}
-  - component: {fileID: 207555442}
+  - component: {fileID: 207555444}
   - component: {fileID: 207555441}
   - component: {fileID: 207555443}
   m_Layer: 0
@@ -188,22 +188,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &207555442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 207555439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aa2e83fa8ca4cb48ae8c34569442fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rocketPower: 10
-  wheelRotationAngle: 0.2
-  rb: {fileID: 0}
-  isLeftClick: 0
 --- !u!50 &207555443
 Rigidbody2D:
   serializedVersion: 5
@@ -231,6 +215,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &207555444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207555439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f4c324a5ba7ef46924b73d4fc25100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 11400000, guid: d37d2e127c58c8a41aab953f149114a9, type: 2}
+  wing: {fileID: 11400000, guid: 0b9dcce4078ee4f4583effdd92b0115b, type: 2}
+  tire: {fileID: 11400000, guid: 505910786b490d24e90a12f49ca94c8b, type: 2}
+  rocket: {fileID: 11400000, guid: 5502d2dc500ff4741aa948f4ebcc002e, type: 2}
+  rocketPower: 10
+  wheelRotationAngle: 0.2
 --- !u!1 &232489024
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,7 +401,7 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -423,19 +425,19 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 34
+  field of view: 60
   orthographic: 1
-  orthographic size: 13
-  m_Depth: -1
+  orthographic size: 5
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 0
+  m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 0
+  m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0

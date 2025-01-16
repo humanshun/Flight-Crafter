@@ -4,23 +4,27 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
-    public BodyData body;
-    public WingData wing;
-    public TireData tire;
-    public RocketData rocket;
+    // 各パーツデータを保持するクラスへの参照
+    public BodyData body; // 本体のデータ
+    public WingData wing; // 翼のデータ
+    public TireData tire; // タイヤのデータ
+    public RocketData rocket; // ロケットのデータ
 
 
-    private float totalWeight;
-    private float totalLift;
-    private float totalGroundAcceleration;
-    private float totalAirAcceleration;
+    // パーツごとの合計値を計算・保持するための変数
+    private float totalWeight; // 総重量
+    private float totalLift; // 総浮力
+    private float totalGroundAcceleration; // 総地上加速度
+    private float totalAirAcceleration; // 総空中加速度
 
 
     // private UnityEngine.Camera mainCamera; // カメラを手動で指定
-    [SerializeField] private float rocketPower = 10f;
-    [SerializeField] private float wheelRotationAngle = 0.2f;
-    private Rigidbody2D rb;
-    private bool isLeftClick = false;
+
+    // プレイヤーの制御に必要なパラメータ
+    [SerializeField] private float rocketPower = 10f; // ロケットの推進力
+    [SerializeField] private float wheelRotationAngle = 0.2f; // プレイヤーの回転角度
+    private Rigidbody2D rb; // プレイヤーのRigidbody2D
+    private bool isLeftClick = false; // 左クリック状態を保持するフラグ
     void Start()
     {
         // //
@@ -53,9 +57,14 @@ public class PlayerController : MonoBehaviour
 
     //     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     //     transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        // プレイヤーの向きを制御する
         PlayerAngle();
+
+        // 左クリックの状態をチェック
         OnLeftClick();
 
+        // 左クリック状態がtrueの場合、右方向に力を加える
         if (isLeftClick)
         {
             AddForce(Vector2.right);
@@ -89,31 +98,32 @@ public class PlayerController : MonoBehaviour
     //         transform.rotation *= Quaternion.Euler(0, 0, -wheelRotationAngle);
     //     }
     // }
-    public void UpdateStats()
+    public void UpdateStats() // 各パーツのステータスを集計する
     {
-        // 重量と空気抵抗
+        // 重量と空気抵抗を取得
         totalWeight = body.weight;
         float totalAirResistance = body.airResistance;
 
-        // 浮力
+        // 翼の浮力と重量を加算
         totalLift = 0f;
         totalLift += wing.lift;
         totalWeight += wing.weight;
 
-        // 地上加速度
+        // タイヤの地上加速度と重量を加算
         totalGroundAcceleration = 0f;
         totalGroundAcceleration += tire.groundAcceleration;
         totalWeight += tire.weight;
 
-        // 空中加速度
+        // ロケットの空中加速度と重量を加算
         totalAirAcceleration = 0f;
         totalAirAcceleration += rocket.airAcceleration;
         totalWeight += rocket.weight;
 
-        // デバッグ用ログ
+        // デバッグ用に各ステータスをログ出力
         Debug.Log($"Weight: {totalWeight}, Lift: {totalLift}, Ground Acceleration: {totalGroundAcceleration}, Air Acceleration: {totalAirAcceleration}, Air Resistance: {totalAirResistance}");
     }
 
+    // ステータスの値を取得する関数
     public float GetWeight() => totalWeight;
     public float GetLift() => totalLift;
     public float GetGroundAcceleration() => totalGroundAcceleration;
@@ -121,10 +131,12 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerAngle()
     {
+        // Wキーを押したら時計回りに回転
         if (Input.GetKey(KeyCode.W))
         {
             transform.rotation *= Quaternion.Euler(0, 0, wheelRotationAngle);
         }
+        // Sキーを押したら反時計回りに回転
         if (Input.GetKey(KeyCode.S))
         {
             transform.rotation *= Quaternion.Euler(0, 0, -wheelRotationAngle);
@@ -133,6 +145,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnLeftClick()
     {
+        // 左Shiftキーを押している間はisLeftClickをtrueに設定
         if (Input.GetKey(KeyCode.LeftShift))
         {
             isLeftClick = true;
@@ -151,7 +164,7 @@ public class PlayerController : MonoBehaviour
         // 回転に基づいて力の方向を計算
         Vector2 forceDirection = new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
 
-        // 力を加える
+        // 力を加える（推進力を掛けて）
         rb.AddForce(forceDirection * rocketPower, ForceMode2D.Force);
     }
 }

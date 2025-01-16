@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56d0fbdf49b472544abee5ca8fd61a2b, type: 3}
-  m_Name: Default Body
+  m_Name: Danbo-ru
   m_EditorClassIdentifier: 
-  partName: 
-  weight: 0
-  airResistance: 0
+  partName: Danbo-ru
+  weight: 1
+  airResistance: 10
