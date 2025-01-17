@@ -227,10 +227,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f4c324a5ba7ef46924b73d4fc25100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 11400000, guid: d37d2e127c58c8a41aab953f149114a9, type: 2}
-  wing: {fileID: 11400000, guid: 0b9dcce4078ee4f4583effdd92b0115b, type: 2}
-  tire: {fileID: 11400000, guid: 505910786b490d24e90a12f49ca94c8b, type: 2}
-  rocket: {fileID: 11400000, guid: 5502d2dc500ff4741aa948f4ebcc002e, type: 2}
+  bodyPrefab: {fileID: 7410604593853858804, guid: fdb861afd878506489db79b00967e8c9, type: 3}
+  rocketPrefab: {fileID: 764101576814905923, guid: a2d84cf2799a30a43b225eefd8814732, type: 3}
+  tirePrefab: {fileID: 5737310961949354187, guid: dc6042dd4372bae43a0171f6dc3e5a83, type: 3}
+  wingPrefab: {fileID: 3444109036514365600, guid: 6980b7bff1e877e4a81e3a313c48fdeb, type: 3}
   rocketPower: 10
   wheelRotationAngle: 0.2
 --- !u!1 &232489024

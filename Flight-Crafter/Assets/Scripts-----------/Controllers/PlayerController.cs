@@ -4,18 +4,30 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+    // パーツのプレハブ
+    public GameObject bodyPrefab;
+    public GameObject rocketPrefab;
+    public GameObject tirePrefab;
+    public GameObject wingPrefab;
+
     // 各パーツデータを保持するクラスへの参照
-    public BodyData body; // 本体のデータ
-    public WingData wing; // 翼のデータ
-    public TireData tire; // タイヤのデータ
-    public RocketData rocket; // ロケットのデータ
+    private BodyData bodyData; // 本体のデータ
+    private RocketData rocketData; // ロケットのデータ
+    private TireData tireData; // タイヤのデータ
+    private WingData wingData; // 翼のデータ
+    
 
 
     // パーツごとの合計値を計算・保持するための変数
     private float totalWeight; // 総重量
-    private float totalLift; // 総浮力
-    private float totalGroundAcceleration; // 総地上加速度
     private float totalAirAcceleration; // 総空中加速度
+    private float totalGroundAcceleration; // 総地上加速度
+    private float totalLift; // 総浮力
+    private float totalRocketTime; // ロケットの合計噴射時間
+    private float totalAirResistance;
+    private float time;
+    private bool finishRocketTime = true;
+    
 
 
     // private UnityEngine.Camera mainCamera; // カメラを手動で指定
@@ -24,7 +36,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rocketPower = 10f; // ロケットの推進力
     [SerializeField] private float wheelRotationAngle = 0.2f; // プレイヤーの回転角度
     private Rigidbody2D rb; // プレイヤーのRigidbody2D
-    private bool isLeftClick = false; // 左クリック状態を保持するフラグ
     void Start()
     {
         // //
@@ -45,6 +56,12 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("Rigidbody2D がアタッチされていません。このスクリプトは Rigidbody2D を必要とします。");
         }
+
+        // パーツデータを初期化
+        InitializeParts();
+
+        // 初期ステータスを計算
+        UpdateStats();
     }
     void Update()
     {
@@ -59,17 +76,56 @@ public class PlayerController : MonoBehaviour
     //     transform.rotation = Quaternion.Euler(0, 0, angle);
 
         // プレイヤーの向きを制御する
-        PlayerAngle();
+        if (wingPrefab != null) {PlayerAngle();}
 
         // 左クリックの状態をチェック
-        OnLeftClick();
+        if (rocketPrefab != null) {OnLeftClick();}
+    }
 
-        // 左クリック状態がtrueの場合、右方向に力を加える
-        if (isLeftClick)
+    // パーツデータを初期化
+    void InitializeParts()
+    {
+        if (bodyPrefab != null)
         {
-            AddForce(Vector2.right);
+            Part bodyPart = bodyPrefab.GetComponent<Part>();
+            if (bodyPart != null && bodyPart.partData is BodyData body)
+            {
+                bodyData = body;
+                Debug.Log($"Bodyデータを取得: {bodyData.weight}, {bodyData.airResistance}");
+            }
+        }
+
+        if (wingPrefab != null)
+        {
+            Part wingPart = wingPrefab.GetComponent<Part>();
+            if (wingPart != null && wingPart.partData is WingData wing)
+            {
+                wingData = wing;
+                Debug.Log($"Wingデータを取得: {wingData.weight}, {wingData.lift}");
+            }
+        }
+
+        if (tirePrefab != null)
+        {
+            Part tirePart = tirePrefab.GetComponent<Part>();
+            if (tirePart != null && tirePart.partData is TireData tire)
+            {
+                tireData = tire;
+                Debug.Log($"Tireデータを取得: {tireData.weight}, {tireData.groundAcceleration}");
+            }
+        }
+
+        if (rocketPrefab != null)
+        {
+            Part rocketPart = rocketPrefab.GetComponent<Part>();
+            if (rocketPart != null && rocketPart.partData is RocketData rocket)
+            {
+                rocketData = rocket;
+                Debug.Log($"Rocketデータを取得: {rocketData.weight}, {rocketData.airAcceleration}, {rocketData.time}");
+            }
         }
     }
+
     // //インプットシステム
     // public void OnLeftClick(InputAction.CallbackContext context)
     // {
@@ -98,37 +154,51 @@ public class PlayerController : MonoBehaviour
     //         transform.rotation *= Quaternion.Euler(0, 0, -wheelRotationAngle);
     //     }
     // }
-    public void UpdateStats() // 各パーツのステータスを集計する
+
+    // プレイヤーのパーツ性能を集計
+    public void UpdateStats()
     {
-        // 重量と空気抵抗を取得
-        totalWeight = body.weight;
-        float totalAirResistance = body.airResistance;
-
-        // 翼の浮力と重量を加算
+        totalWeight = 0f;
         totalLift = 0f;
-        totalLift += wing.lift;
-        totalWeight += wing.weight;
-
-        // タイヤの地上加速度と重量を加算
         totalGroundAcceleration = 0f;
-        totalGroundAcceleration += tire.groundAcceleration;
-        totalWeight += tire.weight;
-
-        // ロケットの空中加速度と重量を加算
         totalAirAcceleration = 0f;
-        totalAirAcceleration += rocket.airAcceleration;
-        totalWeight += rocket.weight;
+        totalRocketTime = 0f;
+        totalAirResistance = 0f;
 
-        // デバッグ用に各ステータスをログ出力
-        Debug.Log($"Weight: {totalWeight}, Lift: {totalLift}, Ground Acceleration: {totalGroundAcceleration}, Air Acceleration: {totalAirAcceleration}, Air Resistance: {totalAirResistance}");
+        if (bodyData != null)
+        {
+            totalWeight += bodyData.weight;
+            totalAirResistance += bodyData.airResistance;
+        }
+        if (wingData != null)
+        {
+            totalWeight += wingData.weight;
+            totalLift += wingData.lift;
+        }
+        if (tireData != null)
+        {
+            totalWeight += tireData.weight;
+            totalGroundAcceleration += tireData.groundAcceleration;
+        }
+        if (rocketData != null)
+        {
+            totalWeight += rocketData.weight;
+            totalAirAcceleration += rocketData.airAcceleration;
+            totalRocketTime += rocketData.time; // ロケット噴射時間を追加
+        }
+
+        Debug.Log($"総重量: {totalWeight}, 浮力: {totalLift}, 地上加速: {totalGroundAcceleration}, 空中加速: {totalAirAcceleration}, ロケット噴射時間: {totalRocketTime}, 空気抵抗: {totalAirResistance}");
     }
 
-    // ステータスの値を取得する関数
+    // ステータスの値を取得する関数ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public float GetWeight() => totalWeight;
     public float GetLift() => totalLift;
     public float GetGroundAcceleration() => totalGroundAcceleration;
     public float GetAirAcceleration() => totalAirAcceleration;
+    public float GetRocketTime() => totalRocketTime;
+    public float GetAirResistance() => totalAirResistance;
 
+    //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
     {
         // Wキーを押したら時計回りに回転
@@ -143,19 +213,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void OnLeftClick()
     {
+        if (!finishRocketTime) return;
         // 左Shiftキーを押している間はisLeftClickをtrueに設定
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            isLeftClick = true;
-        }
-        else
-        {
-            isLeftClick = false;
+            time += Time.deltaTime;
+            if (totalRocketTime > time)
+            {
+                AddForce(Vector2.right);
+                Debug.Log($"{GetRocketTime()} + {time}");
+            }
+            else{finishRocketTime = false;}
         }
     }
     
+    //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void AddForce(Vector2 direction)
     {
         // プレイヤーのローカルZ回転を取得
