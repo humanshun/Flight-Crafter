@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Danbo-ru
   m_EditorClassIdentifier: 
   partName: Danbo-ru
-  weight: 1
+  weight: 0.3
   lift: 2

@@ -201,7 +201,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.2
   m_AngularDamping: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -233,6 +233,7 @@ MonoBehaviour:
   wingPrefab: {fileID: 3444109036514365600, guid: 6980b7bff1e877e4a81e3a313c48fdeb, type: 3}
   rocketPower: 10
   wheelRotationAngle: 0.2
+  playerAngle: 0
 --- !u!1 &232489024
 GameObject:
   m_ObjectHideFlags: 0

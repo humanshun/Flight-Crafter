@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Caster
   m_EditorClassIdentifier: 
   partName: Caster
-  weight: 1
+  weight: 0.3
   groundAcceleration: 1

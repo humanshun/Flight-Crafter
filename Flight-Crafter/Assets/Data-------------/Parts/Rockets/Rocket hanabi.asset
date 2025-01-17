@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Rocket hanabi
   m_EditorClassIdentifier: 
   partName: Rocket hanabi
-  weight: 1
+  weight: 0.3
   airAcceleration: 5
   time: 3

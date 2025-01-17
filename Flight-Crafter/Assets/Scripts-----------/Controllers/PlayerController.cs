@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour
     // プレイヤーの制御に必要なパラメータ
     [SerializeField] private float rocketPower = 10f; // ロケットの推進力
     [SerializeField] private float wheelRotationAngle = 0.2f; // プレイヤーの回転角度
+    [SerializeField] private float playerAngle;
     private Rigidbody2D rb; // プレイヤーのRigidbody2D
     void Start()
     {
@@ -52,10 +55,6 @@ public class PlayerController : MonoBehaviour
 
         // Rigidbody2D を取得
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
-        {
-            Debug.LogError("Rigidbody2D がアタッチされていません。このスクリプトは Rigidbody2D を必要とします。");
-        }
 
         // パーツデータを初期化
         InitializeParts();
@@ -80,6 +79,9 @@ public class PlayerController : MonoBehaviour
 
         // 左クリックの状態をチェック
         if (rocketPrefab != null) {OnLeftClick();}
+
+        // プレイヤーのローカルZ回転を取得
+        playerAngle = transform.localRotation.eulerAngles.z;
     }
 
     // パーツデータを初期化
@@ -188,6 +190,9 @@ public class PlayerController : MonoBehaviour
         }
 
         Debug.Log($"総重量: {totalWeight}, 浮力: {totalLift}, 地上加速: {totalGroundAcceleration}, 空中加速: {totalAirAcceleration}, ロケット噴射時間: {totalRocketTime}, 空気抵抗: {totalAirResistance}");
+
+        rb.mass = totalWeight;
+        Debug.Log(rb.mass);
     }
 
     // ステータスの値を取得する関数ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -201,15 +206,23 @@ public class PlayerController : MonoBehaviour
     //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
     {
-        // Wキーを押したら時計回りに回転
-        if (Input.GetKey(KeyCode.W))
+        //90以下の時にtrue
+        //270以上の時にtrue
+        if (playerAngle <= 90 || 270 <= playerAngle)
         {
-            transform.rotation *= Quaternion.Euler(0, 0, wheelRotationAngle);
+            // Wキーを押したら時計回りに回転
+            if (Input.GetKey(KeyCode.W))
+            {
+                transform.rotation *= Quaternion.Euler(0, 0, wheelRotationAngle);
+            }
         }
-        // Sキーを押したら反時計回りに回転
-        if (Input.GetKey(KeyCode.S))
+        if (270 <= playerAngle || playerAngle <= 90)
         {
-            transform.rotation *= Quaternion.Euler(0, 0, -wheelRotationAngle);
+            // Sキーを押したら反時計回りに回転
+            if (Input.GetKey(KeyCode.S))
+            {
+                transform.rotation *= Quaternion.Euler(0, 0, -wheelRotationAngle);
+            }
         }
     }
 
@@ -233,13 +246,12 @@ public class PlayerController : MonoBehaviour
     //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void AddForce(Vector2 direction)
     {
-        // プレイヤーのローカルZ回転を取得
-        float angleInRadians = transform.localRotation.eulerAngles.z * Mathf.Deg2Rad;
-
         // 回転に基づいて力の方向を計算
-        Vector2 forceDirection = new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
+        Vector2 forceDirection = new Vector2(Mathf.Cos(playerAngle), Mathf.Sin(playerAngle));
 
         // 力を加える（推進力を掛けて）
         rb.AddForce(forceDirection * rocketPower, ForceMode2D.Force);
+
+        // if (playerAngle)
     }
 }
