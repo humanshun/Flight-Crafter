@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: Rocket hanabi
   weight: 0.3
-  airAcceleration: 5
+  jetThrust: 50
   time: 3

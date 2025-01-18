@@ -3,5 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Tire", menuName = "Parts/Tire")]
 public class TireData : PartData
 {
-    public float groundAcceleration;  // 地上加速度
+    [Header("地上加速度")]
+    [Tooltip("値が高いほど地上での加速が大きくなります。")]
+    public float torque;  // トルク
 }

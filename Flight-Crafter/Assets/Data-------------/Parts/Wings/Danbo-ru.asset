@@ -15,3 +15,4 @@ MonoBehaviour:
   partName: Danbo-ru
   weight: 0.3
   lift: 2
+  airControl: 1
