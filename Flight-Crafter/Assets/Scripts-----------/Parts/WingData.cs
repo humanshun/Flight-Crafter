@@ -10,4 +10,8 @@ public class WingData : PartData
     [Header("空中制御")]
     [Tooltip("値が高いほど、空中での操作性が良くなります。")]
     public float airControl; //空中制御
+
+    [Header("回転制御")]
+    [Tooltip("値が高いほど空中での回転力が高くなります。")]
+    public float airRotationalControl;
 }

@@ -6,66 +6,38 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
-    // パーツのプレハブ
+    // パーツのプレハブーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public GameObject bodyPrefab;
     public GameObject rocketPrefab;
     public GameObject tirePrefab;
     public GameObject wingPrefab;
 
-    // 各パーツデータを保持するクラスへの参照
+    // 各パーツデータを保持するクラスへの参照ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private BodyData bodyData; // 本体のデータ
     private RocketData rocketData; // ロケットのデータ
     private TireData tireData; // タイヤのデータ
     private WingData wingData; // 翼のデータ
-    
 
-
-    // パーツごとの合計値を計算・保持するための変数
+    // パーツごとの合計値を計算・保持するための変数ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private float total_Weight; // 総重量
     private float total_JetThrust; // 総空中加速度
     private float total_Torque; // 総地上加速度
     private float total_Lift; // 総浮力
+    private float total_AirControl; //空中コントロール
+    private float total_AirRotationalControl;
     private float total_RocketTime; // ロケットの合計噴射時間
     private float total_AirResistance; //総空気抵抗
-    private float time;
-    private bool finishRocketTime = true;
-    
-
-
-    // private UnityEngine.Camera mainCamera; // カメラを手動で指定
 
     // プレイヤーの制御に必要なパラメータ
-    [SerializeField] private float playerAngle;
     private Rigidbody2D rb; // プレイヤーのRigidbody2D
-
-
-
-
-
-    public float rotationSpeed = 100f; // 回転速度
-    public float maxRotationAngle = 90f; // 最大回転角度（±）
-
-    private float currentRotationAngle = 0f; // 現在の回転角度
-
-
-
-
-
+    [SerializeField] private float playerAngle;
+    private float crrentRocketTime; //現在のロケット噴射時間
+    private bool finishRocketTime = true; //ロケットが使えるかどうか
+    [SerializeField] private float maxRotationAngle = 90f; // 最大回転角度（±）
+    public bool groundCheck;
 
     void Start()
     {
-        // //
-        // // mainCameraが未設定の場合、自動で取得
-        // if (mainCamera == null)
-        // {
-        //     mainCamera = FindFirstObjectByType<UnityEngine.Camera>();
-        // }
-
-        // if (mainCamera == null)
-        // {
-        //     Debug.LogError("カメラが見つかりません。カメラをインスペクターで指定してください。");
-        // }
-
         // Rigidbody2D を取得
         rb = GetComponent<Rigidbody2D>();
 
@@ -77,16 +49,6 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-    //    //インプットシステム
-    //    //マウスのワールド座標を取得
-    //     Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-    //     //プレイヤーとマウスの位置を2D平面で比較
-    //     Vector2 direction = (mousePosition - transform.position).normalized;
-
-    //     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-    //     transform.rotation = Quaternion.Euler(0, 0, angle);
-
         // プレイヤーの向きを制御する
         if (wingPrefab != null) {PlayerAngle();}
 
@@ -95,6 +57,8 @@ public class PlayerController : MonoBehaviour
 
         // プレイヤーのローカルZ回転を取得
         playerAngle = transform.localRotation.eulerAngles.z;
+
+        GroundAddForce();
     }
 
     // パーツデータを初期化
@@ -141,35 +105,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // //インプットシステム
-    // public void OnLeftClick(InputAction.CallbackContext context)
-    // {
-    //     if (context.performed)
-    //     {
-    //         Debug.Log("aa");
-    //         isLeftClick = true;
-    //     }
-    //     else if (context.canceled)
-    //     {
-    //         isLeftClick = false;
-    //     }
-    // }
-
-    // //インプットシステム
-    // public void OnWheel(InputValue inputValue)
-    // {
-    //     float scrollValue = inputValue.Get<float>();
-
-    //     if (scrollValue > 0) // スクロールアップ
-    //     {
-    //         transform.rotation *= Quaternion.Euler(0, 0, wheelRotationAngle);
-    //     }
-    //     else if (scrollValue < 0) // スクロールダウン
-    //     {
-    //         transform.rotation *= Quaternion.Euler(0, 0, -wheelRotationAngle);
-    //     }
-    // }
-
     // プレイヤーのパーツ性能を集計
     public void UpdateStats()
     {
@@ -189,6 +124,8 @@ public class PlayerController : MonoBehaviour
         {
             total_Weight += wingData.weight;
             total_Lift += wingData.lift;
+            total_AirControl += wingData.airControl;
+            total_AirRotationalControl += wingData.airRotationalControl;
         }
         if (tireData != null)
         {
@@ -202,18 +139,30 @@ public class PlayerController : MonoBehaviour
             total_RocketTime += rocketData.time; // ロケット噴射時間を追加
         }
 
-        Debug.Log($"総重量: {total_Weight}, 浮力: {total_Lift}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}, 空気抵抗: {total_AirResistance}");
+        Debug.Log($"総重量: {total_Weight}, 浮力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}, 空気抵抗: {total_AirResistance}");
 
         rb.mass = total_Weight;
         Debug.Log(rb.mass);
     }
 
     // ステータスの値を取得する関数ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+    //全体の重さ
     public float GetWeight() => total_Weight;
+
+    //Wingのデータ
     public float GetLift() => total_Lift;
+    public float GetAirControl() => total_AirControl;
+    public float GetAirControlRotational() => total_AirRotationalControl;
+
+    //Tireのデータ
     public float GetGroundAcceleration() => total_Torque;
+
+    //Rocketのデータ
     public float GetJetThrust() => total_JetThrust;
     public float GetRocketTime() => total_RocketTime;
+
+    //Bodyのデータ
     public float GetAirResistance() => total_AirResistance;
 
     //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -222,19 +171,29 @@ public class PlayerController : MonoBehaviour
         // 入力取得（Wキー：1, Sキー：-1, それ以外：0）
         float input = Input.GetAxis("Vertical");
 
-        // 回転角度を計算
-        float rotationChange = input * rotationSpeed * Time.deltaTime;
+        // 現在の角速度を取得
+        float currentAngularVelocity = rb.angularVelocity;
 
-        // 回転制限を考慮
-        float newRotationAngle = Mathf.Clamp(currentRotationAngle + rotationChange, -maxRotationAngle, maxRotationAngle);
+        if (input != 0)
+        {
+            // 回転速度が上限以下の場合のみトルクを適用
+            if ((input > 0 && currentAngularVelocity < total_AirRotationalControl) ||
+                (input < 0 && currentAngularVelocity > -total_AirRotationalControl))
+            {
+                float torque = input * total_AirControl;
+                rb.AddTorque(torque);
+            }
+        }
+        else
+        {
+            // キー入力がない場合、角速度を徐々に減衰させる
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, 0f, Time.deltaTime * 5f);
 
-        // 実際に回転を適用
-        float appliedRotation = newRotationAngle - currentRotationAngle; // 実際の回転分
-        transform.Rotate(Vector3.forward, appliedRotation);
-
-        // 現在の回転角度を更新
-        currentRotationAngle = newRotationAngle;
+            // デバッグログ（オプション）
+            // Debug.Log($"Angular velocity reducing to: {rb.angularVelocity}");
+        }
     }
+
 
     //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void OnLeftClick()
@@ -243,11 +202,11 @@ public class PlayerController : MonoBehaviour
         // 左Shiftキーを押している間はisLeftClickをtrueに設定
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            time += Time.deltaTime;
-            if (total_RocketTime > time)
+            crrentRocketTime += Time.deltaTime;
+            if (total_RocketTime > crrentRocketTime)
             {
                 AddForce(Vector2.right);
-                Debug.Log($"{GetRocketTime()} + {time}");
+                // Debug.Log($"{GetRocketTime()} + {crrentRocketTime}");
             }
             else{finishRocketTime = false;}
         }
@@ -261,6 +220,28 @@ public class PlayerController : MonoBehaviour
 
         // 力を加える（推進力を掛けて）
         rb.AddForce(forceDirection * total_RocketTime, ForceMode2D.Force);
+    }
+
+    //車輪メソッド
+    private void GroundAddForce()
+    {
+        if (!groundCheck) return;
+        // 水平方向の入力取得（Aキー: -1, Dキー: 1, それ以外: 0）
+        float input = Input.GetAxis("Horizontal");
+
+        if (input != 0)
+        {
+            // プレイヤーの回転に基づいた右方向を計算
+            Vector2 rightDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
+
+            // 入力に基づいて力を計算
+            Vector2 force = rightDirection * input * total_Torque;
+
+            // 力を加える
+            rb.AddForce(force, ForceMode2D.Force);
+            // デバッグログで力の情報を出力
+            Debug.Log($"Applied Ground Force: {force}, Input: {input}");
+        }
     }
 
 }
