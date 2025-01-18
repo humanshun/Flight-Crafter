@@ -141,6 +141,7 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log($"総重量: {total_Weight}, 浮力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}, 空気抵抗: {total_AirResistance}");
 
+        rb.linearDamping = total_AirResistance; //空気抵抗なんだけど、まだどうするか迷ってる。浮力と空気抵抗の区別ができん。。。
         rb.mass = total_Weight;
         Debug.Log(rb.mass);
     }
