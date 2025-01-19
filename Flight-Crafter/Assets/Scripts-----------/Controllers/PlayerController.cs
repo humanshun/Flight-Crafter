@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public GameObject tirePrefab;
     public GameObject wingPrefab;
 
+    public GameObject rocketThrust;
+
     // 各パーツデータを保持するクラスへの参照ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private BodyData bodyData; // 本体のデータ
     private RocketData rocketData; // ロケットのデータ
@@ -37,8 +39,12 @@ public class PlayerController : MonoBehaviour
     public bool groundCheck; //Groundについているかどうか
     private Vector2 rightDirection;// プレイヤーの回転に基づいた右方向
 
+
+    float MovY,MovX = 1;
+
     void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
+        rocketThrust.SetActive(false);
         // Rigidbody2D を取得
         rb = GetComponent<Rigidbody2D>();
 
@@ -50,8 +56,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update() //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
-        // プレイヤーの向きを制御する
-        if (wingPrefab != null) {PlayerAngle();}
+        MovY = Input.GetAxis("Vertical");
 
         // 左クリックの状態をチェック
         if (rocketPrefab != null) {OnLeftClick();}
@@ -60,10 +65,15 @@ public class PlayerController : MonoBehaviour
         playerAngle = transform.localRotation.eulerAngles.z;
 
         GroundAddForce();
-        AirAddForce();
 
         // プレイヤーの回転に基づいた右方向を計算
         rightDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
+    }
+
+    void FixedUpdate()
+    {
+        // プレイヤーの向きを制御する
+        if (wingPrefab != null) {PlayerAngle();}
     }
 
     // パーツデータを初期化
@@ -175,30 +185,32 @@ public class PlayerController : MonoBehaviour
     //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
     {
-        // 入力取得（Wキー：1, Sキー：-1, それ以外：0）
-        float input = Input.GetAxis("Vertical");
+        // 水平方向の加速を計算（プレイヤーのローカル座標の右方向に加速）
+        Vector2 Vel = transform.right * (MovX * total_JetThrust);
+        rb.AddForce(Vel);
 
-        // 現在の角速度を取得
-        float currentAngularVelocity = rb.angularVelocity;
+        // 進行方向とローカル座標の右方向の内積を計算（正負で進行方向を判定）
+        float Dir = Vector2.Dot(rb.linearVelocity, rb.GetRelativeVector(Vector2.right));
 
-        if (input != 0)
+        if (Dir > 0)
         {
-            // 回転速度が上限以下の場合のみトルクを適用
-            if ((input > 0 && currentAngularVelocity < total_AirRotationalControl) ||
-                (input < 0 && currentAngularVelocity > -total_AirRotationalControl))
-            {
-                float torque = input * total_AirControl;
-                rb.AddTorque(torque);
-            }
+            // 正の方向に進んでいる場合、垂直入力に応じて時計回りに回転
+            rb.rotation += MovY * total_AirControl * rb.linearVelocity.magnitude;
         }
         else
         {
-            // キー入力がない場合、角速度を徐々に減衰させる
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, 0f, Time.deltaTime * 5f);
-
-            // デバッグログ（オプション）
-            // Debug.Log($"Angular velocity reducing to: {rb.angularVelocity}");
+            // 負の方向に進んでいる場合、垂直入力に応じて反時計回りに回転
+            rb.rotation -= MovY * total_AirControl * rb.linearVelocity.magnitude;
         }
+
+        // 垂直方向の力を計算（進行方向が下向きのときの揚力）
+        float thrustForce = Vector2.Dot(rb.linearVelocity, rb.GetRelativeVector(Vector2.down)) * 2.0f;
+
+        // 上方向に力を加えるためのベクトルを計算
+        Vector2 relForce = Vector2.up * thrustForce;
+
+        // Rigidbody2Dに揚力を加える
+        rb.AddForce(rb.GetRelativeVector(relForce));
     }
 
 
@@ -213,9 +225,18 @@ public class PlayerController : MonoBehaviour
             if (total_RocketTime > crrentRocketTime)
             {
                 AddForce(Vector2.right);
+                rocketThrust.SetActive(true);
                 // Debug.Log($"{GetRocketTime()} + {crrentRocketTime}");
             }
-            else{finishRocketTime = false;}
+            else
+            {
+                rocketThrust.SetActive(false);
+                finishRocketTime = false;
+            }
+        }
+        else
+        {
+            rocketThrust.SetActive(false);
         }
     }
     
@@ -245,45 +266,4 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(force, ForceMode2D.Force);
         }
     }
-
-    private void AirAddForce()
-    {
-        // groundCheck が false の場合のみ実行（空中にいるとき）
-        if (groundCheck) return;
-
-        // Rigidbody2Dの速度を取得
-        Vector2 playerVelocity = rb.linearVelocity;
-
-        // プレイヤーが落ちている角度を計算（ラジアン -> 度に変換）
-        float playerVelocityAngle = Mathf.Atan2(playerVelocity.y, playerVelocity.x) * Mathf.Rad2Deg;
-
-        // プレイヤーが向いている角度を-180～180度に正規化
-        float normalizedPlayerAngle = (playerAngle + 180f) % 360f - 180f;
-
-        // 力をかける角度を計算
-        float applyForceAngle = (playerVelocityAngle + normalizedPlayerAngle * 5) / 7;
-
-        // 角度をラジアンに変換
-        float applyForceAngleRad = applyForceAngle * Mathf.Deg2Rad;
-
-        // 力をかける方向のベクトルを計算
-        Vector2 applyForceDirection = new Vector2(Mathf.Cos(applyForceAngleRad), Mathf.Sin(applyForceAngleRad)).normalized;
-
-        // 現在の速度の大きさを取得
-        float velocityMagnitude = playerVelocity.magnitude * 0.5f;
-
-        // 力を計算（現在の速度に基づいてスケール調整）
-        Vector2 forceToApply = applyForceDirection * velocityMagnitude * total_PropulsionPower;
-
-        // デバッグ用出力
-        // Debug.Log($"Playerの速度: {playerVelocity}");
-        // Debug.Log($"Playerの落ちている角度: {playerVelocityAngle}度");
-        // Debug.Log($"Playerの向いている角度: {normalizedPlayerAngle}度");
-        Debug.Log($"Playerに力をかける角度: {applyForceAngle}度");
-        // Debug.Log($"Playerに加える力: {forceToApply}");
-
-        // Rigidbody2D に力を加える
-        rb.AddForce(forceToApply, ForceMode2D.Force);
-    }
-
 }
