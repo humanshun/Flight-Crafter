@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private float total_Lift; // 総浮力
     private float total_AirControl; //空中コントロール
     private float total_AirRotationalControl; //回転制御
+    private float total_PropulsionPower;
     private float total_RocketTime; // ロケットの合計噴射時間
 
     // プレイヤーの制御に必要なパラメータ
@@ -129,6 +130,7 @@ public class PlayerController : MonoBehaviour
             total_Lift += wingData.lift;
             total_AirControl += wingData.airControl;
             total_AirRotationalControl += wingData.airRotationalControl;
+            total_PropulsionPower += wingData.propulsionPower;
         }
         if (tireData != null)
         {
@@ -142,7 +144,7 @@ public class PlayerController : MonoBehaviour
             total_RocketTime += rocketData.time; // ロケット噴射時間を追加
         }
 
-        Debug.Log($"総重量: {total_Weight},総空気抵抗{total_AirResistance}, 浮力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}");
+        Debug.Log($"総重量: {total_Weight},総空気抵抗{total_AirResistance}, 揚力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 推進力: {total_PropulsionPower}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}");
 
         rb.linearDamping = total_AirResistance; //空気抵抗。下を向くほどその方向に加速するように。
         rb.mass = total_Weight;
@@ -161,6 +163,7 @@ public class PlayerController : MonoBehaviour
     public float GetLift() => total_Lift;
     public float GetAirControl() => total_AirControl;
     public float GetAirControlRotational() => total_AirRotationalControl;
+    public float GetPropulsionPower() => total_PropulsionPower;
 
     //Tireのデータ
     public float GetGroundAcceleration() => total_Torque;
@@ -240,8 +243,6 @@ public class PlayerController : MonoBehaviour
 
             // 力を加える
             rb.AddForce(force, ForceMode2D.Force);
-            // デバッグログで力の情報を出力
-            Debug.Log($"Applied Ground Force: {force}, Input: {input}");
         }
     }
 
@@ -250,32 +251,39 @@ public class PlayerController : MonoBehaviour
         // groundCheck が false の場合のみ実行（空中にいるとき）
         if (groundCheck) return;
 
-        // プレイヤーの角度を基に力の方向を決定
-        float angle = playerAngle % 360f; // 角度を0～360度に正規化
+        // Rigidbody2Dの速度を取得
+        Vector2 playerVelocity = rb.linearVelocity;
 
-        // 力の大きさを決定する変数
-        float forceMultiplier = 0f;
+        // プレイヤーが落ちている角度を計算（ラジアン -> 度に変換）
+        float playerVelocityAngle = Mathf.Atan2(playerVelocity.y, playerVelocity.x) * Mathf.Rad2Deg;
 
-        if (angle > 0f && angle <= 180f)
-        {
-            // 90度を中心に最大の負方向の力を加える
-            float distanceFrom90 = Mathf.Abs(angle - 90f); // 90度からの距離
-            forceMultiplier = -Mathf.Lerp(1f, 0f, Mathf.InverseLerp(0f, 90f, distanceFrom90));
-            Debug.Log("負方向に力をかけています。");
-        }
-        else if (angle > 180f && angle <= 360f)
-        {
-            // 270度を中心に最大の正方向の力を加える
-            float distanceFrom270 = Mathf.Abs(angle - 270f); // 270度からの距離
-            forceMultiplier = Mathf.Lerp(1f, 0f, Mathf.InverseLerp(0f, 90f, distanceFrom270));
-            Debug.Log("正方向に力をかけています。");
-        }
+        // プレイヤーが向いている角度を-180～180度に正規化
+        float normalizedPlayerAngle = (playerAngle + 180f) % 360f - 180f;
 
-        // rightDirection に基づいて力を計算
-        Vector2 airForce = rightDirection * forceMultiplier * total_Lift; // total_Lift を使用する場合は置き換え
-        Debug.Log($"Force Multiplier: {forceMultiplier}");
+        // 力をかける角度を計算
+        float applyForceAngle = (playerVelocityAngle + normalizedPlayerAngle * 5) / 7;
+
+        // 角度をラジアンに変換
+        float applyForceAngleRad = applyForceAngle * Mathf.Deg2Rad;
+
+        // 力をかける方向のベクトルを計算
+        Vector2 applyForceDirection = new Vector2(Mathf.Cos(applyForceAngleRad), Mathf.Sin(applyForceAngleRad)).normalized;
+
+        // 現在の速度の大きさを取得
+        float velocityMagnitude = playerVelocity.magnitude * 0.5f;
+
+        // 力を計算（現在の速度に基づいてスケール調整）
+        Vector2 forceToApply = applyForceDirection * velocityMagnitude * total_PropulsionPower;
+
+        // デバッグ用出力
+        // Debug.Log($"Playerの速度: {playerVelocity}");
+        // Debug.Log($"Playerの落ちている角度: {playerVelocityAngle}度");
+        // Debug.Log($"Playerの向いている角度: {normalizedPlayerAngle}度");
+        Debug.Log($"Playerに力をかける角度: {applyForceAngle}度");
+        // Debug.Log($"Playerに加える力: {forceToApply}");
 
         // Rigidbody2D に力を加える
-        rb.AddForce(airForce, ForceMode2D.Force);
+        rb.AddForce(forceToApply, ForceMode2D.Force);
     }
+
 }
