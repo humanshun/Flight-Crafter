@@ -20,23 +20,23 @@ public class PlayerController : MonoBehaviour
 
     // パーツごとの合計値を計算・保持するための変数ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private float total_Weight; // 総重量
+    private float total_AirResistance; //総空気抵抗
     private float total_JetThrust; // 総空中加速度
     private float total_Torque; // 総地上加速度
     private float total_Lift; // 総浮力
     private float total_AirControl; //空中コントロール
-    private float total_AirRotationalControl;
+    private float total_AirRotationalControl; //回転制御
     private float total_RocketTime; // ロケットの合計噴射時間
-    private float total_AirResistance; //総空気抵抗
 
     // プレイヤーの制御に必要なパラメータ
     private Rigidbody2D rb; // プレイヤーのRigidbody2D
     [SerializeField] private float playerAngle;
     private float crrentRocketTime; //現在のロケット噴射時間
     private bool finishRocketTime = true; //ロケットが使えるかどうか
-    [SerializeField] private float maxRotationAngle = 90f; // 最大回転角度（±）
-    public bool groundCheck;
+    public bool groundCheck; //Groundについているかどうか
+    private Vector2 rightDirection;// プレイヤーの回転に基づいた右方向
 
-    void Start()
+    void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
         // Rigidbody2D を取得
         rb = GetComponent<Rigidbody2D>();
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         // 初期ステータスを計算
         UpdateStats();
     }
-    void Update()
+    void Update() //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
         // プレイヤーの向きを制御する
         if (wingPrefab != null) {PlayerAngle();}
@@ -59,10 +59,14 @@ public class PlayerController : MonoBehaviour
         playerAngle = transform.localRotation.eulerAngles.z;
 
         GroundAddForce();
+        AirAddForce();
+
+        // プレイヤーの回転に基づいた右方向を計算
+        rightDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
     }
 
     // パーツデータを初期化
-    void InitializeParts()
+    void InitializeParts()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
         if (bodyPrefab != null)
         {
@@ -105,7 +109,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // プレイヤーのパーツ性能を集計
+    // プレイヤーのパーツ性能を集計//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void UpdateStats()
     {
         total_Weight = 0f;
@@ -113,7 +117,6 @@ public class PlayerController : MonoBehaviour
         total_Torque = 0f;
         total_JetThrust = 0f;
         total_RocketTime = 0f;
-        total_AirResistance = 0f;
 
         if (bodyData != null)
         {
@@ -139,9 +142,9 @@ public class PlayerController : MonoBehaviour
             total_RocketTime += rocketData.time; // ロケット噴射時間を追加
         }
 
-        Debug.Log($"総重量: {total_Weight}, 浮力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}, 空気抵抗: {total_AirResistance}");
+        Debug.Log($"総重量: {total_Weight},総空気抵抗{total_AirResistance}, 浮力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}");
 
-        rb.linearDamping = total_AirResistance; //空気抵抗なんだけど、まだどうするか迷ってる。浮力と空気抵抗の区別ができん。。。
+        rb.linearDamping = total_AirResistance; //空気抵抗。下を向くほどその方向に加速するように。
         rb.mass = total_Weight;
         Debug.Log(rb.mass);
     }
@@ -150,6 +153,9 @@ public class PlayerController : MonoBehaviour
 
     //全体の重さ
     public float GetWeight() => total_Weight;
+
+    //Bodyのデータ
+    public float GetAirResistance() => total_AirResistance;
 
     //Wingのデータ
     public float GetLift() => total_Lift;
@@ -163,10 +169,7 @@ public class PlayerController : MonoBehaviour
     public float GetJetThrust() => total_JetThrust;
     public float GetRocketTime() => total_RocketTime;
 
-    //Bodyのデータ
-    public float GetAirResistance() => total_AirResistance;
-
-    //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
     {
         // 入力取得（Wキー：1, Sキー：-1, それ以外：0）
@@ -224,7 +227,7 @@ public class PlayerController : MonoBehaviour
     }
 
     //車輪メソッド
-    private void GroundAddForce()
+    private void GroundAddForce()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
         if (!groundCheck) return;
         // 水平方向の入力取得（Aキー: -1, Dキー: 1, それ以外: 0）
@@ -232,9 +235,6 @@ public class PlayerController : MonoBehaviour
 
         if (input != 0)
         {
-            // プレイヤーの回転に基づいた右方向を計算
-            Vector2 rightDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
-
             // 入力に基づいて力を計算
             Vector2 force = rightDirection * input * total_Torque;
 
@@ -245,4 +245,37 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void AirAddForce()
+    {
+        // groundCheck が false の場合のみ実行（空中にいるとき）
+        if (groundCheck) return;
+
+        // プレイヤーの角度を基に力の方向を決定
+        float angle = playerAngle % 360f; // 角度を0～360度に正規化
+
+        // 力の大きさを決定する変数
+        float forceMultiplier = 0f;
+
+        if (angle > 0f && angle <= 180f)
+        {
+            // 90度を中心に最大の負方向の力を加える
+            float distanceFrom90 = Mathf.Abs(angle - 90f); // 90度からの距離
+            forceMultiplier = -Mathf.Lerp(1f, 0f, Mathf.InverseLerp(0f, 90f, distanceFrom90));
+            Debug.Log("負方向に力をかけています。");
+        }
+        else if (angle > 180f && angle <= 360f)
+        {
+            // 270度を中心に最大の正方向の力を加える
+            float distanceFrom270 = Mathf.Abs(angle - 270f); // 270度からの距離
+            forceMultiplier = Mathf.Lerp(1f, 0f, Mathf.InverseLerp(0f, 90f, distanceFrom270));
+            Debug.Log("正方向に力をかけています。");
+        }
+
+        // rightDirection に基づいて力を計算
+        Vector2 airForce = rightDirection * forceMultiplier * total_Lift; // total_Lift を使用する場合は置き換え
+        Debug.Log($"Force Multiplier: {forceMultiplier}");
+
+        // Rigidbody2D に力を加える
+        rb.AddForce(airForce, ForceMode2D.Force);
+    }
 }
