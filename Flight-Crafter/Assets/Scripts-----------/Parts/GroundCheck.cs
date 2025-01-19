@@ -19,7 +19,6 @@ public class GroundCheck : MonoBehaviour
         if (other.gameObject.CompareTag("Ground") && playerController != null)
         {
             playerController.groundCheck = true;
-            Debug.Log("Grounded (Enter)");
         }
     }
 
@@ -28,7 +27,6 @@ public class GroundCheck : MonoBehaviour
         if (other.gameObject.CompareTag("Ground") && playerController != null)
         {
             playerController.groundCheck = true;
-            Debug.Log("Grounded (Stay)");
         }
     }
 
@@ -37,7 +35,6 @@ public class GroundCheck : MonoBehaviour
         if (other.gameObject.CompareTag("Ground") && playerController != null)
         {
             playerController.groundCheck = false;
-            Debug.Log("Not Grounded (Exit)");
         }
     }
 }

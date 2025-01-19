@@ -3,9 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Wing", menuName = "Parts/Wing")]
 public class WingData : PartData
 {
-    [Header("浮力")]
+    [Header("揚力")]
     [Tooltip("値が高いほど水平方向に向いているときの、垂直方向の浮力が大きくなります。")]
-    public float lift;       // 浮力
+    public float lift;       // 揚力
     
     [Header("空中制御")]
     [Tooltip("値が高いほど、空中での操作性が良くなります。")]
