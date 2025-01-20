@@ -185,6 +185,7 @@ public class PlayerController : MonoBehaviour
     //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
     {
+        if (groundCheck != false) return;
         // 水平方向の加速を計算（プレイヤーのローカル座標の右方向に加速）
         Vector2 Vel = transform.right * (MovX * total_JetThrust);
         rb.AddForce(Vel);
