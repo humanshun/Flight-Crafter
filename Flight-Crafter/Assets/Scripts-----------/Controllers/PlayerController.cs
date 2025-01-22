@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
     public GameObject tirePrefab;
     public GameObject wingPrefab;
 
-    public GameObject rocketThrust;
+    public GameObject rocketThrustPrefab; // エフェクトのプレハブ
+    public Transform EffectPosition;
+    private GameObject currentRocketThrustInstance;
 
     // 各パーツデータを保持するクラスへの参照ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private BodyData bodyData; // 本体のデータ
@@ -44,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
-        rocketThrust.SetActive(false);
         // Rigidbody2D を取得
         rb = GetComponent<Rigidbody2D>();
 
@@ -231,25 +232,37 @@ public class PlayerController : MonoBehaviour
     public void OnLeftClick()
     {
         if (!finishRocketTime) return;
-        // 左Shiftキーを押している間はisLeftClickをtrueに設定
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             crrentRocketTime += Time.deltaTime;
+
             if (total_RocketTime > crrentRocketTime)
             {
                 AddForce(Vector2.right);
-                rocketThrust.SetActive(true);
-                // Debug.Log($"{GetRocketTime()} + {crrentRocketTime}");
             }
             else
             {
-                rocketThrust.SetActive(false);
                 finishRocketTime = false;
             }
         }
-        else
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            rocketThrust.SetActive(false);
+            currentRocketThrustInstance = Instantiate(rocketThrustPrefab, EffectPosition.position, transform.rotation);
+            currentRocketThrustInstance.transform.SetParent(transform); // プレイヤーに追従
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            // エフェクトが存在している場合、停止
+            if (currentRocketThrustInstance != null)
+            {
+                ParticleSystem ps = currentRocketThrustInstance.GetComponent<ParticleSystem>();
+                if (ps != null)
+                {
+                    ps.Stop(); // エフェクトを停止
+                }
+            }
         }
     }
     
