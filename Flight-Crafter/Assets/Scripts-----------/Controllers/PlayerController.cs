@@ -186,23 +186,14 @@ public class PlayerController : MonoBehaviour
     public void PlayerAngle()
     {
         if (groundCheck != false) return;
+
         // 水平方向の加速を計算（プレイヤーのローカル座標の右方向に加速）
         Vector2 Vel = transform.right * (MovX * total_JetThrust);
         rb.AddForce(Vel);
 
-        // 進行方向とローカル座標の右方向の内積を計算（正負で進行方向を判定）
-        float Dir = Vector2.Dot(rb.linearVelocity, rb.GetRelativeVector(Vector2.right));
-
-        if (Dir > 0)
-        {
-            // 正の方向に進んでいる場合、垂直入力に応じて時計回りに回転
-            rb.rotation += MovY * total_AirControl * rb.linearVelocity.magnitude;
-        }
-        else
-        {
-            // 負の方向に進んでいる場合、垂直入力に応じて反時計回りに回転
-            rb.rotation -= MovY * total_AirControl * rb.linearVelocity.magnitude;
-        }
+        // 回転に対するトルクを加える（AddTorqueを使用）
+        float torque = MovY * total_AirControl;  // MovYとtotal_AirControlで回転力を計算
+        rb.AddTorque(torque);
 
         // 垂直方向の力を計算（進行方向が下向きのときの揚力）
         float thrustForce = Vector2.Dot(rb.linearVelocity, rb.GetRelativeVector(Vector2.down)) * 2.0f;
@@ -212,7 +203,28 @@ public class PlayerController : MonoBehaviour
 
         // Rigidbody2Dに揚力を加える
         rb.AddForce(rb.GetRelativeVector(relForce));
+
+        // 現在の角速度を取得
+        float currentAngularVelocity = rb.angularVelocity;
+
+        // 0.5秒で角速度を0に近づけるための速度を計算
+        float timeToZero = 0.2f;  // 0.5秒で角速度を0にする
+        float targetAngularVelocity = 0f;
+
+        // 徐々に角速度を0に近づける
+        if (Mathf.Abs(currentAngularVelocity) > 0.01f)  // 角速度が一定の閾値以上なら
+        {
+            // 現在の角速度を徐々に0に向けて減少させる
+            rb.angularVelocity = Mathf.MoveTowards(currentAngularVelocity, targetAngularVelocity, Mathf.Abs(currentAngularVelocity) / timeToZero * Time.deltaTime);
+        }
+        else
+        {
+            // 角速度が十分小さくなったら完全に0に設定
+            rb.angularVelocity = 0;
+        }
     }
+
+
 
 
     //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -248,7 +260,7 @@ public class PlayerController : MonoBehaviour
         Vector2 forceDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
 
         // 力を加える（推進力を掛けて）
-        rb.AddForce(forceDirection * total_RocketTime, ForceMode2D.Force);
+        rb.AddForce(forceDirection * total_JetThrust, ForceMode2D.Force);
     }
 
     //車輪メソッド

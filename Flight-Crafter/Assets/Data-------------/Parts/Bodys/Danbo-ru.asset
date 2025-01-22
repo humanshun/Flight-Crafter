@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: Danbo-ru
   weight: 0.3
-  airResistance: 0.07
+  airResistance: 0.2

@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Rocket hanabi
   weight: 0.3
   jetThrust: 2
-  time: 3
+  time: 10

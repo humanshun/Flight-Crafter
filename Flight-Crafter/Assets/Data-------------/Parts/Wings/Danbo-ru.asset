@@ -15,6 +15,6 @@ MonoBehaviour:
   partName: Danbo-ru
   weight: 0.3
   lift: 4
-  airControl: 0.03
+  airControl: 30
   airRotationalControl: 1000
   propulsionPower: 0.03
