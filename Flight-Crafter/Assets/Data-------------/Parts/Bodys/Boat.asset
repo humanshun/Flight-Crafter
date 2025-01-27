@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f70f85ef5a41447979281f9d74ad42, type: 3}
-  m_Name: Rocket hanabi
+  m_Script: {fileID: 11500000, guid: 56d0fbdf49b472544abee5ca8fd61a2b, type: 3}
+  m_Name: Boat
   m_EditorClassIdentifier: 
-  partName: Rocket hanabi
-  weight: 0.3
-  jetThrust: 10
-  time: 200
+  partName: Boat
+  weight: 3
+  airResistance: 0.1

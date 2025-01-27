@@ -9,7 +9,7 @@ public class CloudManager : MonoBehaviour
     private float cloudActiveRange = 200f;  // 雲がアクティブである範囲
     private float cloudSpacing = 20f;  // 雲を均等に配置する間隔
     private float minHeight = -10f;  // 雲の最小高さ
-    private float maxHeight = 10f;  // 雲の最大高さ
+    private float maxHeight = 200f;  // 雲の最大高さ
     private List<GameObject> clouds = new List<GameObject>();  // 生成した雲を格納するリスト
 
     void Start()
