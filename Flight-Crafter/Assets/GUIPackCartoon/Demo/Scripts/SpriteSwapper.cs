@@ -7,30 +7,40 @@ using UnityEngine.UI;
 
 namespace Ricimi
 {
-    // Utility class for swapping the sprite of a UI Image between two predefined values.
+    // UIのImageコンポーネントのスプライトを2つの事前定義された値の間で切り替えるユーティリティクラス
     public class SpriteSwapper : MonoBehaviour
     {
+        // 有効状態のスプライト
         public Sprite enabledSprite;
+        // 無効状態のスプライト
         public Sprite disabledSprite;
 
+        // スプライトが切り替わっているかどうかを示すフラグ
         private bool m_swapped = true;
 
+        // Imageコンポーネントへの参照
         private Image m_image;
 
+        // Awakeメソッドはオブジェクトが有効化されたときに呼び出される
         public void Awake()
         {
+            // Imageコンポーネントを取得
             m_image = GetComponent<Image>();
         }
 
+        // スプライトを切り替えるメソッド
         public void SwapSprite()
         {
+            // 現在の状態に応じてスプライトを切り替える
             if (m_swapped)
             {
+                // 無効状態に切り替える
                 m_swapped = false;
                 m_image.sprite = disabledSprite;
             }
             else
             {
+                // 有効状態に切り替える
                 m_swapped = true;
                 m_image.sprite = enabledSprite;
             }
