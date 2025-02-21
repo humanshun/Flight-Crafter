@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: Boat
   weight: 3
+  partCost: 1000
   airResistance: 0.1
