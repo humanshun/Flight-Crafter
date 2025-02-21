@@ -3588,7 +3588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2864486697453313663, guid: 29ea53df5ea6f44a8b3269f2d044afab, type: 3}
       propertyPath: m_Name
-      value: BodyDanboru
+      value: BodyDanboru Button
       objectReference: {fileID: 0}
     - target: {fileID: 5585583631189188578, guid: 29ea53df5ea6f44a8b3269f2d044afab, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -5323,7 +5323,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2864486697453313663, guid: 29ea53df5ea6f44a8b3269f2d044afab, type: 3}
       propertyPath: m_Name
-      value: BodyBoto
+      value: BodyBoto Button
       objectReference: {fileID: 0}
     - target: {fileID: 5585583631189188578, guid: 29ea53df5ea6f44a8b3269f2d044afab, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
