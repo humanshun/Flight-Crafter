@@ -25,6 +25,7 @@ public class Shop : MonoBehaviour
         if (playerData.playerCoins >= item.partCost)
         {
             playerData.playerCoins -= item.partCost;
+            playerData.SavePlayerCoins(); // コインのデータを保存
             Debug.Log(item.partName + " 購入成功！ 残りコイン: " + playerData.playerCoins);
             // ここでアイテムをプレイヤーに追加する処理を行う
         }
