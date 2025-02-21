@@ -38,12 +38,12 @@ namespace Ricimi
                 m_swapped = false;
                 m_image.sprite = disabledSprite;
             }
-            else
-            {
-                // 有効状態に切り替える
-                m_swapped = true;
-                m_image.sprite = enabledSprite;
-            }
+            // else
+            // {
+            //     // 有効状態に切り替える
+            //     m_swapped = true;
+            //     m_image.sprite = enabledSprite;
+            // }
         }
     }
 }

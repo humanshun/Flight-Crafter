@@ -9,9 +9,9 @@ public class PlayerData : MonoBehaviour
     {
         // PlayerPrefs.DeleteAll();
         // PlayerPrefsからコインのデータを読み込む
-        playerCoins = PlayerPrefs.GetInt(PlayerCoinsKey); // デフォルト値は500
+        playerCoins = 2000;
+        SavePlayerCoins();
     }
-
     public void SavePlayerCoins()
     {
         // PlayerPrefsにコインのデータを保存する
