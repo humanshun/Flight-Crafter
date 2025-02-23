@@ -188,10 +188,6 @@ public class PlayerController : MonoBehaviour
     {
         if (groundCheck != false) return;
 
-        // 水平方向の加速を計算（プレイヤーのローカル座標の右方向に加速）
-        Vector2 Vel = transform.right * (MovX * total_JetThrust);
-        rb.AddForce(Vel);
-
         // 回転に対するトルクを加える（AddTorqueを使用）
         float torque = MovY * total_AirControl;  // MovYとtotal_AirControlで回転力を計算
         rb.AddTorque(torque);
