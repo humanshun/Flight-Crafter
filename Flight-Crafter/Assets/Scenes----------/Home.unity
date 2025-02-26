@@ -5759,14 +5759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 2019719730}
-  shopItems:
-  - {fileID: 11400000, guid: d37d2e127c58c8a41aab953f149114a9, type: 2}
-  buyButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  itemNameText:
-  - {fileID: 0}
-  - {fileID: 0}
+  shopData: {fileID: 11400000, guid: ec622ff121f19b64c8132bbf24294031, type: 2}
 --- !u!4 &2038309362
 Transform:
   m_ObjectHideFlags: 0
