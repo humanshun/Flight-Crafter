@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: Danbo-ru
   weight: 0.3
+  partCost: 0
+  partIcon: {fileID: 0}
+  partType: 3
   lift: 4
   airControl: 30
   airRotationalControl: 1000
