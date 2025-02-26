@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 rightDirection;// プレイヤーの回転に基づいた右方向
 
 
-    float MovY,MovX = 1;
+    float MovY = 1;
 
     void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
