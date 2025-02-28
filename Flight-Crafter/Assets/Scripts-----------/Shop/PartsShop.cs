@@ -4,6 +4,8 @@ namespace Ricimi
 {
     public class PartsShop : MonoBehaviour
     {
+        // ショップデータを格納するためのパブリック変数
+        public ShopData shopData;
         // ポップアップのプレハブを格納するためのパブリック変数
         public GameObject popupPrefab;
 
@@ -13,6 +15,7 @@ namespace Ricimi
         // スクリプトが有効になったときに最初に呼び出されるメソッド
         protected void Start()
         {
+            ShopData();
             // 親オブジェクトからCanvasコンポーネントを取得し、m_canvasに格納
             m_canvas = GetComponentInParent<Canvas>();
         }
@@ -36,6 +39,16 @@ namespace Ricimi
             Debug.Log("オブジェクトがクリックされました！");
             OpenPopup();
         }
-        
+        void ShopData()
+        {
+            int count = 0;
+
+            foreach (PartData part in shopData.shopItems)
+            {
+                Debug.Log(part.name + part.partType);
+                count++;
+            }
+            Debug.Log(count);
+        }
     }
 }
