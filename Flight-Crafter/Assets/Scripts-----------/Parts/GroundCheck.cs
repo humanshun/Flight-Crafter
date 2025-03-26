@@ -18,7 +18,7 @@ public class GroundCheck : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground") && playerController != null)
         {
-            playerController.groundCheck = true;
+            playerController.isGrounded = true;
         }
     }
 
@@ -26,7 +26,7 @@ public class GroundCheck : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground") && playerController != null)
         {
-            playerController.groundCheck = true;
+            playerController.isGrounded = true;
         }
     }
 
@@ -34,7 +34,7 @@ public class GroundCheck : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground") && playerController != null)
         {
-            playerController.groundCheck = false;
+            playerController.isGrounded = false;
         }
     }
 }
