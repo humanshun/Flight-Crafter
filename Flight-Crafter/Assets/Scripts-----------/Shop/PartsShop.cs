@@ -44,10 +44,20 @@ namespace Ricimi
 
             foreach (PartData part in shopData.shopItems)
             {
-                Debug.Log(part.name + part.partType);
-                var item = Instantiate(itemPrefab) as GameObject;
+                // Debug.Log(part.name + part.partType);
+                // var item = Instantiate(itemPrefab) as GameObject;
 
-                item.transform.SetParent(contentTransform.transform, false);
+                // item.transform.SetParent(contentTransform.transform, false);
+                
+                // パーツのタイプが "Body" の場合のみ処理を実行
+                if (part.partType == PartType.Body)
+                {
+                    Debug.Log(part.name + " (" + part.partType + ")");
+                    var item = Instantiate(itemPrefab) as GameObject;
+
+                    // Contentオブジェクトの子として設定
+                    item.transform.SetParent(contentTransform.transform, false);
+                }
             }
         }
         // 再帰的に子オブジェクトを検索するメソッド
@@ -66,11 +76,6 @@ namespace Ricimi
                 }
             }
             return null;
-        }
-        void OnMouseDown()
-        {
-            Debug.Log("オブジェクトがクリックされました！");
-            OpenPopup();
         }
     }
 }
