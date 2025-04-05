@@ -15,4 +15,8 @@ MonoBehaviour:
   partName: Danbo-ru
   weight: 0.3
   partCost: 100
+  partIcon: {fileID: 0}
+  partType: 0
+  partDescription: 
+  partIconImage: {fileID: -920528429157208796, guid: d298cd62c2a36d24f84f68b6e68398bc, type: 3}
   airResistance: 0.2

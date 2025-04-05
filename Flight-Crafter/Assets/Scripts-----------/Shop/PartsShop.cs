@@ -57,6 +57,59 @@ namespace Ricimi
 
                     // Contentオブジェクトの子として設定
                     item.transform.SetParent(contentTransform.transform, false);
+
+                    Transform nameTextTransform = item.transform.Find("Text/Name Text");
+                    Transform priceTextTransform = item.transform.Find("Button/Text");
+                    Transform iconTransform = item.transform.Find("Icon");
+
+                    TMPro.TextMeshProUGUI nameText = nameTextTransform.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                    if (nameText != null)
+                    {
+                        // パーツの名前をテキストコンポーネントに設定
+                        nameText.text = part.name;
+                    }
+                    else
+                    {
+                        Debug.LogError("nameTextのTextMeshProUGUIコンポーネントが見つかりません。");
+                    }
+
+                    if (priceTextTransform != null)
+                    {
+                        // パーツの価格をテキストコンポーネントに設定
+                        TMPro.TextMeshProUGUI priceText = priceTextTransform.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                        if (priceText != null)
+                        {
+                            priceText.text = part.partCost.ToString() + "$";
+                        }
+                        else
+                        {
+                            Debug.LogError("TextMeshProUGUIコンポーネントが見つかりません。");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("priceTextTransformが見つかりません。");
+                    }
+
+                    if (iconTransform != null)
+                    {
+                        // パーツのアイコンをImageコンポーネントに設定
+                        UnityEngine.UI.Image iconImage = iconTransform.GetComponent<UnityEngine.UI.Image>();
+                        if (iconImage != null)
+                        {
+                            iconImage.sprite = part.partIconImage;
+                            
+                            iconImage.preserveAspect = true;
+                        }
+                        else
+                        {
+                            Debug.LogError("iconTransformのImageコンポーネントが見つかりません。");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("iconTransformが見つかりません。");
+                    }
                 }
             }
         }
