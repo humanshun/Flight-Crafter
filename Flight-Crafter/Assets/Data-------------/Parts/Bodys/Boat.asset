@@ -17,6 +17,6 @@ MonoBehaviour:
   partCost: 1000
   partIcon: {fileID: 0}
   partType: 0
-  partDescription: 
+  partDescription: "\u6F01\u5E2B\u306E\u304A\u3058\u3055\u3093\u304B\u3089\u3082\u3089\u3063\u305F\u30DC\u30FC\u30C8"
   partIconImage: {fileID: -4032481707582436298, guid: 5fe02ee676471cc4d83d663fd3bcace9, type: 3}
   airResistance: 0.1

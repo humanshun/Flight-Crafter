@@ -70,6 +70,7 @@ public class ShopPartsButton : MonoBehaviour
                 item.transform.SetParent(contentTransform.transform, false);
 
                 Transform nameTextTransform = item.transform.Find("Text/Name Text");
+                Transform descriptioTextTransform = item.transform.Find("Text/DescriptioText");
                 Transform priceTextTransform = item.transform.Find("Button/Text");
                 Transform iconTransform = item.transform.Find("Icon");
 
@@ -81,6 +82,16 @@ public class ShopPartsButton : MonoBehaviour
                 else
                 {
                     Debug.LogError("nameTextのTextMeshProUGUIコンポーネントが見つかりません。");
+                }
+
+                TMPro.TextMeshProUGUI descriptioText = descriptioTextTransform?.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (descriptioText != null)
+                {
+                    descriptioText.text = part.partDescription;
+                }
+                else
+                {
+                    Debug.LogError("partDescriptionのTextMeshProUGUIコンポーネントが見つかりません。");
                 }
 
                 TMPro.TextMeshProUGUI priceText = priceTextTransform?.GetComponentInChildren<TMPro.TextMeshProUGUI>();
