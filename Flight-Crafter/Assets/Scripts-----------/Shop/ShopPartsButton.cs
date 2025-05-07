@@ -1,18 +1,23 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ShopPartsButton : MonoBehaviour
 {
     [SerializeField] Button bodyButton;
+    [SerializeField] GameObject bodyButtonImage;
     [SerializeField] Button rocketButton;
+    [SerializeField] GameObject rocketButtonImage;
     [SerializeField] Button tireButton;
+    [SerializeField] GameObject tireButtonImage;
     [SerializeField] Button wingButton;
+    [SerializeField] GameObject wingButtonImage;
 
     [SerializeField] Sprite enabledSprite;
     [SerializeField] Sprite disabledSprite;
 
-
+    [SerializeField] Transform contentTransform;
     public ShopData shopData;
     public GameObject itemPrefab;
     void Start()
@@ -27,93 +32,66 @@ public class ShopPartsButton : MonoBehaviour
 
     void OnButtonClicked(Button selectedButton, PartType selectedType)
     {
-        Button[] buttons = { bodyButton, rocketButton, tireButton, wingButton };
+        (Button, GameObject)[] buttons =
+        { 
+            (bodyButton, bodyButtonImage),
+            (rocketButton, rocketButtonImage),
+            (tireButton, tireButtonImage),
+            (wingButton, wingButtonImage)
+        };
 
-        foreach (Button btn in buttons)
+        foreach (var (button, imageObj) in buttons)
         {
-            bool isSelected = (btn == selectedButton);
-            btn.interactable = !isSelected;
+            bool isSelected = (button == selectedButton);
+            button.interactable = !isSelected;
 
-            Transform childImage = btn.transform.Find("ButtonImage");
-            if (childImage != null)
+            if (imageObj != null)
             {
-                Image img = childImage.GetComponent<Image>();
+                Image img = imageObj.GetComponent<Image>();
                 if (img != null)
                 {
                     img.sprite = isSelected ? enabledSprite : disabledSprite;
                 }
             }
         }
-        // 選ばれたカテゴリのパーツを表示
+        // 選ばれたカテゴリのパーツを表
         UpdatePartListUI(selectedType);
 
         
     }
     void UpdatePartListUI(PartType partType)
     {
-        // Contentオブジェクトを取得
-        Transform contentTransform = transform.Find("Scroll View/View Port/Content");
         // Contentを全クリア
         foreach (Transform child in contentTransform)
         {
             Destroy(child.gameObject);
         }
 
-        foreach (PartData part in shopData.shopItems)
+        List<PartData> parts = null;
+
+        switch (partType)
         {
-            if (part.partType == partType)
+            case PartType.Body:
+                parts = shopData.typeBody.bodyParts;
+                break;
+            case PartType.Rocket:
+                parts = shopData.typeRocket.rocketParts;
+                break;
+            case PartType.Tire:
+                parts = shopData.typeTire.tireParts;
+                break;
+            case PartType.Wing:
+                parts = shopData.typeWing.wingParts;
+                break;
+        }
+
+        foreach (PartData part in parts)
+        {
+            GameObject item = Instantiate(itemPrefab, contentTransform);
+            SetupItem setupItem = item.GetComponent<SetupItem>();
+            if (setupItem != null)
             {
-                Debug.Log(part.name + " (" + part.partType + ")");
-                var item = Instantiate(itemPrefab) as GameObject;
-                
-                // Contentオブジェクトの子として設定
-                item.transform.SetParent(contentTransform.transform, false);
-
-                Transform nameTextTransform = item.transform.Find("Text/Name Text");
-                Transform descriptioTextTransform = item.transform.Find("Text/DescriptioText");
-                Transform priceTextTransform = item.transform.Find("Button/Text");
-                Transform iconTransform = item.transform.Find("Icon");
-
-                TMPro.TextMeshProUGUI nameText = nameTextTransform?.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-                if (nameText != null)
-                {
-                    nameText.text = part.name;
-                }
-                else
-                {
-                    Debug.LogError("nameTextのTextMeshProUGUIコンポーネントが見つかりません。");
-                }
-
-                TMPro.TextMeshProUGUI descriptioText = descriptioTextTransform?.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-                if (descriptioText != null)
-                {
-                    descriptioText.text = part.partDescription;
-                }
-                else
-                {
-                    Debug.LogError("partDescriptionのTextMeshProUGUIコンポーネントが見つかりません。");
-                }
-
-                TMPro.TextMeshProUGUI priceText = priceTextTransform?.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-                if (priceText != null)
-                {
-                    priceText.text = part.partCost.ToString() + "$";
-                }
-                else
-                {
-                    Debug.LogError("TextMeshProUGUIコンポーネントが見つかりません。");
-                }
-
-                Image iconImage = iconTransform?.GetComponent<Image>();
-                if (iconImage != null)
-                {
-                    iconImage.sprite = part.partIconImage;
-                    iconImage.preserveAspect = true;
-                }
-                else
-                {
-                    Debug.LogError("iconTransformのImageコンポーネントが見つかりません。");
-                }
+                setupItem.Setup(part); // ← ここでデータを渡す
             }
         }
     }

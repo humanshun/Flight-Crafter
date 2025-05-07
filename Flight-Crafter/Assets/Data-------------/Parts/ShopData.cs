@@ -4,5 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ShopData", menuName = "Scriptable Objects/ShopData")]
 public class ShopData : ScriptableObject
 {
-    public List<PartData> shopItems;
+    public TypeBody typeBody;
+    public TypeRocket typeRocket;
+    public TypeWing typeWing;
+    public TypeTire typeTire;
 }

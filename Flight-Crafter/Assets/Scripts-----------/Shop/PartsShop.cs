@@ -18,6 +18,8 @@ namespace Ricimi
         {
             // 親オブジェクトからCanvasコンポーネントを取得し、m_canvasに格納
             m_canvas = GetComponentInParent<Canvas>();
+
+            Debug.Log($"{this.GetType().Name} は {gameObject.name} にアタッチされています");
         }
 
         // ポップアップを生成して表示するためのメソッド
@@ -42,7 +44,7 @@ namespace Ricimi
                 return;
             }
 
-            foreach (PartData part in shopData.shopItems)
+            foreach (PartData part in shopData.typeBody.bodyParts)
             {
                 // Debug.Log(part.name + part.partType);
                 // var item = Instantiate(itemPrefab) as GameObject;

@@ -476,7 +476,6 @@ GameObject:
   - component: {fileID: 209801461}
   - component: {fileID: 209801465}
   - component: {fileID: 209801464}
-  - component: {fileID: 209801466}
   - component: {fileID: 209801463}
   - component: {fileID: 209801462}
   - component: {fileID: 209801467}
@@ -707,21 +706,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209801460}
   m_CullTransparentMesh: 1
---- !u!114 &209801466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 209801460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 770122f504a650a4fba703afae041f06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shopData: {fileID: 11400000, guid: ec622ff121f19b64c8132bbf24294031, type: 2}
-  popupPrefab: {fileID: 2915731829089221020, guid: 6d594ed4b1218774382674f7331eb3d8, type: 3}
-  itemPrefab: {fileID: 2868071375550646959, guid: 61e8257177dd25247a294f30531deeac, type: 3}
 --- !u!212 &209801467
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4729,18 +4713,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 954050651}
     m_Modifications:
-    - target: {fileID: 72523985048714642, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 631112129870799024, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_Name
-      value: WingButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 757858882758987169, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_Name
-      value: BodyButton
-      objectReference: {fileID: 0}
     - target: {fileID: 1079034106139492153, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4821,49 +4793,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1835110396155312859, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: shopData
-      value: 
-      objectReference: {fileID: 11400000, guid: ec622ff121f19b64c8132bbf24294031, type: 2}
-    - target: {fileID: 1835110396155312859, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: itemPrefab
-      value: 
-      objectReference: {fileID: 2868071375550646959, guid: 61e8257177dd25247a294f30531deeac, type: 3}
-    - target: {fileID: 2172134436769488776, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_Name
-      value: TireButton
-      objectReference: {fileID: 0}
     - target: {fileID: 2999702380054465767, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2999702380054465767, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2999702380054465767, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3085210055632221083, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3085210055632221083, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 42.799927
-      objectReference: {fileID: 0}
-    - target: {fileID: 3261035607152254163, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 166
-      objectReference: {fileID: 0}
-    - target: {fileID: 3329069754354302626, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -166
-      objectReference: {fileID: 0}
-    - target: {fileID: 4430225282338796173, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -500
       objectReference: {fileID: 0}
     - target: {fileID: 5833813824661511973, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
       propertyPath: m_Name
@@ -4871,11 +4811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5833813824661511973, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
       propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8447214133808392479, guid: 63618a6fbdae44f478b0def090c35491, type: 3}
-      propertyPath: m_Name
-      value: RocketButton
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

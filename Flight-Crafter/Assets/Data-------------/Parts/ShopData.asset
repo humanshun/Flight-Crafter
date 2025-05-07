@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55088380935eb594d832ef0c94faf4e2, type: 3}
   m_Name: ShopData
   m_EditorClassIdentifier: 
-  shopItems:
-  - {fileID: 11400000, guid: d37d2e127c58c8a41aab953f149114a9, type: 2}
-  - {fileID: 11400000, guid: 33c03d546f45b134f93508d7c341f8da, type: 2}
-  - {fileID: 11400000, guid: 5502d2dc500ff4741aa948f4ebcc002e, type: 2}
-  - {fileID: 11400000, guid: 505910786b490d24e90a12f49ca94c8b, type: 2}
-  - {fileID: 11400000, guid: 0b9dcce4078ee4f4583effdd92b0115b, type: 2}
+  typeBody: {fileID: 11400000, guid: 5a15fc4b4ea38b148ac1a470382acc94, type: 2}
+  typeRocket: {fileID: 11400000, guid: 5cf7d5315c6ad5a4d85a8811b61132fa, type: 2}
+  typeWing: {fileID: 11400000, guid: c335d525a1ec37144877d2094e1fe479, type: 2}
+  typeTire: {fileID: 11400000, guid: 676366d0e3678a544bc3bf219aad15d4, type: 2}
