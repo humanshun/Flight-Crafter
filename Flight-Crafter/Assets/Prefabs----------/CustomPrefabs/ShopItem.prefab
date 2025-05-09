@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5562905014903504152}
   - component: {fileID: 493453376292990365}
   m_Layer: 5
-  m_Name: Item
+  m_Name: ShopItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,8 +63,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1201487557018787685}
   costText: {fileID: 1378770497678515181}
+  costButton: {fileID: 5479432342200909960}
   descriptionText: {fileID: 9174324049865791264}
   iconImage: {fileID: 9003615786589961943}
+  active: {fileID: 21300000, guid: 0d02c955b35ed40599bb4aca60216d75, type: 3}
+  inactive: {fileID: 21300000, guid: b4b024c6ca6464483b99578de7edfd49, type: 3}
 --- !u!114 &493453376292990365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -672,6 +675,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: dbde9f7b19c4944b298da7a0bdf1b292, type: 3}
+    - target: {fileID: 6067696468438814952, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7016391421997232863, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_text
       value: "\xA5000"
@@ -701,7 +708,8 @@ PrefabInstance:
       value: 1801810542
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6067696468438814952, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6067696467860351015, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
@@ -770,3 +778,14 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5479432342200909960 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
+  m_PrefabInstance: {fileID: 8249849755079059762}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758898350054031637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

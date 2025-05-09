@@ -35,11 +35,12 @@ public class PlayerData : MonoBehaviour
         {
             playerCoins -= price; // コインを減らす
             SavePlayerCoins(); // セーブする
+            Debug.Log("購入成功");
             return true; // 購入成功
         }
         else
         {
-            Debug.Log("Not enough coins to buy this part.");
+            Debug.Log("購入失敗");
             return false; // 購入失敗
         }
     }

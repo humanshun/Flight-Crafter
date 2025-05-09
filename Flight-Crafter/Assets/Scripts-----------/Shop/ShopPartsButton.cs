@@ -42,7 +42,7 @@ public class ShopPartsButton : MonoBehaviour
 
         foreach (var (button, imageObj) in buttons)
         {
-            bool isSelected = (button == selectedButton);
+            bool isSelected = button == selectedButton;
             button.interactable = !isSelected;
 
             if (imageObj != null)
