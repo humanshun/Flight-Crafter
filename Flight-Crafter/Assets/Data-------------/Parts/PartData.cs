@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 public class PartData : ScriptableObject
 {
@@ -7,11 +8,11 @@ public class PartData : ScriptableObject
 
     [Header("重量")]
     [Tooltip("値が高いほど重力が大きくなります。")]
-    public float weight;    // 重量（すべてのパーツに共通）
+    public PartWeight weight;    // 重量（すべてのパーツに共通）
 
     [Header("金額")]
     [Tooltip("このパーツの価格")]
-    public int partCost;
+    public PartCost partCost;
 
     [Header("タイプ")]
     [Tooltip("このパーツの種類")]
@@ -25,7 +26,21 @@ public class PartData : ScriptableObject
     [Tooltip("このパーツのアイコン")]
     public Sprite partIconImage; // パーツのアイコン画像
 
-    [Header("パーツの状態")]
+    [Header("パーツの購入状態")]
     [Tooltip("このパーツを購入したかどうか")]
     public bool isPurchased; // 購入したかどうか
+
+    [System.Serializable]
+    public class PartCost
+    {
+        [HideInInspector]public string displayName = "金額";
+        public int value;
+    }
+
+    [System.Serializable]
+    public class PartWeight
+    {
+        [HideInInspector]public string displayName = "重量";
+        public float value;
+    }
 }

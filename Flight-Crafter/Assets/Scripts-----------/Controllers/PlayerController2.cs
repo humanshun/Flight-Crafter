@@ -116,7 +116,7 @@ public class PlayerController2 : MonoBehaviour
             if (rocketPart != null && rocketPart.partData is RocketData rocket)
             {
                 rocketData = rocket;
-                Debug.Log($"Rocketデータを取得: {rocketData.weight}, {rocketData.jetThrust}, {rocketData.time}");
+                Debug.Log($"Rocketデータを取得: {rocketData.weight}, {rocketData.jetThrust}, {rocketData.jetTime.value}");
             }
         }
     }
@@ -132,27 +132,27 @@ public class PlayerController2 : MonoBehaviour
 
         if (bodyData != null)
         {
-            total_Weight += bodyData.weight;
-            total_AirResistance += bodyData.airResistance;
+            total_Weight += bodyData.weight.value;
+            total_AirResistance += bodyData.airResistance.value;
         }
         if (wingData != null)
         {
-            total_Weight += wingData.weight;
-            total_Lift += wingData.lift;
-            total_AirControl += wingData.airControl;
-            total_AirRotationalControl += wingData.airRotationalControl;
-            total_PropulsionPower += wingData.propulsionPower;
+            total_Weight += wingData.weight.value;
+            total_Lift += wingData.lift.value;
+            total_AirControl += wingData.airControl.value;
+            total_AirRotationalControl += wingData.airRotationalControl.value;
+            total_PropulsionPower += wingData.propulsionPower.value;
         }
         if (tireData != null)
         {
-            total_Weight += tireData.weight;
-            total_Torque += tireData.torque;
+            total_Weight += tireData.weight.value;
+            total_Torque += tireData.torque.value;
         }
         if (rocketData != null)
         {
-            total_Weight += rocketData.weight;
-            total_JetThrust += rocketData.jetThrust;
-            total_RocketTime += rocketData.time; // ロケット噴射時間を追加
+            total_Weight += rocketData.weight.value;
+            total_JetThrust += rocketData.jetThrust.value;
+            total_RocketTime += rocketData.jetTime.value; // ロケット噴射時間を追加
         }
 
         Debug.Log($"総重量: {total_Weight},総空気抵抗{total_AirResistance}, 揚力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 推進力: {total_PropulsionPower}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}");

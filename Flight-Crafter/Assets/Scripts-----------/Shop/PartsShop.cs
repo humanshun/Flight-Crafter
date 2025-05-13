@@ -81,7 +81,7 @@ namespace Ricimi
                         TMPro.TextMeshProUGUI priceText = priceTextTransform.GetComponentInChildren<TMPro.TextMeshProUGUI>();
                         if (priceText != null)
                         {
-                            priceText.text = part.partCost.ToString() + "$";
+                            priceText.text = part.partCost.value.ToString() + "$";
                         }
                         else
                         {

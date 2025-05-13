@@ -27,7 +27,7 @@ public class SetupItem : MonoBehaviour
     {
         currentPart = part;
         if (nameText != null) nameText.text = part.partName;
-        if (costText != null) costText.text = $"¥{part.partCost}";
+        if (costText != null) costText.text = $"¥{part.partCost.value}"; // コストを表示
         if (descriptionText != null) descriptionText.text = part.partDescription;
         if (iconImage != null) iconImage.sprite = part.partIconImage;
         if (iconImage != null) iconImage.preserveAspect = true; // アスペクト比を保持する
@@ -42,7 +42,7 @@ public class SetupItem : MonoBehaviour
     private void OnCostButtonClick()
     {
         // 購入処理を実行
-        if (PlayerData.Instance.TryBuyPart(currentPart.partCost))
+        if (PlayerData.Instance.TryBuyPart(currentPart.partCost.value))
         {
             currentPart.isPurchased = true; // 購入フラグを立てる
             costButton.image.sprite = inactive; // ボタンを非アクティブスプライトにする

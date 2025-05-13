@@ -9,6 +9,8 @@ public class PartCustom : MonoBehaviour
     [SerializeField] private Button tirePopupButton;
     [SerializeField] private Button wingPopupButton;
     [SerializeField] Transform contentTransform;
+    [SerializeField] private GameObject partCostom;
+    [SerializeField] private DescriptionPopup descriptionPopup;
 
     public ShopData shopData;
     public GameObject itemPrefab;
@@ -23,6 +25,7 @@ public class PartCustom : MonoBehaviour
     }
     private void OnButtonClick(Button selectedButton, PartType selectedType)
     {
+        partCostom.SetActive(true); // Contentをアクティブにする
         // Contentを全クリア
         foreach (Transform child in contentTransform)
         {
@@ -55,7 +58,7 @@ public class PartCustom : MonoBehaviour
                 CustomItem setupItem = item.GetComponent<CustomItem>();
                 if (setupItem != null)
                 {
-                    setupItem.Setup(part); // データを渡してセットアップ
+                    setupItem.Setup(part, descriptionPopup); // データを渡してセットアップ
                 }
             }
         }

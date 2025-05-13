@@ -853,7 +853,7 @@ GameObject:
   - component: {fileID: 5774753328506002258}
   - component: {fileID: 7164168855330356362}
   m_Layer: 5
-  m_Name: PartsShop
+  m_Name: PartsShopPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

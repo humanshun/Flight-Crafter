@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Danbo-ru
   m_EditorClassIdentifier: 
   partName: Danbo-ru
-  weight: 0.3
-  partCost: 0
-  partIcon: {fileID: 0}
+  weight:
+    displayName: "\u91CD\u91CF"
+    value: 0
+  partCost:
+    displayName: "\u91D1\u984D"
+    value: 0
   partType: 3
-  lift: 4
-  airControl: 30
-  airRotationalControl: 1000
-  propulsionPower: 0.03
+  partDescription: 
+  partIconImage: {fileID: 0}
+  isPurchased: 0
