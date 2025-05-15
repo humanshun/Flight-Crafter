@@ -7,6 +7,7 @@ public class TireData : PartData
     [Tooltip("値が高いほど地上での加速が大きくなります。")]
     public Torque torque;  // トルク
 
+    [System.Serializable]
     public class Torque
     {
         [HideInInspector] public string displayName = "地上加速度";

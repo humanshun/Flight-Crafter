@@ -14,6 +14,7 @@ public class BodyData : PartData
     public Vector3 rightTirePosition;  // 車輪の位置
     public Vector3 leftTirePosition;   // 車輪の位置
 
+    [System.Serializable]
     public class AirResistance
     {
         [HideInInspector] public string displayName = "空気抵抗";

@@ -11,11 +11,13 @@ public class RocketData : PartData
     [Tooltip("値が高いほどロケット噴射時間が長くなります。")]
     public JetTime jetTime; //ロケット噴射時間
 
+    [System.Serializable]
     public class JetThrust
     {
         [HideInInspector] public string displayName = "噴射力";
         public float value;
     }
+    [System.Serializable]
     public class JetTime
     {
         [HideInInspector] public string displayName = "噴射時間";

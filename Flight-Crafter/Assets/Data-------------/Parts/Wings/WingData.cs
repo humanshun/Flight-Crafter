@@ -19,21 +19,25 @@ public class WingData : PartData
     [Tooltip("値が高いほど、ベクトル推進力が強くなります。")]
     public PropulsionPower propulsionPower; // 推進力の大きさ
 
+    [System.Serializable]
     public class Lift
     {
         [HideInInspector] public string displayName = "揚力";
         public float value;
     }
+    [System.Serializable]
     public class AirControl
     {
         [HideInInspector] public string displayName = "空中制御";
         public float value;
     }
+    [System.Serializable]
     public class AirRotationalControl
     {
         [HideInInspector] public string displayName = "回転制御";
         public float value;
     }
+    [System.Serializable]
     public class PropulsionPower
     {
         [HideInInspector] public string displayName = "推進力";
