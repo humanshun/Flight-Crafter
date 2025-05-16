@@ -12,10 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f70f85ef5a41447979281f9d74ad42, type: 3}
   m_Name: Rocket hanabi
   m_EditorClassIdentifier: 
-  partName: Rocket hanabi
-  weight: 0.3
-  partCost: 0
-  partIcon: {fileID: 0}
+  partName: "\u30ED\u30B1\u30C3\u30C8\u82B1\u706B"
+  weight:
+    displayName: "\u91CD\u91CF"
+    value: 0
+  partCost:
+    displayName: "\u91D1\u984D"
+    value: 0
   partType: 1
-  jetThrust: 10
-  time: 200
+  partDescription: 
+  partIconImage: {fileID: 0}
+  isPurchased: 1
+  jetThrust:
+    displayName: "\u5674\u5C04\u529B"
+    value: 0
+  jetTime:
+    displayName: "\u5674\u5C04\u6642\u9593"
+    value: 0

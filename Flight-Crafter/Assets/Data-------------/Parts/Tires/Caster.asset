@@ -12,9 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f20554fd710c7a4da94dc82143f978b, type: 3}
   m_Name: Caster
   m_EditorClassIdentifier: 
-  partName: Caster
-  weight: 0.3
-  partCost: 0
-  partIcon: {fileID: 0}
+  partName: "\u30AD\u30E3\u30B9\u30BF\u30FC"
+  weight:
+    displayName: "\u91CD\u91CF"
+    value: 0
+  partCost:
+    displayName: "\u91D1\u984D"
+    value: 0
   partType: 2
-  torque: 5
+  partDescription: 
+  partIconImage: {fileID: 0}
+  isPurchased: 0
+  torque:
+    displayName: "\u5730\u4E0A\u52A0\u901F\u5EA6"
+    value: 0

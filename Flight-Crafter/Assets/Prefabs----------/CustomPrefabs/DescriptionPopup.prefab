@@ -333,7 +333,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -189, y: 112}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 195, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4648693792910782773
 CanvasRenderer:
@@ -468,7 +468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -190, y: 110}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2611221269066641052
@@ -541,10 +541,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5275773214625347663}
   - {fileID: 3474726494457891340}
   - {fileID: 6619891804511808357}
   - {fileID: 577686773768306692}
+  - {fileID: 5275773214625347663}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2689628650059664685
@@ -561,4 +561,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupRoot: {fileID: 9044153809657403685}
   nameText: {fileID: 7842744811596047980}
-  statsText: []
+  ContentTransform: {fileID: 5275773214625347663}
+  statusBar: {fileID: 5129247946015702874, guid: d0c0039e57f15914ea7c060dc05916e6, type: 3}

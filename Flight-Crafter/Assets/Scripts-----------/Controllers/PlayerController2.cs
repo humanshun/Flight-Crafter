@@ -152,7 +152,7 @@ public class PlayerController2 : MonoBehaviour
         {
             total_Weight += rocketData.weight.value;
             total_JetThrust += rocketData.jetThrust.value;
-            total_RocketTime += rocketData.jetTime.value; // ロケット噴射時間を追加
+            total_RocketTime += rocketData.jetTime.value;
         }
 
         Debug.Log($"総重量: {total_Weight},総空気抵抗{total_AirResistance}, 揚力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 推進力: {total_PropulsionPower}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}");

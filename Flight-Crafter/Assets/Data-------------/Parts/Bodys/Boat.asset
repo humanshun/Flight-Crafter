@@ -12,16 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56d0fbdf49b472544abee5ca8fd61a2b, type: 3}
   m_Name: Boat
   m_EditorClassIdentifier: 
-  partName: Boat
+  partName: "\u30DC\u30FC\u30C8"
   weight:
     displayName: "\u91CD\u91CF"
-    value: 0
+    value: 100
   partCost:
     displayName: "\u91D1\u984D"
-    value: 0
+    value: 100
   partType: 0
   partDescription: "\u6F01\u5E2B\u306E\u304A\u3058\u3055\u3093\u304B\u3089\u3082\u3089\u3063\u305F\u30DC\u30FC\u30C8"
   partIconImage: {fileID: -4032481707582436298, guid: 5fe02ee676471cc4d83d663fd3bcace9, type: 3}
   isPurchased: 1
+  airResistance:
+    displayName: "\u7A7A\u6C17\u62B5\u6297"
+    value: 1.61
   rightTirePosition: {x: 0, y: 0, z: 0}
   leftTirePosition: {x: 0, y: 0, z: 0}
