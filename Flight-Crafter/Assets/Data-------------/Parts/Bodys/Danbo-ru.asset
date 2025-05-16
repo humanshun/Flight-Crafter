@@ -25,6 +25,6 @@ MonoBehaviour:
   isPurchased: 1
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"
-    value: 100
+    value: 1
   rightTirePosition: {x: 0, y: 0, z: 0}
   leftTirePosition: {x: 0, y: 0, z: 0}

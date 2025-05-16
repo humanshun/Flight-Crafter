@@ -25,7 +25,7 @@ MonoBehaviour:
   isPurchased: 1
   jetThrust:
     displayName: "\u5674\u5C04\u529B"
-    value: 0
+    value: 1000
   jetTime:
     displayName: "\u5674\u5C04\u6642\u9593"
-    value: 0
+    value: 10

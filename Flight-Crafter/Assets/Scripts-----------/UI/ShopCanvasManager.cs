@@ -1,0 +1,61 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ShopCanvasManager : MonoBehaviour
+{
+    [SerializeField] private Button shopButton;
+    [SerializeField] private GameObject partShopPopup;
+    [SerializeField] private Button shopCloseButton;
+    [SerializeField] private GameObject partCustomPopup;
+    [SerializeField] private Button customCloseButton;
+
+    [SerializeField] private Button bodyButton;
+    [SerializeField] private Button rocketButton;
+    [SerializeField] private Button tireButton;
+    [SerializeField] private Button wingButton;
+
+    [SerializeField] private GameObject desctiptionPopupPrefab;
+
+    
+
+    private void Start()
+    {
+        // ボタンにイベントリスナーを追加
+        shopButton.onClick.AddListener(OnShopButtonClicked);
+
+        shopCloseButton.onClick.AddListener(OnShopCloseButtonClicked);
+        customCloseButton.onClick.AddListener(OnCustomCloseButtonClicked);
+
+        bodyButton.onClick.AddListener(CustomButtonOnClick);
+        rocketButton.onClick.AddListener(CustomButtonOnClick);
+        tireButton.onClick.AddListener(CustomButtonOnClick);
+        wingButton.onClick.AddListener(CustomButtonOnClick);
+
+    }
+
+    private void OnShopButtonClicked()
+    {
+        partShopPopup.SetActive(true);
+        partCustomPopup.SetActive(false);
+        shopButton.gameObject.SetActive(false);
+    }
+
+    private void OnShopCloseButtonClicked()
+    {
+        partShopPopup.SetActive(false);
+        partCustomPopup.SetActive(true);
+        shopButton.gameObject.SetActive(true);
+    }
+
+    private void OnCustomCloseButtonClicked()
+    {
+        shopButton.gameObject.SetActive(true);
+        desctiptionPopupPrefab.SetActive(false);
+    }
+
+    private void CustomButtonOnClick()
+    {
+        shopButton.gameObject.SetActive(false);
+        desctiptionPopupPrefab.SetActive(false);
+    }
+}

@@ -15,7 +15,7 @@ MonoBehaviour:
   partName: "\u6BB5\u30DC\u30FC\u30EB"
   weight:
     displayName: "\u91CD\u91CF"
-    value: 0
+    value: 1
   partCost:
     displayName: "\u91D1\u984D"
     value: 0
@@ -25,13 +25,13 @@ MonoBehaviour:
   isPurchased: 1
   lift:
     displayName: "\u63DA\u529B"
-    value: 0
+    value: 10
   airControl:
     displayName: "\u7A7A\u4E2D\u5236\u5FA1"
-    value: 0
+    value: 1000
   airRotationalControl:
     displayName: "\u56DE\u8EE2\u5236\u5FA1"
-    value: 0
+    value: 100
   propulsionPower:
     displayName: "\u63A8\u9032\u529B"
-    value: 0
+    value: 100

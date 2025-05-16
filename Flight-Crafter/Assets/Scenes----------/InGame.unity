@@ -555,17 +555,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &150679766 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2667027851469931412, guid: 6d594ed4b1218774382674f7331eb3d8, type: 3}
-  m_PrefabInstance: {fileID: 8252074860682135725}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &150681353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1134,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 7
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -4075,17 +4064,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc6042dd4372bae43a0171f6dc3e5a83, type: 3}
---- !u!114 &960768408 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4895279577652388971, guid: 6d594ed4b1218774382674f7331eb3d8, type: 3}
-  m_PrefabInstance: {fileID: 8252074860682135725}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &994901409 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3038200668444731188, guid: dc6042dd4372bae43a0171f6dc3e5a83, type: 3}
@@ -5621,17 +5599,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1324014820 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7541414220180971289, guid: 6d594ed4b1218774382674f7331eb3d8, type: 3}
-  m_PrefabInstance: {fileID: 8252074860682135725}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1353581704
 GameObject:
   m_ObjectHideFlags: 0
@@ -6852,15 +6819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 150681354}
-  shopItems:
-  - {fileID: 11400000, guid: d37d2e127c58c8a41aab953f149114a9, type: 2}
-  - {fileID: 11400000, guid: 33c03d546f45b134f93508d7c341f8da, type: 2}
-  buyButtons:
-  - {fileID: 1809721957}
-  - {fileID: 960768408}
-  itemNameText:
-  - {fileID: 150679766}
-  - {fileID: 1324014820}
+  shopData: {fileID: 0}
 --- !u!1 &1729821730
 GameObject:
   m_ObjectHideFlags: 0
@@ -7261,17 +7220,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1809721957 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7595373989389497601, guid: 6d594ed4b1218774382674f7331eb3d8, type: 3}
-  m_PrefabInstance: {fileID: 8252074860682135725}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1827707086
 GameObject:
   m_ObjectHideFlags: 0
