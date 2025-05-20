@@ -11,6 +11,10 @@ public class PartCustom : MonoBehaviour
     [SerializeField] Transform contentTransform;
     [SerializeField] private GameObject partCostom;
     [SerializeField] private DescriptionPopup descriptionPopup;
+    [SerializeField] private CurrentPartPopup bodyCurrentPartPopup;
+    [SerializeField] private CurrentPartPopup rocketCurrentPartPopup;
+    [SerializeField] private CurrentPartPopup tireCurrentPartPopup;
+    [SerializeField] private CurrentPartPopup wingCurrentPartPopup;
     [SerializeField] private ShopData shopData;
     [SerializeField] private GameObject itemPrefab;
 
@@ -35,41 +39,37 @@ public class PartCustom : MonoBehaviour
         }
 
         List<PartData> parts = null;
+        CurrentPartPopup currentPartPopup = null;
 
         switch (selectedType)
         {
             case PartType.Body:
                 parts = shopData.typeBody.bodyParts;
+                currentPartPopup = bodyCurrentPartPopup;
                 break;
             case PartType.Rocket:
                 parts = shopData.typeRocket.rocketParts;
+                currentPartPopup = rocketCurrentPartPopup;
                 break;
             case PartType.Tire:
                 parts = shopData.typeTire.tireParts;
+                currentPartPopup = tireCurrentPartPopup;
                 break;
             case PartType.Wing:
                 parts = shopData.typeWing.wingParts;
+                currentPartPopup = wingCurrentPartPopup;
                 break;
         }
 
         foreach (PartData part in parts)
         {
-            // if (part.isPurchased) // 購入済みのパーツのみ処理
-            // {
-            //     GameObject item = Instantiate(itemPrefab, contentTransform);
-            //     CustomItem setupItem = item.GetComponent<CustomItem>();
-            //     if (setupItem != null)
-            //     {
-            //         setupItem.Setup(part, descriptionPopup); // データを渡してセットアップ
-            //     }
-            // }
             if (PlayerData.Instance.IsPartPurchased(part.partName))
             {
                 GameObject item = Instantiate(itemPrefab, contentTransform);
                 CustomItem setupItem = item.GetComponent<CustomItem>();
                 if (setupItem != null)
                 {
-                    setupItem.Setup(part, descriptionPopup); // データを渡してセットアップ
+                    setupItem.Setup(part, descriptionPopup, currentPartPopup); // データを渡してセットアップ
                 }
             }
         }

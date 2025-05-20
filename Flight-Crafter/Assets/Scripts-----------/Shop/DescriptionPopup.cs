@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DescriptionPopup : MonoBehaviour
 {
@@ -7,9 +8,10 @@ public class DescriptionPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private Transform ContentTransform;
     [SerializeField] private StatusBar statusBar; // ステータス情報のプレハブ
+    [SerializeField] private Button partSetButton; // パーツセットボタン
     private GameObject status;
 
-    public void Show(PartData part)
+    public void Show(PartData part, CurrentPartPopup currentPartPopup)
     {
         popupRoot.SetActive(true);
         nameText.text = part.partName;
@@ -51,6 +53,9 @@ public class DescriptionPopup : MonoBehaviour
                 AddStatus(wing.propulsionPower.displayName, wing.propulsionPower.value);
                 break;
         }
+
+        partSetButton.onClick.RemoveAllListeners(); // 既存のリスナーを削除
+        partSetButton.onClick.AddListener(() => ButtonClick(part, currentPartPopup));
     }
 
     private void AddStatus(string displayName, float value)
@@ -64,5 +69,10 @@ public class DescriptionPopup : MonoBehaviour
     public void Hide()
     {
         popupRoot.SetActive(false);
+    }
+
+    public void ButtonClick(PartData part, CurrentPartPopup currentPartPopup)
+    {
+        currentPartPopup.Setup(part);
     }
 }
