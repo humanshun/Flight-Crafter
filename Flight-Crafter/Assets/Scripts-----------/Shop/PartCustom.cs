@@ -11,9 +11,8 @@ public class PartCustom : MonoBehaviour
     [SerializeField] Transform contentTransform;
     [SerializeField] private GameObject partCostom;
     [SerializeField] private DescriptionPopup descriptionPopup;
-
-    public ShopData shopData;
-    public GameObject itemPrefab;
+    [SerializeField] private ShopData shopData;
+    [SerializeField] private GameObject itemPrefab;
 
 
     void Start()
@@ -22,6 +21,9 @@ public class PartCustom : MonoBehaviour
         rocketPopupButton.onClick.AddListener(() => OnButtonClick(rocketPopupButton, PartType.Rocket));
         tirePopupButton.onClick.AddListener(() => OnButtonClick(tirePopupButton, PartType.Tire));
         wingPopupButton.onClick.AddListener(() => OnButtonClick(wingPopupButton, PartType.Wing));
+
+        descriptionPopup.gameObject.SetActive(false); // 初期状態で非表示
+        partCostom.SetActive(false); // 初期状態で非表示
     }
     private void OnButtonClick(Button selectedButton, PartType selectedType)
     {
@@ -52,7 +54,16 @@ public class PartCustom : MonoBehaviour
 
         foreach (PartData part in parts)
         {
-            if (part.isPurchased) // 購入済みのパーツのみ処理
+            // if (part.isPurchased) // 購入済みのパーツのみ処理
+            // {
+            //     GameObject item = Instantiate(itemPrefab, contentTransform);
+            //     CustomItem setupItem = item.GetComponent<CustomItem>();
+            //     if (setupItem != null)
+            //     {
+            //         setupItem.Setup(part, descriptionPopup); // データを渡してセットアップ
+            //     }
+            // }
+            if (PlayerData.Instance.IsPartPurchased(part.partName))
             {
                 GameObject item = Instantiate(itemPrefab, contentTransform);
                 CustomItem setupItem = item.GetComponent<CustomItem>();

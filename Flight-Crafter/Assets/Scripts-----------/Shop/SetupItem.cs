@@ -11,12 +11,12 @@ public class SetupItem : MonoBehaviour
     [SerializeField] private Image iconImage;
     [SerializeField] private Sprite active;
     [SerializeField] private Sprite inactive;
-    private PartData currentPart;
 
+    private PartData currentPart;
 
     void Start()
     {
-        // ボタンのクリックイベントを登録
+        // 購入ボタンにクリックイベント登録
         if (costButton != null)
         {
             costButton.onClick.AddListener(OnCostButtonClick);
@@ -26,35 +26,45 @@ public class SetupItem : MonoBehaviour
     public void Setup(PartData part)
     {
         currentPart = part;
-        if (nameText != null) nameText.text = part.partName;
-        if (costText != null) costText.text = $"¥{part.partCost.value}"; // コストを表示
-        if (descriptionText != null) descriptionText.text = part.partDescription;
-        if (iconImage != null) iconImage.sprite = part.partIconImage;
-        if (iconImage != null) iconImage.preserveAspect = true; // アスペクト比を保持する
 
+        // UIに情報を反映
+        nameText.text = part.partName;
+        costText.text = $"¥{part.partCost.value}";
+        descriptionText.text = part.partDescription;
+
+        if (iconImage != null)
+        {
+            iconImage.sprite = part.partIconImage;
+            iconImage.preserveAspect = true;
+        }
+
+        // 購入状態に応じてボタンの状態を更新
+        UpdateButtonVisual();
+    }
+
+    private void UpdateButtonVisual()
+    {
         if (costButton != null)
         {
-            costButton.image.sprite = part.isPurchased ? inactive : active; // 購入済みなら非アクティブスプライトにする
-            costButton.interactable = !part.isPurchased; // 購入済みならボタンを無効にする
+            bool isPurchased = PlayerData.Instance.IsPartPurchased(currentPart.partName);
+            costButton.image.sprite = isPurchased ? inactive : active;
+            costButton.interactable = !isPurchased;
         }
     }
 
     private void OnCostButtonClick()
     {
-        // 購入処理を実行
-        if (PlayerData.Instance.TryBuyPart(currentPart.partCost.value))
+        // コインを消費して購入を試みる
+        if (PlayerData.Instance.TryBuyPart(currentPart, currentPart.partCost.value))
         {
-            currentPart.isPurchased = true; // 購入フラグを立てる
-            costButton.image.sprite = inactive; // ボタンを非アクティブスプライトにする
-            costButton.interactable = false; // ボタンを無効にする
-            Debug.Log("Item purchased successfully!");
-            // 購入成功の処理を追加することができます
+            PlayerData.Instance.SavePurchasedPart(currentPart); // JSONに保存
+            UpdateButtonVisual(); // 最新状態をUIに反映
+
+            Debug.Log("アイテムの購入に成功しました！");
         }
         else
         {
-            
-            Debug.Log("Not enough coins to buy this item.");
-            // 購入失敗の処理を追加することができます
+            Debug.Log("このアイテムを買うにはコインが足りません。");
         }
     }
 }

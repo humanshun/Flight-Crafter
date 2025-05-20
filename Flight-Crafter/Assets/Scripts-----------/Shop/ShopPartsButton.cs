@@ -13,10 +13,8 @@ public class ShopPartsButton : MonoBehaviour
     [SerializeField] GameObject tireButtonImage;
     [SerializeField] Button wingButton;
     [SerializeField] GameObject wingButtonImage;
-
     [SerializeField] Sprite enabledSprite;
     [SerializeField] Sprite disabledSprite;
-
     [SerializeField] Transform contentTransform;
     public ShopData shopData;
     public GameObject itemPrefab;
@@ -28,6 +26,8 @@ public class ShopPartsButton : MonoBehaviour
         wingButton.onClick.AddListener(() => OnButtonClicked(wingButton, PartType.Wing));
 
         OnButtonClicked(bodyButton, PartType.Body); // 初期状態の更新
+
+        gameObject.SetActive(false);
     }
 
     void OnButtonClicked(Button selectedButton, PartType selectedType)

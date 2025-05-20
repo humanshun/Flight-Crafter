@@ -26,10 +26,6 @@ public class PartData : ScriptableObject
     [Tooltip("このパーツのアイコン")]
     public Sprite partIconImage; // パーツのアイコン画像
 
-    [Header("パーツの購入状態")]
-    [Tooltip("このパーツを購入したかどうか")]
-    public bool isPurchased; // 購入したかどうか
-
     [System.Serializable]
     public class PartCost
     {
