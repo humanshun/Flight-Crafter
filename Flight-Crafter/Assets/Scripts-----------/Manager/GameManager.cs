@@ -1,12 +1,22 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private CustomPlayer player;
+    private CustomPlayer playerInstance;
+    public CustomPlayer Player => playerInstance;
     // シングルトンインスタンス
     public static GameManager Instance;
 
-    // プレイヤーのデータを管理するクラス
-    public PlayerData playerData;
+    void Start()
+    {
+        // すでにCustomシーンが読み込まれていた場合に備える
+        if (SceneManager.GetActiveScene().name == "Custom")
+        {
+            OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        }
+    }
 
     void Awake()
     {
@@ -15,6 +25,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // シーンをまたいでも破棄されないようにする
+            SceneManager.sceneLoaded += OnSceneLoaded; // シーンが読み込まれたときのイベントを登録
         }
         else
         {
@@ -22,13 +33,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        playerData.LoadPlayerData(); // 起動時に保存データを読み込む
-    }
+        if (scene.name == "Custom")
+        {
+            Vector3 spawnPosition = new Vector3(-3.7f, -1.15f, 0f);
 
-    public void ResetPlayerData()
-    {
-        playerData.ResetPlayerData(); // データをリセット
+            if (playerInstance != null)
+            {
+                Destroy(playerInstance.gameObject); // 既存のインスタンスを削除
+            }
+            playerInstance = Instantiate(player, spawnPosition, Quaternion.identity);
+        }
     }
 }

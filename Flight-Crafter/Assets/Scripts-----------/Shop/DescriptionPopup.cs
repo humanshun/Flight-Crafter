@@ -11,9 +11,10 @@ public class DescriptionPopup : MonoBehaviour
     [SerializeField] private Button partSetButton; // パーツセットボタン
     [SerializeField] private CustomPlayer customPlayer; // プレイヤーのカスタムオブジェクト
     private GameObject status;
-
     public void Show(PartData part, CurrentPartPopup currentPartPopup)
     {
+        customPlayer = GameManager.Instance.Player;
+        
         popupRoot.SetActive(true);
         nameText.text = part.partName;
 
