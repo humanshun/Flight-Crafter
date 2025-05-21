@@ -569,6 +569,7 @@ MonoBehaviour:
   ContentTransform: {fileID: 5275773214625347663}
   statusBar: {fileID: 5129247946015702874, guid: d0c0039e57f15914ea7c060dc05916e6, type: 3}
   partSetButton: {fileID: 8692036628209354554}
+  customPlayer: {fileID: 0}
 --- !u!1001 &5104778815677329024
 PrefabInstance:
   m_ObjectHideFlags: 0
