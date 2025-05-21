@@ -9,6 +9,7 @@ public class DescriptionPopup : MonoBehaviour
     [SerializeField] private Transform ContentTransform;
     [SerializeField] private StatusBar statusBar; // ステータス情報のプレハブ
     [SerializeField] private Button partSetButton; // パーツセットボタン
+    [SerializeField] private CustomPlayer customPlayer; // プレイヤーのカスタムオブジェクト
     private GameObject status;
 
     public void Show(PartData part, CurrentPartPopup currentPartPopup)
@@ -73,6 +74,16 @@ public class DescriptionPopup : MonoBehaviour
 
     public void ButtonClick(PartData part, CurrentPartPopup currentPartPopup)
     {
+        string currentName = PlayerData.Instance.GetCurrentPartName(part.partType);
+        if (!string.IsNullOrEmpty(currentName) && currentName != part.partName)
+        {
+            Debug.Log($"{part.partType}の現在の装備{currentName}を削除します");
+            PlayerData.Instance.RemoveCurrentPart(part.partType);
+        }
+
+        PlayerData.Instance.SaveCurrentPart(part);
         currentPartPopup.Setup(part);
+
+        customPlayer.SetupAll();
     }
 }
