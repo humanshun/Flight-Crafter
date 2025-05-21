@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+using NUnit.Framework;
 
 // プレイヤーのデータを管理するシングルトンクラス
 public class PlayerData : MonoBehaviour
@@ -15,7 +16,7 @@ public class PlayerData : MonoBehaviour
     private List<string> purchasedParts = new List<string>();
 
     // 現在装備しているパーツの名前
-    private string currentPartName = "";
+    private Dictionary<PartType, string> currentParts = new();
 
     // セーブファイルの保存先パス
     private string SavePath => Path.Combine(Application.persistentDataPath, "PlayerData_save.json");
@@ -46,7 +47,7 @@ public class PlayerData : MonoBehaviour
     // パーツ購入を試みる処理（成功ならtrue）
     public bool TryBuyPart(PartData part, int price)
     {
-        if (playerCoins >= price)
+        if (playerCoins >= price && !purchasedParts.Contains(part.partName))
         {
             playerCoins -= price; // コインを減らす
             purchasedParts.Add(part.partName); // 購入済みリストに追加（重複チェックなし）
@@ -74,32 +75,51 @@ public class PlayerData : MonoBehaviour
     // 現在装備しているパーツを保存（パーツ名だけ記録）
     public void SaveCurrentPart(PartData part)
     {
-        currentPartName = part.partName;
+        currentParts[part.partType] = part.resaurceFileName;
         SavePlayerData(); // 保存を反映
+    }
+
+    public void RemoveCurrentPart(PartType partType)
+    {
+        if (currentParts.ContainsKey(partType))
+        {
+            currentParts.Remove(partType);
+            SavePlayerData(); // 保存を反映
+        }
+    }
+
+    public Dictionary<PartType, string> GetAllCurrentParts()
+    {
+        return new Dictionary<PartType, string>(currentParts);
+    }
+
+    public string GetCurrentPartName(PartType partType)
+    {
+        return currentParts.TryGetValue(partType, out var partName) ? partName : null;
     }
 
     // プレイヤーデータをJSONで保存
     private void SavePlayerData()
     {
-        // 保存用データ構造に現在の情報を代入
-        PlayerSaveData saveData = new PlayerSaveData
+        var saveData = new PlayerSaveData
         {
             coins = playerCoins,
             purchasedPartNames = purchasedParts,
-            currentPartName = currentPartName
+            currentParts = new List<PartTypePartPair>()
         };
 
-        // JSONに変換（第2引数trueで整形出力）
+        foreach (var kvp in currentParts)
+        {
+            saveData.currentParts.Add(new PartTypePartPair { partType = kvp.Key, partName = kvp.Value });
+        }
+
         string json = JsonUtility.ToJson(saveData, true);
-
-        // ファイルに書き込む
         File.WriteAllText(SavePath, json);
-
-        Debug.Log("保存しました: " + SavePath);
+        Debug.Log("セーブデータを保存しました: " + SavePath);
     }
 
     // プレイヤーデータをJSONファイルから読み込み
-    private void LoadPlayerData()
+    public void LoadPlayerData()
     {
         if (File.Exists(SavePath)) // セーブファイルが存在するか確認
         {
@@ -109,14 +129,22 @@ public class PlayerData : MonoBehaviour
             // 読み込んだデータを反映
             playerCoins = saveData.coins;
             purchasedParts = saveData.purchasedPartNames ?? new List<string>();
-            currentPartName = saveData.currentPartName;
+
+            currentParts = new Dictionary<PartType, string>();
+            if (saveData.currentParts != null)
+            {
+                foreach (var pair in saveData.currentParts)
+                {
+                    currentParts[pair.partType] = pair.partName; // パーツ名を保存
+                }
+            }
         }
         else
         {
             // セーブデータがない場合は初期化
             playerCoins = 2000;
             purchasedParts = new List<string>();
-            currentPartName = "";
+            currentParts = new Dictionary<PartType, string>();
         }
     }
     public bool IsPartPurchased(string partName)
@@ -129,7 +157,7 @@ public class PlayerData : MonoBehaviour
         playerCoins = 10000;
 
         purchasedParts = new List<string>();
-        currentPartName = "";
+        currentParts = new Dictionary<PartType, string>();
 
         if (File.Exists(SavePath))
         {
