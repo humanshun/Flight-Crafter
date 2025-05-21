@@ -28,6 +28,9 @@ public class PartCustom : MonoBehaviour
 
         descriptionPopup.gameObject.SetActive(false); // 初期状態で非表示
         partCostom.SetActive(false); // 初期状態で非表示
+
+        // 装備中パーツをUIに反映
+        SetupEquippedParts();
     }
     private void OnButtonClick(Button selectedButton, PartType selectedType)
     {
@@ -74,4 +77,37 @@ public class PartCustom : MonoBehaviour
             }
         }
     }
+    private void SetupEquippedParts()
+    {
+        Dictionary<PartType, string> parts = PlayerData.Instance.GetAllCurrentParts();
+
+        foreach (var kvp in parts)
+        {
+            PartType type = kvp.Key;
+            string resourceName = kvp.Value;
+            PartData part = Resources.Load<PartData>($"Parts/{resourceName}");
+            if (part == null)
+            {
+                Debug.LogWarning($"{type} の {resourceName} が見つかりませんでした。");
+                continue;
+            }
+
+            switch (type)
+            {
+                case PartType.Body:
+                    bodyCurrentPartPopup.Setup(part);
+                    break;
+                case PartType.Rocket:
+                    rocketCurrentPartPopup.Setup(part);
+                    break;
+                case PartType.Tire:
+                    tireCurrentPartPopup.Setup(part);
+                    break;
+                case PartType.Wing:
+                    wingCurrentPartPopup.Setup(part);
+                    break;
+            }
+        }
+    }
+
 }

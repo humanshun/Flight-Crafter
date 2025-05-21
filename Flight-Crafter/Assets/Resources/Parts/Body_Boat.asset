@@ -27,9 +27,7 @@ MonoBehaviour:
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"
     value: 1.61
-  rightRocketPosition: {x: 0, y: 0, z: 0}
-  leftRocketPosition: {x: 0, y: 0, z: 0}
-  rightWingPosition: {x: 0, y: 0, z: 0}
-  leftWingPosition: {x: 0, y: 0, z: 0}
-  rightTirePosition: {x: 0, y: 0, z: 0}
-  leftTirePosition: {x: 0, y: 0, z: 0}
+  rocketPosition: {x: -4.84, y: 1.13}
+  wingPosition: {x: -0.56, y: 1.63}
+  rightTirePosition: {x: -3.75, y: 0.2}
+  leftTirePosition: {x: 2.44, y: 0.2}

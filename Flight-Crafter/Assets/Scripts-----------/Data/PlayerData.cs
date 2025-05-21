@@ -167,4 +167,5 @@ public class PlayerData : MonoBehaviour
         SavePlayerData(); // 初期化後に保存
         Debug.Log("プレイヤーデータを初期化しました。");
     }
+    
 }

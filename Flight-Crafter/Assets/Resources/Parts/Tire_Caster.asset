@@ -23,7 +23,7 @@ MonoBehaviour:
     value: 0
   partType: 2
   partDescription: 
-  partIconImage: {fileID: 0}
+  partIconImage: {fileID: -8267674591413847557, guid: 004b01c5030ebc34b907075d4910cbaf, type: 3}
   torque:
     displayName: "\u5730\u4E0A\u52A0\u901F\u5EA6"
     value: 100
