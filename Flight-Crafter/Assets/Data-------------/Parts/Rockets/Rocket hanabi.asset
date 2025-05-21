@@ -22,7 +22,6 @@ MonoBehaviour:
   partType: 1
   partDescription: 
   partIconImage: {fileID: 0}
-  isPurchased: 1
   jetThrust:
     displayName: "\u5674\u5C04\u529B"
     value: 1000

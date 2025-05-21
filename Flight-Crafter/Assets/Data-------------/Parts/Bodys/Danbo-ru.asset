@@ -22,7 +22,6 @@ MonoBehaviour:
   partType: 0
   partDescription: "\u51B7\u8535\u5EAB\u3092\u8CB7\u3063\u305F\u3068\u304D\u306E\u6BB5\u30DC\u30FC\u30EB"
   partIconImage: {fileID: -920528429157208796, guid: d298cd62c2a36d24f84f68b6e68398bc, type: 3}
-  isPurchased: 1
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"
     value: 1

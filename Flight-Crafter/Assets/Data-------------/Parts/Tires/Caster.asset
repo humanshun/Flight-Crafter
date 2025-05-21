@@ -22,7 +22,6 @@ MonoBehaviour:
   partType: 2
   partDescription: 
   partIconImage: {fileID: 0}
-  isPurchased: 0
   torque:
     displayName: "\u5730\u4E0A\u52A0\u901F\u5EA6"
     value: 100

@@ -22,7 +22,6 @@ MonoBehaviour:
   partType: 3
   partDescription: 
   partIconImage: {fileID: 0}
-  isPurchased: 1
   lift:
     displayName: "\u63DA\u529B"
     value: 10
