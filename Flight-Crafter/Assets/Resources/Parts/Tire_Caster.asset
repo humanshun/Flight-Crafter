@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f20554fd710c7a4da94dc82143f978b, type: 3}
-  m_Name: Caster
+  m_Name: Tire_Caster
   m_EditorClassIdentifier: 
   partName: "\u30AD\u30E3\u30B9\u30BF\u30FC"
+  resaurceFileName: Tire_Caster
+  partPrefab: {fileID: 5737310961949354187, guid: dc6042dd4372bae43a0171f6dc3e5a83, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
     value: 2

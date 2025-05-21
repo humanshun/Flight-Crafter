@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56d0fbdf49b472544abee5ca8fd61a2b, type: 3}
-  m_Name: Danbo-ru
+  m_Name: Body_Danbo-ru
   m_EditorClassIdentifier: 
   partName: "\u51B7\u8535\u5EAB\u6BB5\u30DC\u30FC\u30EB"
+  resaurceFileName: Body_Danbo-ru
+  partPrefab: {fileID: 7410604593853858804, guid: fdb861afd878506489db79b00967e8c9, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
     value: 10
@@ -25,5 +27,9 @@ MonoBehaviour:
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"
     value: 1
+  rightRocketPosition: {x: 0, y: 0, z: 0}
+  leftRocketPosition: {x: 0, y: 0, z: 0}
+  rightWingPosition: {x: 0, y: 0, z: 0}
+  leftWingPosition: {x: 0, y: 0, z: 0}
   rightTirePosition: {x: 0, y: 0, z: 0}
   leftTirePosition: {x: 0, y: 0, z: 0}

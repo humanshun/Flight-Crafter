@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77f9830f24711f742a9890c4eece963a, type: 3}
-  m_Name: Danbo-ru
+  m_Name: Wing_Danbo-ru
   m_EditorClassIdentifier: 
   partName: "\u6BB5\u30DC\u30FC\u30EB"
+  resaurceFileName: Wing_Danbo-ru
+  partPrefab: {fileID: 3444109036514365600, guid: 6980b7bff1e877e4a81e3a313c48fdeb, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
     value: 1
@@ -21,7 +23,7 @@ MonoBehaviour:
     value: 0
   partType: 3
   partDescription: 
-  partIconImage: {fileID: 0}
+  partIconImage: {fileID: -71845618223202253, guid: 99348e153d16cf948b05617e1e4a5b47, type: 3}
   lift:
     displayName: "\u63DA\u529B"
     value: 10

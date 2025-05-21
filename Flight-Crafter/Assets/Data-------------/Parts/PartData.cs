@@ -4,7 +4,13 @@ using UnityEngine;
 public class PartData : ScriptableObject
 {
     [Header("パーツ名")]
-    public string partName; // パーツ名
+    public string partName; // 表示用：日本語おｋ
+
+    [Header("ファイル名")]
+    public string resaurceFileName; //読み込み用：英語のファイル名で一致させる
+
+    [Header("プレハブ")]
+    public GameObject partPrefab; // パーツのプレハブ
 
     [Header("重量")]
     [Tooltip("値が高いほど重力が大きくなります。")]

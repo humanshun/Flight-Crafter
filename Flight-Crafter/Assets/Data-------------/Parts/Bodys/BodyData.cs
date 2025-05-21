@@ -9,6 +9,16 @@ public class BodyData : PartData
     [Tooltip("値が高いほど空気抵抗が大きくなります。")]
     public AirResistance airResistance;  // 抗力のプロパティ
 
+    [Header("ロケットの位置")]
+    [Tooltip("ロケットの位置を指定します。")]
+    public Vector3 rightRocketPosition;  // ロケットの位置
+    public Vector3 leftRocketPosition;   // ロケットの位置
+    
+    [Header("ウィングの位置")]
+    [Tooltip("ウィングの位置を指定します。")]
+    public Vector3 rightWingPosition;    // ウィングの位置
+    public Vector3 leftWingPosition;     // ウィングの位置
+
     [Header("車輪の位置")]
     [Tooltip("車輪の位置を指定します。")]
     public Vector3 rightTirePosition;  // 車輪の位置
