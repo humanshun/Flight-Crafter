@@ -5,15 +5,26 @@ using System.Data.SqlTypes;
 using System;
 
 public class PlayerController2 : MonoBehaviour
+/*
+    各パーツのステータス
+    bodyData
+        重量（ぶつかった時の影響）
+        空気抵抗（スピード減衰率）
+    rocketData
+        重量（ぶつかった時の影響）
+        噴射力（スピード上昇率）
+        噴射時間（噴射できる時間）
+    tireData
+        重量（ぶつかった時の影響）
+        地上加速（地上でのスピード上昇率）
+    wingData
+        重量（ぶつかった時の影響）
+        空中コントロール（空中での回転力）
+*/
 {
     // パーツのプレハブーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-    public GameObject bodyPrefab;
-    public GameObject rocketPrefab;
-    public GameObject tirePrefab;
-    public GameObject wingPrefab;
-
     public GameObject rocketThrustPrefab; // エフェクトのプレハブ
-    public Transform EffectPosition;
+    public Vector2 effectPosition;
     private GameObject currentRocketThrustInstance;
 
     // 各パーツデータを保持するクラスへの参照ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -34,7 +45,7 @@ public class PlayerController2 : MonoBehaviour
     private float total_RocketTime; // ロケットの合計噴射時間
 
     // プレイヤーの制御に必要なパラメータ
-    private Rigidbody2D rb; // プレイヤーのRigidbody2D
+    [SerializeField] private Rigidbody2D rb; // プレイヤーのRigidbody2D
     [SerializeField] private float playerAngle;
     private float crrentRocketTime; //現在のロケット噴射時間
     private bool finishRocketTime = true; //ロケットが使えるかどうか
@@ -42,29 +53,31 @@ public class PlayerController2 : MonoBehaviour
     private Vector2 rightDirection;// プレイヤーの回転に基づいた右方向
 
 
-    float MovY = 1;
+    float MovY = 0;
 
     void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
         // Rigidbody2D を取得
         rb = GetComponent<Rigidbody2D>();
 
-        // パーツデータを初期化
-        InitializeParts();
+        //プレイヤーのパーツデータを取得
+        GetPartsData();
 
         // 初期ステータスを計算
         UpdateStats();
+
     }
     void Update() //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
         MovY = Input.GetAxis("Vertical");
 
-        // 左クリックの状態をチェック
-        if (rocketPrefab != null) {OnLeftClick();}
-
         // プレイヤーのローカルZ回転を取得
         playerAngle = transform.localRotation.eulerAngles.z;
 
+        //ブーストメソッド
+        OnLeftShiftClick();
+
+        //地上で加速するメソッド
         GroundAddForce();
 
         // プレイヤーの回転に基づいた右方向を計算
@@ -74,51 +87,7 @@ public class PlayerController2 : MonoBehaviour
     void FixedUpdate()
     {
         // プレイヤーの向きを制御する
-        if (wingPrefab != null) {PlayerAngle();}
-    }
-
-    // パーツデータを初期化
-    void InitializeParts()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-    {
-        if (bodyPrefab != null)
-        {
-            Part bodyPart = bodyPrefab.GetComponent<Part>();
-            if (bodyPart != null && bodyPart.partData is BodyData body)
-            {
-                bodyData = body;
-                Debug.Log($"Bodyデータを取得: {bodyData.weight}, {bodyData.airResistance}");
-            }
-        }
-
-        if (wingPrefab != null)
-        {
-            Part wingPart = wingPrefab.GetComponent<Part>();
-            if (wingPart != null && wingPart.partData is WingData wing)
-            {
-                wingData = wing;
-                Debug.Log($"Wingデータを取得: {wingData.weight}, {wingData.lift}");
-            }
-        }
-
-        if (tirePrefab != null)
-        {
-            Part tirePart = tirePrefab.GetComponent<Part>();
-            if (tirePart != null && tirePart.partData is TireData tire)
-            {
-                tireData = tire;
-                Debug.Log($"Tireデータを取得: {tireData.weight}, {tireData.torque}");
-            }
-        }
-
-        if (rocketPrefab != null)
-        {
-            Part rocketPart = rocketPrefab.GetComponent<Part>();
-            if (rocketPart != null && rocketPart.partData is RocketData rocket)
-            {
-                rocketData = rocket;
-                Debug.Log($"Rocketデータを取得: {rocketData.weight}, {rocketData.jetThrust}, {rocketData.jetTime.value}");
-            }
-        }
+        PlayerAngle();
     }
 
     // プレイヤーのパーツ性能を集計//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -186,19 +155,21 @@ public class PlayerController2 : MonoBehaviour
     //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
     {
-        if (groundCheck != false) return;
+        //TODO: いったんコメントアウト
+        // if (groundCheck != false) return;
 
         // 回転に対するトルクを加える（AddTorqueを使用）
+        // TODO: 回転力の調整
         float torque = MovY * total_AirControl;  // MovYとtotal_AirControlで回転力を計算
         rb.AddTorque(torque);
 
         // 垂直方向の力を計算（進行方向が下向きのときの揚力）
         float thrustForce = Vector2.Dot(rb.linearVelocity, rb.GetRelativeVector(Vector2.down)) * 2.0f;
 
-        // 上方向に力を加えるためのベクトルを計算
+        // // 上方向に力を加えるためのベクトルを計算
         Vector2 relForce = Vector2.up * thrustForce;
 
-        // Rigidbody2Dに揚力を加える
+        // // Rigidbody2Dに揚力を加える
         rb.AddForce(rb.GetRelativeVector(relForce));
 
         // 現在の角速度を取得
@@ -225,8 +196,9 @@ public class PlayerController2 : MonoBehaviour
 
 
     //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-    public void OnLeftClick()
+    public void OnLeftShiftClick()
     {
+        // ロケットの噴射時間が終了しているか、ロケットを使用できない
         if (!finishRocketTime) return;
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -245,8 +217,8 @@ public class PlayerController2 : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            currentRocketThrustInstance = Instantiate(rocketThrustPrefab, EffectPosition.position, transform.rotation);
-            currentRocketThrustInstance.transform.SetParent(transform); // プレイヤーに追従
+            currentRocketThrustInstance = Instantiate(rocketThrustPrefab, transform);
+            currentRocketThrustInstance.transform.localPosition = effectPosition; // 背面に配置
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
@@ -261,7 +233,7 @@ public class PlayerController2 : MonoBehaviour
             }
         }
     }
-    
+
     //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void AddForce(Vector2 direction)
     {
@@ -269,23 +241,48 @@ public class PlayerController2 : MonoBehaviour
         Vector2 forceDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
 
         // 力を加える（推進力を掛けて）
+        // TODO: ブーストの強さ調整
         rb.AddForce(forceDirection * total_JetThrust, ForceMode2D.Force);
     }
 
     //車輪メソッド
     private void GroundAddForce()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
-        if (!groundCheck) return;
+        //TODO: いったんコメントアウト
+        // if (!groundCheck) return;
         // 水平方向の入力取得（Aキー: -1, Dキー: 1, それ以外: 0）
         float input = Input.GetAxis("Horizontal");
 
         if (input != 0)
         {
             // 入力に基づいて力を計算
+            //　TODO: 加速力の調整
             Vector2 force = rightDirection * input * total_Torque;
 
             // 力を加える
             rb.AddForce(force, ForceMode2D.Force);
+        }
+    }
+
+    private void GetPartsData()
+    {
+        var currentPart = PlayerData.Instance.GetAllCurrentParts();
+
+        if (currentPart.TryGetValue(PartType.Body, out var bodyResourceName))
+        {
+            bodyData = Resources.Load<BodyData>($"Parts/{bodyResourceName}");
+        }
+        if (currentPart.TryGetValue(PartType.Rocket, out var rocketResourceName))
+        {
+            rocketData = Resources.Load<RocketData>($"Parts/{rocketResourceName}");
+        }
+        if (currentPart.TryGetValue(PartType.Tire, out var tireResourceName))
+        {
+            tireData = Resources.Load<TireData>($"Parts/{tireResourceName}");
+        }
+        if (currentPart.TryGetValue(PartType.Wing, out var wingResourceName))
+        {
+            wingData = Resources.Load<WingData>($"Parts/{wingResourceName}");
         }
     }
 }
