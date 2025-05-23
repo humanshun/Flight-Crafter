@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class ShopCanvasManager : MonoBehaviour
 {
     [SerializeField] private Button shopButton;
+    [SerializeField] private Button playButton;
     [SerializeField] private GameObject partShopPopup;
     [SerializeField] private Button shopCloseButton;
     [SerializeField] private GameObject partCustomPopup;
@@ -38,6 +39,8 @@ public class ShopCanvasManager : MonoBehaviour
         partShopPopup.SetActive(true);
         partCustomPopup.SetActive(false);
         shopButton.gameObject.SetActive(false);
+        playButton.gameObject.SetActive(false);
+
     }
 
     private void OnShopCloseButtonClicked()
@@ -45,17 +48,20 @@ public class ShopCanvasManager : MonoBehaviour
         partShopPopup.SetActive(false);
         partCustomPopup.SetActive(true);
         shopButton.gameObject.SetActive(true);
+        playButton.gameObject.SetActive(true);
     }
 
     private void OnCustomCloseButtonClicked()
     {
         shopButton.gameObject.SetActive(true);
+        playButton.gameObject.SetActive(true);
         desctiptionPopupPrefab.SetActive(false);
     }
 
     private void CustomButtonOnClick()
     {
         shopButton.gameObject.SetActive(false);
+        playButton.gameObject.SetActive(false);
         desctiptionPopupPrefab.SetActive(false);
     }
 }
