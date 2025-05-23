@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 5584681483970083634, guid: facac8d484b0356488ec38c70911ee7d, type: 3}
+  inGamePlayer: {fileID: 5068569638428690978, guid: 7fc8d921f92144a45b92a6d94f896b20, type: 3}

@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CustomPlayer player;
     private CustomPlayer playerInstance;
     public CustomPlayer Player => playerInstance;
+
+    [SerializeField] private CustomPlayer inGamePlayer;
+    private CustomPlayer inGamePlayerInstance;
+    public CustomPlayer InGamePlayer => inGamePlayerInstance;
+
     // シングルトンインスタンス
     public static GameManager Instance;
 
@@ -13,6 +18,10 @@ public class GameManager : MonoBehaviour
     {
         // すでにCustomシーンが読み込まれていた場合に備える
         if (SceneManager.GetActiveScene().name == "Custom")
+        {
+            OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        }
+        else if (SceneManager.GetActiveScene().name == "InGame")
         {
             OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
         }
@@ -44,6 +53,16 @@ public class GameManager : MonoBehaviour
                 Destroy(playerInstance.gameObject); // 既存のインスタンスを削除
             }
             playerInstance = Instantiate(player, spawnPosition, Quaternion.identity);
+        }
+        else if (scene.name == "InGame")
+        {
+            Vector3 spawnPosition = new Vector3(-3.7f, -1.15f, 0f);
+
+            if (inGamePlayerInstance != null)
+            {
+                Destroy(inGamePlayerInstance.gameObject); // 既存のインスタンスを削除
+            }
+            inGamePlayerInstance = Instantiate(inGamePlayer, spawnPosition, Quaternion.identity);
         }
     }
 }
