@@ -714,14 +714,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boat
       objectReference: {fileID: 0}
-    - target: {fileID: 5017895060407549928, guid: 7574e5fc8c8a0214991b87fdacc7424b, type: 3}
-      propertyPath: partData
-      value: 
-      objectReference: {fileID: 11400000, guid: d37d2e127c58c8a41aab953f149114a9, type: 2}
-    - target: {fileID: 8426182374465526549, guid: 7574e5fc8c8a0214991b87fdacc7424b, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
