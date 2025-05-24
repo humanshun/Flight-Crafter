@@ -24,15 +24,9 @@ MonoBehaviour:
   partType: 3
   partDescription: 
   partIconImage: {fileID: -71845618223202253, guid: 99348e153d16cf948b05617e1e4a5b47, type: 3}
-  lift:
-    displayName: "\u63DA\u529B"
-    value: 0
+  airResistance:
+    displayName: "\u7A7A\u6C17\u62B5\u6297"
+    value: 0.01
   airControl:
     displayName: "\u7A7A\u4E2D\u5236\u5FA1"
     value: 10
-  airRotationalControl:
-    displayName: "\u56DE\u8EE2\u5236\u5FA1"
-    value: 1
-  propulsionPower:
-    displayName: "\u63A8\u9032\u529B"
-    value: 0

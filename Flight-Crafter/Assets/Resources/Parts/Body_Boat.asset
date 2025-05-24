@@ -26,7 +26,10 @@ MonoBehaviour:
   partIconImage: {fileID: -4032481707582436298, guid: 5fe02ee676471cc4d83d663fd3bcace9, type: 3}
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"
-    value: 1
+    value: 0.1
+  hp:
+    displayName: "\u4F53\u529B"
+    value: 10
   rocketPosition: {x: -4.84, y: 1.13}
   wingPosition: {x: -0.56, y: 1.63}
   rightTirePosition: {x: -3.75, y: 0.2}

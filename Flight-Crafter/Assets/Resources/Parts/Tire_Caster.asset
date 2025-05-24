@@ -24,6 +24,9 @@ MonoBehaviour:
   partType: 2
   partDescription: 
   partIconImage: {fileID: -8267674591413847557, guid: 004b01c5030ebc34b907075d4910cbaf, type: 3}
+  airResistance:
+    displayName: "\u7A7A\u6C17\u62B5\u6297"
+    value: 0.01
   torque:
     displayName: "\u5730\u4E0A\u52A0\u901F\u5EA6"
     value: 10
