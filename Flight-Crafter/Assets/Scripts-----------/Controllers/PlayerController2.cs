@@ -10,15 +10,18 @@ public class PlayerController2 : MonoBehaviour
     bodyData
         重量（ぶつかった時の影響）
         空気抵抗（スピード減衰率）
+        体力（HP）
     rocketData
         重量（ぶつかった時の影響）
         噴射力（スピード上昇率）
         噴射時間（噴射できる時間）
     tireData
         重量（ぶつかった時の影響）
+        空気抵抗（スピード減衰率）
         地上加速（地上でのスピード上昇率）
     wingData
         重量（ぶつかった時の影響）
+        空気抵抗（スピード減衰率）
         空中コントロール（空中での回転力）
 */
 {
@@ -36,12 +39,10 @@ public class PlayerController2 : MonoBehaviour
     // パーツごとの合計値を計算・保持するための変数ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private float total_Weight; // 総重量
     private float total_AirResistance; //総空気抵抗
+    private float total_Health; // 総体力
     private float total_JetThrust; // 総空中加速度
     private float total_Torque; // 総地上加速度
-    private float total_Lift; // 総浮力
     private float total_AirControl; //空中コントロール
-    private float total_AirRotationalControl; //回転制御
-    private float total_PropulsionPower;
     private float total_RocketTime; // ロケットの合計噴射時間
 
     // プレイヤーの制御に必要なパラメータ
@@ -49,11 +50,23 @@ public class PlayerController2 : MonoBehaviour
     [SerializeField] private float playerAngle;
     private float crrentRocketTime; //現在のロケット噴射時間
     private bool finishRocketTime = true; //ロケットが使えるかどうか
+    [SerializeField] private LayerMask groundLayer; //GroundCheckのBoxCollider2D
+    public BoxCollider2D groundCheckCollider; //GroundCheckのBoxCollider2D
     public bool groundCheck; //Groundについているかどうか
     private Vector2 rightDirection;// プレイヤーの回転に基づいた右方向
 
+    //水に入ったとき
+    [SerializeField] private LayerMask waterLayer; // Waterレイヤーを指定
+    [SerializeField] private CapsuleCollider2D playerCollider;
+    private bool inWater;
+
 
     float MovY = 0;
+
+    void Awake()
+    {
+        Application.targetFrameRate = 60; // フレームレートを60に固定
+    }
 
     void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
@@ -77,11 +90,19 @@ public class PlayerController2 : MonoBehaviour
         //ブーストメソッド
         OnLeftShiftClick();
 
+        //地面に接触しているかどうかを確認
+        GroundCheck();
+
         //地上で加速するメソッド
         GroundAddForce();
 
         // プレイヤーの回転に基づいた右方向を計算
         rightDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
+
+        //水の中にいるか判定
+        InWater();
+
+        CheckGameOver();
     }
 
     void FixedUpdate()
@@ -94,27 +115,30 @@ public class PlayerController2 : MonoBehaviour
     public void UpdateStats()
     {
         total_Weight = 0f;
-        total_Lift = 0f;
         total_Torque = 0f;
         total_JetThrust = 0f;
         total_RocketTime = 0f;
+        total_AirResistance = 0f;
+        total_AirControl = 0f;
+        total_Health = 0f;
+
 
         if (bodyData != null)
         {
             total_Weight += bodyData.weight.value;
             total_AirResistance += bodyData.airResistance.value;
+            total_Health += bodyData.hp.value;
         }
         if (wingData != null)
         {
             total_Weight += wingData.weight.value;
-            total_Lift += wingData.lift.value;
+            total_AirResistance += wingData.airResistance.value;
             total_AirControl += wingData.airControl.value;
-            total_AirRotationalControl += wingData.airRotationalControl.value;
-            total_PropulsionPower += wingData.propulsionPower.value;
         }
         if (tireData != null)
         {
             total_Weight += tireData.weight.value;
+            total_AirResistance += tireData.airResistance.value;
             total_Torque += tireData.torque.value;
         }
         if (rocketData != null)
@@ -124,33 +148,19 @@ public class PlayerController2 : MonoBehaviour
             total_RocketTime += rocketData.jetTime.value;
         }
 
-        Debug.Log($"総重量: {total_Weight},総空気抵抗{total_AirResistance}, 揚力: {total_Lift}, コントロール: {total_AirControl}, 回転制御: {total_AirRotationalControl}, 推進力: {total_PropulsionPower}, 地上加速: {total_Torque}, 空中加速: {total_JetThrust}, ロケット噴射時間: {total_RocketTime}");
+        Debug.Log(
+            $"総重量     :{total_Weight},\n " +
+            $"総空気抵抗  :{total_AirResistance}, \n " +
+            $"体力       :{total_Health}, \n " +
+            $"コントロール:{total_AirControl}, \n " +
+            $"地上加速    :{total_Torque}, \n " +
+            $"ブースト    :{total_JetThrust}, \n " +
+            $"噴射時間    :{total_RocketTime}"
+            );
 
         rb.linearDamping = total_AirResistance; //空気抵抗。下を向くほどその方向に加速するように。
         rb.mass = total_Weight;
-        Debug.Log(rb.mass);
     }
-
-    // ステータスの値を取得する関数ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-
-    //全体の重さ
-    public float GetWeight() => total_Weight;
-
-    //Bodyのデータ
-    public float GetAirResistance() => total_AirResistance;
-
-    //Wingのデータ
-    public float GetLift() => total_Lift;
-    public float GetAirControl() => total_AirControl;
-    public float GetAirControlRotational() => total_AirRotationalControl;
-    public float GetPropulsionPower() => total_PropulsionPower;
-
-    //Tireのデータ
-    public float GetGroundAcceleration() => total_Torque;
-
-    //Rocketのデータ
-    public float GetJetThrust() => total_JetThrust;
-    public float GetRocketTime() => total_RocketTime;
 
     //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
@@ -192,26 +202,34 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-
-
-
     //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void OnLeftShiftClick()
     {
         // ロケットの噴射時間が終了しているか、ロケットを使用できない
         if (!finishRocketTime) return;
 
+        // 左シフトを押したときに
         if (Input.GetKey(KeyCode.LeftShift))
         {
+            // ブーストしてる秒数をカウントして
             crrentRocketTime += Time.deltaTime;
 
+            // もしブースト秒数が余ってれば
             if (total_RocketTime > crrentRocketTime)
             {
-                AddForce(Vector2.right);
+                // 回転に基づいて力の方向を計算
+                Vector2 forceDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
+
+                // プレイヤーの正面方向に力を加える
+                rb.AddForce(forceDirection * total_JetThrust, ForceMode2D.Force);
             }
             else
             {
+                //ロケット噴射時間が終了
                 finishRocketTime = false;
+
+                //エフェクト停止
+                StopRocketEffect();
             }
         }
 
@@ -222,34 +240,30 @@ public class PlayerController2 : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            // エフェクトが存在している場合、停止
-            if (currentRocketThrustInstance != null)
-            {
-                ParticleSystem ps = currentRocketThrustInstance.GetComponent<ParticleSystem>();
-                if (ps != null)
-                {
-                    ps.Stop(); // エフェクトを停止
-                }
-            }
+            StopRocketEffect();
+        }
+    }
+    private void StopRocketEffect()
+    {
+        ParticleSystem ps = currentRocketThrustInstance.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Stop();
         }
     }
 
-    //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-    private void AddForce(Vector2 direction)
+    //地面に接触しているかどうかを確認するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    private void GroundCheck()
     {
-        // 回転に基づいて力の方向を計算
-        Vector2 forceDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
-
-        // 力を加える（推進力を掛けて）
-        // TODO: ブーストの強さ調整
-        rb.AddForce(forceDirection * total_JetThrust, ForceMode2D.Force);
+        if (groundCheckCollider == null) return;
+        // 地面に接触しているかどうかを確認
+        groundCheck = groundCheckCollider.IsTouchingLayers(groundLayer);
     }
 
     //車輪メソッド
     private void GroundAddForce()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
-        //TODO: いったんコメントアウト
-        // if (!groundCheck) return;
+        if (!groundCheck) return;
         // 水平方向の入力取得（Aキー: -1, Dキー: 1, それ以外: 0）
         float input = Input.GetAxis("Horizontal");
 
@@ -283,6 +297,34 @@ public class PlayerController2 : MonoBehaviour
         if (currentPart.TryGetValue(PartType.Wing, out var wingResourceName))
         {
             wingData = Resources.Load<WingData>($"Parts/{wingResourceName}");
+        }
+    }
+
+    private void InWater()
+    {
+        // 水中にいるか判定
+        inWater = playerCollider.IsTouchingLayers(waterLayer);
+
+        if (inWater)
+        {
+            //浮力を再現
+            rb.AddForce(Vector2.up * 30.0f, ForceMode2D.Force);
+
+            //水中抵抗を再現
+            rb.linearDamping = 1.0f;
+        }
+        else
+        {
+            //通常抵抗値に戻す
+            rb.linearDamping = 0;
+        }
+    }
+
+    private void CheckGameOver()
+    {
+        if (transform.position.x >= 260f  && rb.linearVelocity.magnitude < 1f)
+        {
+            GameManager.Instance.GameOver();
         }
     }
 }
