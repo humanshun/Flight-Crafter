@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     // シングルトンインスタンス
     public static GameManager Instance;
 
+    public static event System.Action<CustomPlayer> OnInGamePlayerSpawned;
+
     void Start()
     {
         // すでにCustomシーンが読み込まれていた場合に備える
@@ -56,13 +58,19 @@ public class GameManager : MonoBehaviour
         }
         else if (scene.name == "InGame")
         {
-            Vector3 spawnPosition = new Vector3(-3.7f, -1.15f, 0f);
+            Vector3 spawnPosition = new Vector3(-3.7f, -30f, 0f);
 
             if (inGamePlayerInstance != null)
             {
                 Destroy(inGamePlayerInstance.gameObject); // 既存のインスタンスを削除
             }
             inGamePlayerInstance = Instantiate(inGamePlayer, spawnPosition, Quaternion.identity);
+            OnInGamePlayerSpawned?.Invoke(inGamePlayerInstance); // イベントを発火して、InGamePlayerが生成されたことを通知
         }
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("Custom");
     }
 }
