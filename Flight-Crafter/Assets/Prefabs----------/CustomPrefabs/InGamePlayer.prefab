@@ -152,10 +152,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rocketThrustPrefab: {fileID: 683662035918044519, guid: 51e3df4c0e506a541a4e45f2a000f308, type: 3}
-  effectPosition: {x: 0, y: 0}
+  effectPosition: {x: -3.5, y: 1}
   rb: {fileID: 5382125969591630498}
   playerAngle: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckCollider: {fileID: 0}
   groundCheck: 0
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 16
+  playerCollider: {fileID: 1688970331171682002}
 --- !u!50 &5382125969591630498
 Rigidbody2D:
   serializedVersion: 5
@@ -171,7 +179,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -310,6 +318,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1407317047285431538}
   - component: {fileID: 6648737281787764353}
+  - component: {fileID: 1688970331171682002}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -387,6 +396,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!70 &1688970331171682002
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7523467231882200536}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 1.9999999}
+  m_Direction: 0
 --- !u!1 &7902698449090717067
 GameObject:
   m_ObjectHideFlags: 0
