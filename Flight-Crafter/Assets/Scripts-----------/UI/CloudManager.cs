@@ -12,6 +12,20 @@ public class CloudManager : MonoBehaviour
     private float maxHeight = 200f;  // 雲の最大高さ
     private List<GameObject> clouds = new List<GameObject>();  // 生成した雲を格納するリスト
 
+    void OnEnable()
+    {
+        GameManager.OnInGamePlayerSpawned += OnPlayerSpawned;
+    }
+
+    void OnDisable()
+    {
+        GameManager.OnInGamePlayerSpawned -= OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(CustomPlayer spawnedPlayer)
+    {
+        playerPosition = spawnedPlayer.transform;
+    }
     void Start()
     {
         // 最初に雲を配置する

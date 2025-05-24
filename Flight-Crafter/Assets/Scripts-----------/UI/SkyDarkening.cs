@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SkyDarkening : MonoBehaviour
 {
@@ -9,8 +10,27 @@ public class SkyDarkening : MonoBehaviour
     public Color startColor = Color.cyan; // 開始時の空の色
     public Color endColor = Color.black; // 終了時の空の色
 
+    // このスクリプトが有効になった時に呼ばれる（シーン開始やオブジェクトが有効化された時）
+    void OnEnable()
+    {
+        // GameManagerのイベントに、自分の「OnPlayerSpawned」メソッドを登録
+        GameManager.OnInGamePlayerSpawned += OnPlayerSpawned;
+    }
+    void OnDisable()
+    {
+        GameManager.OnInGamePlayerSpawned -= OnPlayerSpawned;
+    }
+
+    // GameManagerがInGamePlayerを生成したときに呼ばれる処理
+    private void OnPlayerSpawned(CustomPlayer spawnedPlayer)
+    {
+        // GameManagerから渡されたプレイヤーのTransformをPlayerに保存
+        player = spawnedPlayer.transform;
+    }
+
     void Update()
     {
+        if (player == null) return;
         // プレイヤーの高さを取得
         float playerHeight = Mathf.Clamp(player.position.y, minHeight, maxHeight);
 
