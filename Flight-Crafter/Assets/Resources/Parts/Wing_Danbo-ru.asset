@@ -17,22 +17,22 @@ MonoBehaviour:
   partPrefab: {fileID: 3444109036514365600, guid: 6980b7bff1e877e4a81e3a313c48fdeb, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
-    value: 1
+    value: 0.3
   partCost:
     displayName: "\u91D1\u984D"
-    value: 0
+    value: 1
   partType: 3
   partDescription: 
   partIconImage: {fileID: -71845618223202253, guid: 99348e153d16cf948b05617e1e4a5b47, type: 3}
   lift:
     displayName: "\u63DA\u529B"
-    value: 10
+    value: 0
   airControl:
     displayName: "\u7A7A\u4E2D\u5236\u5FA1"
-    value: 1000
+    value: 10
   airRotationalControl:
     displayName: "\u56DE\u8EE2\u5236\u5FA1"
-    value: 100
+    value: 1
   propulsionPower:
     displayName: "\u63A8\u9032\u529B"
-    value: 100
+    value: 0
