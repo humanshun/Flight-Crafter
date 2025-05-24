@@ -30,6 +30,7 @@ public class DescriptionPopup : MonoBehaviour
             case PartType.Body:
                 BodyData body = (BodyData)part;
                 AddStatus(body.weight.displayName, body.weight.value);
+                AddStatus(body.hp.displayName, body.hp.value);
                 AddStatus(body.airResistance.displayName, body.airResistance.value);
                 break;
 
@@ -43,16 +44,15 @@ public class DescriptionPopup : MonoBehaviour
             case PartType.Tire:
                 TireData tire = (TireData)part;
                 AddStatus(tire.weight.displayName, tire.weight.value);
+                AddStatus(tire.airResistance.displayName, tire.airResistance.value);
                 AddStatus(tire.torque.displayName, tire.torque.value);
                 break;
 
             case PartType.Wing:
                 WingData wing = (WingData)part;
                 AddStatus(wing.weight.displayName, wing.weight.value);
-                AddStatus(wing.lift.displayName, wing.lift.value);
+                AddStatus(wing.airResistance.displayName, wing.airResistance.value);
                 AddStatus(wing.airControl.displayName, wing.airControl.value);
-                AddStatus(wing.airRotationalControl.displayName, wing.airRotationalControl.value);
-                AddStatus(wing.propulsionPower.displayName, wing.propulsionPower.value);
                 break;
         }
 
