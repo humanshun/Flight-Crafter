@@ -7,11 +7,11 @@ public class StatusBar : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statusNameText; // ステータス名のテキスト
     [SerializeField] private TextMeshProUGUI statusValueText; // ステータス値のテキスト
     [SerializeField] private RectTransform statusValue;
-    public void Setup(string displayName, float value)
+    public void Setup(PartType part, string displayName, float value, float maxValue)
     {
         statusNameText.text = displayName; // ステータス名を設定
-        statusValueText.text = value.ToString(); // ステータス値を設定
-
-        statusValue.anchorMax = new Vector2(value / 100, statusValue.anchorMax.y); // ステータス値に応じてUIを調整
+        statusValueText.text = value.ToString("F1"); // ステータス値を設定
+        float normalized = Mathf.Clamp01(value / maxValue);
+        statusValue.anchorMax = new Vector2(normalized, statusValue.anchorMax.y); // ステータス値に応じてUIを調整
     }
 }
