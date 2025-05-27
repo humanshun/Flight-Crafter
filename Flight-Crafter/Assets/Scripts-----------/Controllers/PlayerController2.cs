@@ -57,8 +57,8 @@ public class PlayerController2 : MonoBehaviour
 
     //水に入ったとき
     [SerializeField] private LayerMask waterLayer; // Waterレイヤーを指定
-    [SerializeField] private CapsuleCollider2D playerCollider;
-    private bool inWater;
+    [SerializeField] private CapsuleCollider2D playerCollider; // プレイヤーのCapsuleCollider2D
+    private bool inWater; // 水中にいるかどうか
 
 
     float MovY = 0;
@@ -166,7 +166,7 @@ public class PlayerController2 : MonoBehaviour
     public void PlayerAngle()
     {
         //TODO: いったんコメントアウト
-        // if (groundCheck != false) return;
+        if (groundCheck != false) return;
 
         // 回転に対するトルクを加える（AddTorqueを使用）
         // TODO: 回転力の調整
@@ -243,6 +243,7 @@ public class PlayerController2 : MonoBehaviour
             StopRocketEffect();
         }
     }
+    // ロケットのエフェクトを停止するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void StopRocketEffect()
     {
         ParticleSystem ps = currentRocketThrustInstance.GetComponent<ParticleSystem>();
@@ -260,8 +261,8 @@ public class PlayerController2 : MonoBehaviour
         groundCheck = groundCheckCollider.IsTouchingLayers(groundLayer);
     }
 
-    //車輪メソッド
-    private void GroundAddForce()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    //車輪メソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    private void GroundAddForce()
     {
         if (!groundCheck) return;
         // 水平方向の入力取得（Aキー: -1, Dキー: 1, それ以外: 0）
@@ -300,6 +301,7 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
+    // 水中にいるかどうかを判定するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void InWater()
     {
         // 水中にいるか判定
