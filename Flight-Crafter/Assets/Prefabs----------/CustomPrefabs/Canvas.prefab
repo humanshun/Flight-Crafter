@@ -692,18 +692,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8284255714055362841}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: PerformTransition
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 6806095233265818763}
         m_TargetAssemblyTypeName: 
         m_MethodName: Play
@@ -728,6 +716,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f7eaf6dd2a2478c939f6bb532e39ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playButton: {fileID: 4706930451426523990}
   scene: InGame
   duration: 0.5
   color: {r: 0.06336865, g: 0.4165338, b: 0.56078434, a: 1}
