@@ -12,6 +12,9 @@ public class PlayerData : MonoBehaviour
     // プレイヤーの所持コイン数
     public int playerCoins;
 
+    // コインが変化したときに発火するイベント
+    public static event System.Action<int> OnCoinsChanged;
+
     // 購入済みパーツのリスト（パーツ名で管理）
     private List<string> purchasedParts = new List<string>();
 
@@ -53,6 +56,10 @@ public class PlayerData : MonoBehaviour
             purchasedParts.Add(part.partName); // 購入済みリストに追加（重複チェックなし）
             SavePlayerData(); // データを保存
             Debug.Log("購入成功");
+
+            // イベントを発火
+            OnCoinsChanged?.Invoke(playerCoins);
+
             return true;
         }
         else
@@ -145,6 +152,9 @@ public class PlayerData : MonoBehaviour
             playerCoins = 2000;
             purchasedParts = new List<string>();
             currentParts = new Dictionary<PartType, string>();
+
+            // イベントを発火
+            OnCoinsChanged?.Invoke(playerCoins);
         }
     }
     public bool IsPartPurchased(string partName)
@@ -166,6 +176,21 @@ public class PlayerData : MonoBehaviour
         }
         SavePlayerData(); // 初期化後に保存
         Debug.Log("プレイヤーデータを初期化しました。");
+
+        // イベントを発火
+        OnCoinsChanged?.Invoke(playerCoins);
     }
-    
+
+    public void AddCoins(int amount)
+    {
+        if (amount < 0) return; // 負の値は無視
+
+        playerCoins += amount;
+        SavePlayerData();
+
+        Debug.Log($"コインを {amount} 枚加算しました。現在の所持コイン: {playerCoins}");
+
+        // イベントを発火
+        OnCoinsChanged?.Invoke(playerCoins);
+    }
 }
