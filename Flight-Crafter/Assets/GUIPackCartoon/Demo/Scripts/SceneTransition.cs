@@ -3,6 +3,7 @@
 // 詳細は http://unity3d.com/company/legal/as_terms を参照してください。
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ricimi
 {
@@ -10,6 +11,11 @@ namespace Ricimi
     // 実際のシーンの切り替え処理は Transition クラスで行われます。
     public class SceneTransition : MonoBehaviour
     {
+        [SerializeField] private Button playButton; // シーン遷移をトリガーするボタン
+        private void Start()
+        {
+            playButton.onClick.AddListener(PerformTransition);
+        }
         // 遷移先のシーン名。インスペクタから設定可能です。
         public string scene = "<Insert scene name>";
 
