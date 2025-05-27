@@ -16,6 +16,11 @@ public class GameManager : MonoBehaviour
 
     public static event System.Action<CustomPlayer> OnInGamePlayerSpawned;
 
+    private Score score;
+
+    public GameOverPopup gameOvarPopup;
+    public bool isGameOver = false;
+
     void Start()
     {
         // すでにCustomシーンが読み込まれていた場合に備える
@@ -29,6 +34,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RegisterScore(Score s)
+    {
+        score = s;
+    }
+
+    public void GameOverPopup(GameOverPopup popup)
+    {
+        gameOvarPopup = popup;
+    }
+
+
     void Awake()
     {
         // シングルトンパターン：すでに存在していれば自分を破棄、いなければ自分をInstanceとして残す
@@ -36,6 +52,9 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // シーンをまたいでも破棄されないようにする
+
+            // ↓ この登録を一度だけ行う
+            SceneManager.sceneLoaded -= OnSceneLoaded; // ← まず念のため削除
             SceneManager.sceneLoaded += OnSceneLoaded; // シーンが読み込まれたときのイベントを登録
         }
         else
@@ -43,9 +62,16 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject); // すでに存在しているなら自分を削除
         }
     }
+    void OnDestroy()
+    {
+        // シーンが破棄されるときにイベントを解除
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        isGameOver = false; // シーンが読み込まれたらゲームオーバー状態をリセット
+
         if (scene.name == "Custom")
         {
             Vector3 spawnPosition = new Vector3(-3.7f, -1.15f, 0f);
@@ -71,6 +97,16 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        SceneManager.LoadScene("Custom");
+        if (isGameOver) return; // すでにゲームオーバーなら何もしない
+        isGameOver = true; // ゲームオーバー状態にする
+        int earnedCoins = score != null ? score.CalculateCoins() : 0;
+        PlayerData.Instance.AddCoins(earnedCoins);
+        Debug.Log($"コイン獲得: {earnedCoins}");
+
+        // ゲームオーバーのポップアップを表示
+        if (gameOvarPopup != null)
+        {
+            gameOvarPopup.Show();
+        }
     }
 }
