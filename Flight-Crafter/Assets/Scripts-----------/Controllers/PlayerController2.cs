@@ -82,6 +82,9 @@ public class PlayerController2 : MonoBehaviour
     }
     void Update() //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
+        // ゲームオーバー中なら一切の入力処理を無視
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver) return;
+
         MovY = Input.GetAxis("Vertical");
 
         // プレイヤーのローカルZ回転を取得
@@ -107,6 +110,9 @@ public class PlayerController2 : MonoBehaviour
 
     void FixedUpdate()
     {
+        // ゲームオーバー中なら一切の入力処理を無視
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver) return;
+
         // プレイヤーの向きを制御する
         PlayerAngle();
     }
@@ -165,7 +171,6 @@ public class PlayerController2 : MonoBehaviour
     //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
     {
-        //TODO: いったんコメントアウト
         if (groundCheck != false) return;
 
         // 回転に対するトルクを加える（AddTorqueを使用）
@@ -324,9 +329,11 @@ public class PlayerController2 : MonoBehaviour
 
     private void CheckGameOver()
     {
-        if (transform.position.x >= 260f  && rb.linearVelocity.magnitude < 1f)
+        if (transform.position.x >= 260f && rb.linearVelocity.magnitude < 1f)
         {
             GameManager.Instance.GameOver();
+            rb.linearVelocity = Vector2.zero; // プレイヤーの速度をゼロにする
+            rb.bodyType = RigidbodyType2D.Kinematic; // Rigidbodyをキネマティックにして動かなくする
         }
     }
 }
