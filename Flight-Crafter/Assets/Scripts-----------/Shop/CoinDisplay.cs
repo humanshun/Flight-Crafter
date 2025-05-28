@@ -20,11 +20,11 @@ public class CoinDisplay : MonoBehaviour
     void Start()
     {
         // 初期表示
-        coinText.text = $"コイン: {PlayerData.Instance.playerCoins}";
+        coinText.text = PlayerData.Instance.playerCoins.ToString();
     }
 
     private void UpdateCoinDisplay(int newCoinValue)
     {
-        coinText.text = $"コイン: {newCoinValue}";
+        coinText.text = newCoinValue.ToString();
     }
 }
