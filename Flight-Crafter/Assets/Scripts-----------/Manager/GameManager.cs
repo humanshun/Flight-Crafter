@@ -99,14 +99,31 @@ public class GameManager : MonoBehaviour
     {
         if (isGameOver) return; // すでにゲームオーバーなら何もしない
         isGameOver = true; // ゲームオーバー状態にする
+
+        //もしscoreがnullで無ければ、Coinsを計算して追加
         int earnedCoins = score != null ? score.CalculateCoins() : 0;
         PlayerData.Instance.AddCoins(earnedCoins);
         Debug.Log($"コイン獲得: {earnedCoins}");
 
+        bool distanceUpdated = false;
+        bool altitudeUpdated = false;
+
+        //ハイスコア記録
+        if (score != null)
+        {
+            (distanceUpdated, altitudeUpdated) = PlayerData.Instance.TryUpdateHighScore(score.distance, score.maxAltitude);
+        }
+
         // ゲームオーバーのポップアップを表示
         if (gameOvarPopup != null)
         {
-            gameOvarPopup.Show();
+            gameOvarPopup.Show(distanceUpdated, altitudeUpdated);
+        }
+
+        //scoreにゲーム終了したことを通知
+        if (score != null)
+        {
+            score.OnGameOver();
         }
     }
 }
