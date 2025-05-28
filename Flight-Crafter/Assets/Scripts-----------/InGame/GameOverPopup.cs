@@ -12,6 +12,10 @@ public class GameOverPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI distanceText; // 距離表示用テキスト
     [SerializeField] private TextMeshProUGUI altitudeText; // 高度表示用テキスト
     [SerializeField] private TextMeshProUGUI coinText; // コイン表示用テキスト
+    [SerializeField] private GameObject maxDistanceText; // 最高距離表示用テキスト
+    [SerializeField] private GameObject maxAltitudeText; // 最高高度表示用テキスト
+    [SerializeField] private GameObject distanceCrown;
+    [SerializeField] private GameObject altitudeCrown;
 
     void Start()
     {
@@ -22,22 +26,25 @@ public class GameOverPopup : MonoBehaviour
         }
     }
 
-    public void Show()
+    public void Show(bool distanceUpdated, bool altitudeUpdated)
     {
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
             UpdateScoreDisplay();
+
+            distanceCrown.SetActive(distanceUpdated);
+            maxDistanceText.SetActive(distanceUpdated);
+            altitudeCrown.SetActive(altitudeUpdated);
+            maxAltitudeText.SetActive(altitudeUpdated);
         }
     }
 
     private void UpdateScoreDisplay()
     {
-        Debug.Log("a");
         if (distanceText != null)
         {
             distanceText.text = $"{score.distance:F1}m";
-            Debug.Log("距離表示");
         }
         if (altitudeText != null)
         {
