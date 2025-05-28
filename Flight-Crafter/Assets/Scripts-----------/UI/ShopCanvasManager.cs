@@ -16,6 +16,7 @@ public class ShopCanvasManager : MonoBehaviour
     [SerializeField] private Button wingButton;
 
     [SerializeField] private GameObject desctiptionPopupPrefab;
+    [SerializeField] private GameObject coinText;
 
     
 
@@ -40,7 +41,7 @@ public class ShopCanvasManager : MonoBehaviour
         partCustomPopup.SetActive(false);
         shopButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(false);
-
+        coinText.SetActive(true);
     }
 
     private void OnShopCloseButtonClicked()
@@ -49,6 +50,7 @@ public class ShopCanvasManager : MonoBehaviour
         partCustomPopup.SetActive(true);
         shopButton.gameObject.SetActive(true);
         playButton.gameObject.SetActive(true);
+        coinText.SetActive(true);
     }
 
     private void OnCustomCloseButtonClicked()
@@ -56,6 +58,7 @@ public class ShopCanvasManager : MonoBehaviour
         shopButton.gameObject.SetActive(true);
         playButton.gameObject.SetActive(true);
         desctiptionPopupPrefab.SetActive(false);
+        coinText.SetActive(true);
     }
 
     private void CustomButtonOnClick()
@@ -63,5 +66,6 @@ public class ShopCanvasManager : MonoBehaviour
         shopButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(false);
         desctiptionPopupPrefab.SetActive(false);
+        coinText.SetActive(false);
     }
 }
