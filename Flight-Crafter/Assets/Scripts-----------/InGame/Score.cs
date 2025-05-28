@@ -75,4 +75,10 @@ public class Score : MonoBehaviour
     {
         return Mathf.FloorToInt(distance / 10f); // 例：1m = 5コイン
     }
+
+    public void OnGameOver()
+    {
+        distanceText.gameObject.SetActive(false);
+        altitudeText.gameObject.SetActive(false);
+    }
 }
