@@ -855,7 +855,7 @@ Transform:
   m_GameObject: {fileID: 5712078774469073410}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 532.94116, y: 617.64703, z: 0}
+  m_LocalPosition: {x: 1346, y: 617.64703, z: 0}
   m_LocalScale: {x: 1.1764705, y: 1.1764705, z: 1.1764705}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -981,7 +981,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 125.3208, y: 378.07056}
-  m_SizeDelta: {x: 705.384, y: 734.1707}
+  m_SizeDelta: {x: 701.5, y: 627.9}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6944384553162812009
 CanvasRenderer:
@@ -1103,7 +1103,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -410}
+  m_AnchoredPosition: {x: -729, y: -410}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8351788797293035129
@@ -1124,7 +1124,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 52.06
+  m_Spacing: 5.77
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -1418,8 +1418,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 66.65004}
+  m_SizeDelta: {x: 0, y: -133.29993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3363834312443372582
 CanvasRenderer:
@@ -1619,8 +1619,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -80, y: -80}
+  m_AnchoredPosition: {x: 0, y: 64.29496}
+  m_SizeDelta: {x: -80, y: -208.59007}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3664073920795399239
 CanvasRenderer:
@@ -2377,7 +2377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3279320335851040836, guid: 860bd3989ec62f24b8410d27383c34d4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -899
+      value: 142
       objectReference: {fileID: 0}
     - target: {fileID: 3279320335851040836, guid: 860bd3989ec62f24b8410d27383c34d4, type: 3}
       propertyPath: m_AnchoredPosition.y
