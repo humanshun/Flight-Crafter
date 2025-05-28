@@ -21,6 +21,9 @@ public class PlayerData : MonoBehaviour
     // 現在装備しているパーツの名前
     private Dictionary<PartType, string> currentParts = new();
 
+    public float MaxDistance { get; private set; }
+    public float MaxAltitude { get; private set; }
+
     // セーブファイルの保存先パス
     private string SavePath => Path.Combine(Application.persistentDataPath, "PlayerData_save.json");
 
@@ -112,7 +115,9 @@ public class PlayerData : MonoBehaviour
         {
             coins = playerCoins,
             purchasedPartNames = purchasedParts,
-            currentParts = new List<PartTypePartPair>()
+            currentParts = new List<PartTypePartPair>(),
+            maxDistance = MaxDistance,
+            maxAltitude = MaxAltitude
         };
 
         foreach (var kvp in currentParts)
@@ -122,7 +127,6 @@ public class PlayerData : MonoBehaviour
 
         string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(SavePath, json);
-        Debug.Log("セーブデータを保存しました: " + SavePath);
     }
 
     // プレイヤーデータをJSONファイルから読み込み
@@ -136,6 +140,8 @@ public class PlayerData : MonoBehaviour
             // 読み込んだデータを反映
             playerCoins = saveData.coins;
             purchasedParts = saveData.purchasedPartNames ?? new List<string>();
+            MaxDistance = saveData.maxDistance;
+            MaxAltitude = saveData.maxAltitude;
 
             currentParts = new Dictionary<PartType, string>();
             if (saveData.currentParts != null)
@@ -150,6 +156,8 @@ public class PlayerData : MonoBehaviour
         {
             // セーブデータがない場合は初期化
             playerCoins = 2000;
+            MaxDistance = 0f;
+            MaxAltitude = 0f;
             purchasedParts = new List<string>();
             currentParts = new Dictionary<PartType, string>();
 
@@ -181,6 +189,7 @@ public class PlayerData : MonoBehaviour
         OnCoinsChanged?.Invoke(playerCoins);
     }
 
+    //コインを加算するメソッド
     public void AddCoins(int amount)
     {
         if (amount < 0) return; // 負の値は無視
@@ -192,5 +201,31 @@ public class PlayerData : MonoBehaviour
 
         // イベントを発火
         OnCoinsChanged?.Invoke(playerCoins);
+    }
+
+    //最高地点を記録するメソッド
+    public (bool distanceUpdated, bool altitudeUpdated) TryUpdateHighScore(float distance, float altitude)
+    {
+        bool distanceUpdated = false;
+        bool altitudeUpdated = false;
+
+        if (distance > MaxDistance)
+        {
+            MaxDistance = distance;
+            distanceUpdated = true;
+        }
+
+        if (altitude > MaxAltitude)
+        {
+            MaxAltitude = altitude;
+            altitudeUpdated = true;
+        }
+
+        if (distanceUpdated || altitudeUpdated)
+        {
+            SavePlayerData(); //更新されたら保存
+        }
+
+        return (distanceUpdated, altitudeUpdated);
     }
 }
