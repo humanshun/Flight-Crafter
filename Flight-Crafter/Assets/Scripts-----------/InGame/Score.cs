@@ -10,6 +10,7 @@ public class Score : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI distanceText;  // 距離表示UI
     [SerializeField] private TextMeshProUGUI altitudeText;  // 高度表示UI
+    [SerializeField] private GameObject coinText;      // コイン表示UI
     [SerializeField] private float startX = 250f;           // 計測開始X座標
 
     private bool hasStarted = false;  // 計測開始済みフラグ
@@ -28,6 +29,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         GameManager.Instance.RegisterScore(this);
+        coinText.SetActive(false); // 初期状態ではコイン表示を非表示にする
     }
 
     private void OnPlayerSpawned(CustomPlayer spawnedPlayer)
@@ -80,5 +82,6 @@ public class Score : MonoBehaviour
     {
         distanceText.gameObject.SetActive(false);
         altitudeText.gameObject.SetActive(false);
+        coinText.SetActive(true); // ゲームオーバー時にコイン表示を有効化
     }
 }

@@ -6,12 +6,17 @@ public class CameraController1 : MonoBehaviour
     [SerializeField] private float xOffset = 30f;
     [SerializeField] private float zOffset = 10f;
 
-    private void Start()
+    private void OnEnable()
     {
-        if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player");
-        }
+        GameManager.OnInGamePlayerSpawned += OnPlayerSpawned;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnInGamePlayerSpawned -= OnPlayerSpawned;
+    }
+    private void OnPlayerSpawned(CustomPlayer spawnedPlayer)
+    {
+        player = spawnedPlayer.gameObject;
     }
     void Update()
     {

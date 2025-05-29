@@ -983,7 +983,7 @@ MonoBehaviour:
   playButton: {fileID: 4706930451426523990}
   scene: InGame
   duration: 0.5
-  color: {r: 0.06336865, g: 0.4165338, b: 0.56078434, a: 1}
+  color: {r: 0, g: 0, b: 0, a: 1}
 --- !u!95 &5352346048645344714
 Animator:
   serializedVersion: 7
@@ -2382,7 +2382,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9157746463124847454, guid: 6eacda7fb77da124ba5ab86fa4502360, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00012207031
+      value: 0.00011062622
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

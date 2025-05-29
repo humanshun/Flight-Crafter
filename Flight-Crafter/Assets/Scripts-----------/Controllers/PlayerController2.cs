@@ -334,6 +334,7 @@ public class PlayerController2 : MonoBehaviour
             GameManager.Instance.GameOver();
             rb.linearVelocity = Vector2.zero; // プレイヤーの速度をゼロにする
             rb.bodyType = RigidbodyType2D.Kinematic; // Rigidbodyをキネマティックにして動かなくする
+            rb.constraints = RigidbodyConstraints2D.FreezeAll; // 全ての動きを制限する
         }
     }
 }
