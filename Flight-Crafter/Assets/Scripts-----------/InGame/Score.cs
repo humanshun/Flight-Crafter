@@ -1,20 +1,26 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    public Transform playerPosition;  // プレイヤーのTransform
+    [SerializeField] private Transform playerPosition;  // プレイヤーのTransform
     public float distance;            // 横方向の移動距離
     public float altitude;            // 縦方向の高度
     public float maxAltitude = 0f;  // 最高高度
+
 
     [SerializeField] private TextMeshProUGUI distanceText;  // 距離表示UI
     [SerializeField] private TextMeshProUGUI altitudeText;  // 高度表示UI
     [SerializeField] private GameObject coinText;      // コイン表示UI
     [SerializeField] private float startX = 250f;           // 計測開始X座標
+    [SerializeField] private Slider slider; // スクロールバー
+    private float goal = 7000f; // ゴール地点のX座標
 
     private bool hasStarted = false;  // 計測開始済みフラグ
     private float startPosX;          // 距離計測開始X座標
+
+    
 
     void OnEnable()
     {
@@ -71,6 +77,12 @@ public class Score : MonoBehaviour
             distance = Mathf.Max(0f, (playerPosition.position.x - startPosX) / 5f);
             distanceText.text = "距離: " + distance.ToString("F1") + " m";
         }
+
+        // スクロールバーの値を更新
+        if (slider != null)
+        {
+            slider.value = Mathf.Clamp01(playerPosition.position.x / goal);
+        }
     }
 
     public int CalculateCoins()
@@ -83,5 +95,6 @@ public class Score : MonoBehaviour
         distanceText.gameObject.SetActive(false);
         altitudeText.gameObject.SetActive(false);
         coinText.SetActive(true); // ゲームオーバー時にコイン表示を有効化
+        slider.gameObject.SetActive(false); // スクロールバーを非表示にする
     }
 }

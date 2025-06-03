@@ -1,16 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CloudManager : MonoBehaviour
 {
-    public Transform playerPosition;  // プレイヤーの位置
-    public GameObject[] cloudPrefabs;  // 雲のプレハブ配列
-    private float cloudActiveRange = 200f;  // 雲がアクティブである範囲
-    private float cloudSpacing = 20f;  // 雲を均等に配置する間隔
-    private float minHeight = -10f;  // 雲の最小高さ
-    private float maxHeight = 200f;  // 雲の最大高さ
-    private List<GameObject> clouds = new List<GameObject>();  // 生成した雲を格納するリスト
+    public Transform playerPosition;
+    public GameObject[] cloudPrefabs;
+
+    [Header("表示設定")]
+    public int cloudCount = 50;
+    public float spawnRadius = 500f;
+    public float reSpawnDistance = 400f;
+
+    private List<GameObject> activeClouds = new List<GameObject>();
+    private Queue<GameObject> cloudPool = new Queue<GameObject>();
+
+    private bool initialized = false;
+
+    private const float minYThreshold = -10f; // これより下には生成しない
 
     void OnEnable()
     {
@@ -22,57 +28,96 @@ public class CloudManager : MonoBehaviour
         GameManager.OnInGamePlayerSpawned -= OnPlayerSpawned;
     }
 
-    private void OnPlayerSpawned(CustomPlayer spawnedPlayer)
-    {
-        playerPosition = spawnedPlayer.transform;
-    }
     void Start()
     {
-        // 最初に雲を配置する
-        GenerateClouds();
+        for (int i = 0; i < cloudCount; i++)
+        {
+            GameObject prefab = cloudPrefabs[Random.Range(0, cloudPrefabs.Length)];
+            GameObject cloud = Instantiate(prefab);
+            cloud.SetActive(false);
+            cloudPool.Enqueue(cloud);
+        }
     }
 
     void Update()
     {
-        // プレイヤーの位置に基づいて雲を管理
-        ManageClouds();
-    }
+        if (playerPosition == null || !initialized) return;
 
-    void GenerateClouds()
-    {
-        // 最初に、プレイヤーの位置を基準に雲を生成する
-        float startPositionX = playerPosition.position.x - cloudActiveRange;
-
-        // 雲を均等に配置
-        for (float x = startPositionX; x < playerPosition.position.x + cloudActiveRange; x += cloudSpacing)
+        while (activeClouds.Count < cloudCount)
         {
-            float randomY = Random.Range(minHeight, maxHeight);  // 高さをランダムに設定
-            GameObject cloudPrefab = cloudPrefabs[Random.Range(0, cloudPrefabs.Length)];  // ランダムに雲を選ぶ
-            GameObject cloud = Instantiate(cloudPrefab, new Vector3(x, randomY, 0f), Quaternion.identity);
-            clouds.Add(cloud);  // 生成した雲をリストに追加
+            SpawnInitialCloud();
+        }
+
+        for (int i = activeClouds.Count - 1; i >= 0; i--)
+        {
+            GameObject cloud = activeClouds[i];
+            float distance = Vector2.Distance(cloud.transform.position, playerPosition.position);
+
+            if (distance > spawnRadius)
+            {
+                cloud.SetActive(false);
+                cloudPool.Enqueue(cloud);
+                activeClouds.RemoveAt(i);
+
+                SpawnCloudOutsideRadius();
+            }
         }
     }
 
-    void ManageClouds()
+    void SpawnInitialCloud()
     {
-        // 現在画面外に出た雲を削除し、新たに生成する
-        for (int i = clouds.Count - 1; i >= 0; i--)
+        if (cloudPool.Count == 0) return;
+
+        GameObject cloud = cloudPool.Dequeue();
+
+        Vector2 offset;
+        float y;
+        int attempts = 0;
+
+        do
         {
-            GameObject cloud = clouds[i];
+            offset = Random.insideUnitCircle * spawnRadius;
+            y = playerPosition.position.y + offset.y;
+            attempts++;
+        } while (y < minYThreshold && attempts < 10); // y < -10 を回避
 
-            // 雲が指定の範囲外に出た場合
-            if (Mathf.Abs(cloud.transform.position.x - playerPosition.position.x) > cloudActiveRange)
-            {
-                // 雲を削除
-                Destroy(cloud);
-                clouds.RemoveAt(i);
+        cloud.transform.position = new Vector3(playerPosition.position.x + offset.x, y, 0f);
+        cloud.SetActive(true);
+        activeClouds.Add(cloud);
+    }
 
-                // 新たに雲を生成してリストに追加
-                float randomY = Random.Range(minHeight, maxHeight);  // 高さをランダムに設定
-                GameObject cloudPrefab = cloudPrefabs[Random.Range(0, cloudPrefabs.Length)];  // ランダムに雲を選ぶ
-                GameObject newCloud = Instantiate(cloudPrefab, new Vector3(playerPosition.position.x + cloudActiveRange, randomY, 0f), Quaternion.identity);
-                clouds.Add(newCloud);  // 生成した雲をリストに追加
-            }
+    void SpawnCloudOutsideRadius()
+    {
+        if (cloudPool.Count == 0) return;
+
+        GameObject cloud = cloudPool.Dequeue();
+
+        Vector2 offset;
+        float y;
+        int attempts = 0;
+
+        do
+        {
+            Vector2 direction = Random.insideUnitCircle.normalized;
+            float distance = Random.Range(spawnRadius + 50f, reSpawnDistance);
+            offset = direction * distance;
+            y = playerPosition.position.y + offset.y;
+            attempts++;
+        } while (y < minYThreshold && attempts < 10); // y < -10 を回避
+
+        cloud.transform.position = new Vector3(playerPosition.position.x + offset.x, y, 0f);
+        cloud.SetActive(true);
+        activeClouds.Add(cloud);
+    }
+
+    private void OnPlayerSpawned(CustomPlayer spawnedPlayer)
+    {
+        playerPosition = spawnedPlayer.transform;
+        initialized = true;
+
+        for (int i = 0; i < cloudCount; i++)
+        {
+            SpawnInitialCloud();
         }
     }
 }
