@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rocketThrustPrefab: {fileID: 683662035918044519, guid: 51e3df4c0e506a541a4e45f2a000f308, type: 3}
+  dieEffectPrefab: {fileID: 683662035918044519, guid: 26ef13a0b263b6a43aae4014fc2ed84a, type: 3}
   effectPosition: {x: -3.5, y: 1}
   rb: {fileID: 5382125969591630498}
   playerAngle: 0

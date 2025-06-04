@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System;
+using System.Collections;
 
 public class PlayerController2 : MonoBehaviour
 /*
@@ -27,8 +28,10 @@ public class PlayerController2 : MonoBehaviour
 {
     // パーツのプレハブーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public GameObject rocketThrustPrefab; // エフェクトのプレハブ
+    public GameObject dieEffectPrefab; // 死亡エフェクトのプレハブ
     public Vector2 effectPosition;
     private GameObject currentRocketThrustInstance;
+    private GameObject currentDieEffectInstance;
 
     // 各パーツデータを保持するクラスへの参照ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private BodyData bodyData; // 本体のデータ
@@ -59,9 +62,15 @@ public class PlayerController2 : MonoBehaviour
     [SerializeField] private LayerMask waterLayer; // Waterレイヤーを指定
     [SerializeField] private CapsuleCollider2D playerCollider; // プレイヤーのCapsuleCollider2D
     private bool inWater; // 水中にいるかどうか
-
-
     float MovY = 0;
+
+    private float invincibleTime = 1.0f; // 無敵時間
+    private float blinkInterval = 0.1f; // 点滅間隔
+    private bool isInvincible = false; // 無敵状態かどうか
+    private SpriteRenderer[] spriteRenderers; // スプライトレンダラー
+
+    //死んだかどうか
+    private bool isDead = false;
 
     void Awake()
     {
@@ -78,7 +87,14 @@ public class PlayerController2 : MonoBehaviour
 
         // 初期ステータスを計算
         UpdateStats();
+        
+        StartCoroutine(WaitAndInitSprites());
+    }
+    private IEnumerator WaitAndInitSprites()
+    {
+        yield return null; // 1フレーム待つ
 
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
     }
     void Update() //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     {
@@ -171,6 +187,7 @@ public class PlayerController2 : MonoBehaviour
     //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void PlayerAngle()
     {
+        if (isDead) return; // ゲームオーバー中なら何もしない
         if (groundCheck != false) return;
 
         // 回転に対するトルクを加える（AddTorqueを使用）
@@ -210,6 +227,7 @@ public class PlayerController2 : MonoBehaviour
     //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     public void OnLeftShiftClick()
     {
+        if (isDead) return; // ゲームオーバー中なら何もしない
         // ロケットの噴射時間が終了しているか、ロケットを使用できない
         if (!finishRocketTime) return;
 
@@ -240,13 +258,21 @@ public class PlayerController2 : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            currentRocketThrustInstance = Instantiate(rocketThrustPrefab, transform);
-            currentRocketThrustInstance.transform.localPosition = effectPosition; // 背面に配置
+            // currentRocketThrustInstance = Instantiate(rocketThrustPrefab, transform);
+            // currentRocketThrustInstance.transform.localPosition = effectPosition; // 背面に配置
+            StartRocketEffect();
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             StopRocketEffect();
         }
+    }
+
+    // ロケットのエフェクトを開始するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    private void StartRocketEffect()
+    {
+        currentRocketThrustInstance = Instantiate(rocketThrustPrefab, transform);
+        currentRocketThrustInstance.transform.localPosition = effectPosition; // 背面に配置
     }
     // ロケットのエフェクトを停止するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void StopRocketEffect()
@@ -257,6 +283,7 @@ public class PlayerController2 : MonoBehaviour
             ps.Stop();
         }
     }
+
 
     //地面に接触しているかどうかを確認するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void GroundCheck()
@@ -269,6 +296,8 @@ public class PlayerController2 : MonoBehaviour
     //車輪メソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void GroundAddForce()
     {
+        // ゲームオーバー中なら一切の入力処理を無視
+        if (isDead) return;
         if (!groundCheck) return;
         // 水平方向の入力取得（Aキー: -1, Dキー: 1, それ以外: 0）
         float input = Input.GetAxis("Horizontal");
@@ -326,15 +355,76 @@ public class PlayerController2 : MonoBehaviour
             rb.linearDamping = 0;
         }
     }
+    // ゲームオーバーのチェックメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
     private void CheckGameOver()
     {
-        if (transform.position.x >= 260f && rb.linearVelocity.magnitude < 1f)
+        if (transform.position.x >= 260f && rb.linearVelocity.magnitude < 1f && inWater)
         {
             GameManager.Instance.GameOver();
             rb.linearVelocity = Vector2.zero; // プレイヤーの速度をゼロにする
             rb.bodyType = RigidbodyType2D.Kinematic; // Rigidbodyをキネマティックにして動かなくする
             rb.constraints = RigidbodyConstraints2D.FreezeAll; // 全ての動きを制限する
+        }
+    }
+
+    // プレイヤーの体力を取得するメソッド
+    public void TakeDamage(float damage)
+    {
+        // 無敵状態ならダメージを無視
+        if (isInvincible) return;
+
+        // ダメージを受けたときの処理
+        Debug.Log("プレイヤーがダメージを受けました: " + damage);
+        if (total_Health > 0)
+        {
+            total_Health -= damage;
+            Debug.Log("残り体力: " + total_Health);
+
+            // 体力が0以下になったらプレイヤーを死亡させる
+            if (total_Health <= 0)
+            {
+                Die();
+            }
+        }
+
+        StartCoroutine(InvincibilityCoroutine());
+    }
+
+    // プレイヤーが死亡したときの処理
+    private void Die()
+    {
+        //プレイヤーを操作できなくする
+        isDead = true;
+        StopRocketEffect();
+        currentDieEffectInstance = Instantiate(dieEffectPrefab, transform);
+        currentDieEffectInstance.transform.localPosition = effectPosition; // 背面に配置
+    }
+
+    private IEnumerator InvincibilityCoroutine()
+    {
+        isInvincible = true;
+
+        float timer = 0f;
+
+        while (timer < invincibleTime)
+        {
+            SetRenderersVisible(false);
+            yield return new WaitForSeconds(blinkInterval);
+            SetRenderersVisible(true);
+            yield return new WaitForSeconds(blinkInterval);
+
+            timer += blinkInterval * 2;
+        }
+
+        isInvincible = false;
+    }
+
+    private void SetRenderersVisible(bool visible)
+    {
+        foreach (var sr in spriteRenderers)
+        {
+            sr.enabled = visible;
         }
     }
 }
