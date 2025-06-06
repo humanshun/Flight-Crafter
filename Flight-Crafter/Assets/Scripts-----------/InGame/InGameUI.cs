@@ -28,6 +28,8 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI rocketText;
 
+    [SerializeField] private GameObject playerUI;
+
     private float initialHealth = 1f; // 初期ヘルス
     private float initialRocketTime = 1f; // 初期ロケット時間
 
@@ -134,6 +136,7 @@ public class InGameUI : MonoBehaviour
         altitudeText.gameObject.SetActive(false);
         coinText.SetActive(true); // ゲームオーバー時にコイン表示を有効化
         slider.gameObject.SetActive(false); // スクロールバーを非表示にする
+        playerUI.SetActive(false); // プレイヤーUIを非表示にする
     }
     
     private void UpdateHealthUI(float health)
