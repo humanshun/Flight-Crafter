@@ -48,6 +48,14 @@ public class PlayerController2 : MonoBehaviour
     private float total_AirControl; //空中コントロール
     private float total_RocketTime; // ロケットの合計噴射時間
 
+    // プレイヤーゲッター
+    public float TotalHealth => total_Health; // 総体力のゲッター
+    public float TotalRocketTime => total_RocketTime; // ロケットの合計噴射時間のゲッター
+
+    //イベント
+    public event Action<float> OnHealthChanged;
+    public event Action<float> OnRocketTimeChanged;
+
     // プレイヤーの制御に必要なパラメータ
     [SerializeField] private Rigidbody2D rb; // プレイヤーのRigidbody2D
     [SerializeField] private float playerAngle;
@@ -75,18 +83,18 @@ public class PlayerController2 : MonoBehaviour
     void Awake()
     {
         Application.targetFrameRate = 60; // フレームレートを60に固定
-    }
-
-    void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-    {
-        // Rigidbody2D を取得
-        rb = GetComponent<Rigidbody2D>();
 
         //プレイヤーのパーツデータを取得
         GetPartsData();
 
         // 初期ステータスを計算
         UpdateStats();
+    }
+
+    void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    {
+        // Rigidbody2D を取得
+        rb = GetComponent<Rigidbody2D>();
         
         StartCoroutine(WaitAndInitSprites());
     }
@@ -240,6 +248,8 @@ public class PlayerController2 : MonoBehaviour
             // もしブースト秒数が余ってれば
             if (total_RocketTime > crrentRocketTime)
             {
+                // ロケット噴射時間を更新
+                OnRocketTimeChanged?.Invoke(total_RocketTime - crrentRocketTime);
                 // 回転に基づいて力の方向を計算
                 Vector2 forceDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
 
@@ -258,8 +268,6 @@ public class PlayerController2 : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            // currentRocketThrustInstance = Instantiate(rocketThrustPrefab, transform);
-            // currentRocketThrustInstance.transform.localPosition = effectPosition; // 背面に配置
             StartRocketEffect();
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
@@ -352,7 +360,7 @@ public class PlayerController2 : MonoBehaviour
         else
         {
             //通常抵抗値に戻す
-            rb.linearDamping = 0;
+            rb.linearDamping = total_AirResistance;
         }
     }
     // ゲームオーバーのチェックメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -379,7 +387,10 @@ public class PlayerController2 : MonoBehaviour
         if (total_Health > 0)
         {
             total_Health -= damage;
-            Debug.Log("残り体力: " + total_Health);
+            total_Health = Mathf.Max(total_Health, 0); // 体力が0未満にならないようにする
+
+            // 体力が変化したことを通知
+            OnHealthChanged?.Invoke(total_Health);
 
             // 体力が0以下になったらプレイヤーを死亡させる
             if (total_Health <= 0)

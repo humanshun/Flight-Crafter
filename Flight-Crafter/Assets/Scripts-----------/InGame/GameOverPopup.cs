@@ -8,7 +8,7 @@ public class GameOverPopup : MonoBehaviour
     [SerializeField] private Button restartButton; // 再スタートボタン
     [SerializeField] private Button exitButton; // ゲーム終了ボタン
 
-    [SerializeField] private Score score; // スコア管理用スクリプト
+    [SerializeField] private InGameUI inGameUI; // スコア管理用スクリプト
     [SerializeField] private TextMeshProUGUI distanceText; // 距離表示用テキスト
     [SerializeField] private TextMeshProUGUI altitudeText; // 高度表示用テキスト
     [SerializeField] private TextMeshProUGUI coinText; // コイン表示用テキスト
@@ -44,15 +44,15 @@ public class GameOverPopup : MonoBehaviour
     {
         if (distanceText != null)
         {
-            distanceText.text = $"{score.distance:F1}m";
+            distanceText.text = $"{inGameUI.distance:F1}m";
         }
         if (altitudeText != null)
         {
-            altitudeText.text = $"{score.maxAltitude:F1}m";
+            altitudeText.text = $"{inGameUI.maxAltitude:F1}m";
         }
         if (coinText != null)
         {
-            coinText.text = $"{score.CalculateCoins()}Coins";
+            coinText.text = $"{inGameUI.CalculateCoins()}Coins";
         }
     }
 }

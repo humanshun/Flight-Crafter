@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     public static event System.Action<CustomPlayer> OnInGamePlayerSpawned;
 
-    private Score score;
+    private InGameUI score;
 
     public GameOverPopup gameOvarPopup;
     public bool isGameOver = false;
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RegisterScore(Score s)
+    public void RegisterScore(InGameUI s)
     {
         score = s;
     }

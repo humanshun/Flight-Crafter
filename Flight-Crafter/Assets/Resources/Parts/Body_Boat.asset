@@ -29,7 +29,7 @@ MonoBehaviour:
     value: 0.1
   hp:
     displayName: "\u4F53\u529B"
-    value: 10
+    value: 100
   rocketPosition: {x: -4.84, y: 1.13}
   wingPosition: {x: -0.56, y: 1.63}
   rightTirePosition: {x: -3.75, y: 0.2}

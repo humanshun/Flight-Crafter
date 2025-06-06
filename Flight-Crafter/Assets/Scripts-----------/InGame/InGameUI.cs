@@ -2,8 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Score : MonoBehaviour
+public class InGameUI : MonoBehaviour
 {
+    [SerializeField] private CustomPlayer player; // プレイヤーのインスタンス
+    [SerializeField] private PlayerController2 playerController; // プレイヤーコントローラーのインスタンス
     [SerializeField] private Transform playerPosition;  // プレイヤーのTransform
     public float distance;            // 横方向の移動距離
     public float altitude;            // 縦方向の高度
@@ -20,7 +22,16 @@ public class Score : MonoBehaviour
     private bool hasStarted = false;  // 計測開始済みフラグ
     private float startPosX;          // 距離計測開始X座標
 
-    
+    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Slider rocketSlider;
+
+    [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private TextMeshProUGUI rocketText;
+
+    private float initialHealth = 1f; // 初期ヘルス
+    private float initialRocketTime = 1f; // 初期ロケット時間
+
+
 
     void OnEnable()
     {
@@ -30,6 +41,21 @@ public class Score : MonoBehaviour
     void OnDisable()
     {
         GameManager.OnInGamePlayerSpawned -= OnPlayerSpawned;
+
+        if (playerController != null)
+        {
+            playerController.OnHealthChanged -= UpdateHealthUI;
+            playerController.OnRocketTimeChanged -= UpdateRocketUI;
+        }
+    }
+
+    public void Setup(float health, float rocket)
+    {
+        initialHealth = health;
+        initialRocketTime = rocket;
+
+        UpdateHealthUI(health);
+        UpdateRocketUI(rocket);
     }
 
     void Start()
@@ -46,6 +72,16 @@ public class Score : MonoBehaviour
         altitude = 0f;
         distanceText.text = "距離: 0.0 m";
         altitudeText.text = "高度: 0.0 m";
+
+        playerController = spawnedPlayer.GetComponent<PlayerController2>();
+        if (playerController != null)
+        {
+            Setup(playerController.TotalHealth, playerController.TotalRocketTime);
+
+            // イベント購読
+            playerController.OnHealthChanged += UpdateHealthUI;
+            playerController.OnRocketTimeChanged += UpdateRocketUI;
+        }
     }
 
     void Update()
@@ -83,6 +119,8 @@ public class Score : MonoBehaviour
         {
             slider.value = Mathf.Clamp01(playerPosition.position.x / goal);
         }
+
+
     }
 
     public int CalculateCoins()
@@ -96,5 +134,19 @@ public class Score : MonoBehaviour
         altitudeText.gameObject.SetActive(false);
         coinText.SetActive(true); // ゲームオーバー時にコイン表示を有効化
         slider.gameObject.SetActive(false); // スクロールバーを非表示にする
+    }
+    
+    private void UpdateHealthUI(float health)
+    {
+        float percent = (health / initialHealth) * 100f;
+        healthSlider.value = percent;
+        healthText.text = percent.ToString("F0") + "%";
+    }
+
+    private void UpdateRocketUI(float rocket)
+    {
+        float percent = (rocket / initialRocketTime) * 100f;
+        rocketSlider.value = percent;
+        rocketText.text = percent.ToString("F0") + "%";
     }
 }
