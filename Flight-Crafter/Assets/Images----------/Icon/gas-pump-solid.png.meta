@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gas-pump-solid_0: 9042209843740835171
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
