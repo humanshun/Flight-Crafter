@@ -6,12 +6,12 @@ using System.Collections.Generic;
 public class ShopPartsButton : MonoBehaviour
 {
     [SerializeField] Button bodyButton;
-    [SerializeField] GameObject bodyButtonImage;
     [SerializeField] Button rocketButton;
-    [SerializeField] GameObject rocketButtonImage;
     [SerializeField] Button tireButton;
-    [SerializeField] GameObject tireButtonImage;
     [SerializeField] Button wingButton;
+    [SerializeField] GameObject bodyButtonImage;
+    [SerializeField] GameObject rocketButtonImage;
+    [SerializeField] GameObject tireButtonImage;
     [SerializeField] GameObject wingButtonImage;
     [SerializeField] Sprite enabledSprite;
     [SerializeField] Sprite disabledSprite;
