@@ -1417,7 +1417,6 @@ MonoBehaviour:
   rocketSlider: {fileID: 1514964652806265990}
   healthText: {fileID: 2011385969331670588}
   rocketText: {fileID: 4747615924759344330}
-  playerUI: {fileID: 2935839856358599034}
 --- !u!1 &4881882370358856626
 GameObject:
   m_ObjectHideFlags: 0
