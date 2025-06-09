@@ -27,6 +27,8 @@ public class PlayerData : MonoBehaviour
     // セーブファイルの保存先パス
     private string SavePath => Path.Combine(Application.persistentDataPath, "PlayerData_save.json");
 
+    public static event System.Action OnAnyPartEquipped;
+
     void Awake()
     {
         // シングルトンパターン：すでに存在していれば自分を破棄、いなければ自分をInstanceとして残す
@@ -87,6 +89,7 @@ public class PlayerData : MonoBehaviour
     {
         currentParts[part.partType] = part.resaurceFileName;
         SavePlayerData(); // 保存を反映
+        OnAnyPartEquipped?.Invoke(); // 装備したら通知
     }
 
     public void RemoveCurrentPart(PartType partType)
@@ -106,6 +109,14 @@ public class PlayerData : MonoBehaviour
     public string GetCurrentPartName(PartType partType)
     {
         return currentParts.TryGetValue(partType, out var partName) ? partName : null;
+    }
+
+    public bool HasAllRequiredPartsEquipped()
+    {
+        return currentParts.ContainsKey(PartType.Body) &&
+               currentParts.ContainsKey(PartType.Rocket) &&
+               currentParts.ContainsKey(PartType.Tire) &&
+               currentParts.ContainsKey(PartType.Wing);
     }
 
     // プレイヤーデータをJSONで保存

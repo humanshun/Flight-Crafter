@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Security;
+using Unity.VisualScripting;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -28,6 +29,12 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private Button customCloseButton;
     [SerializeField] private Button setButton;
 
+    [Header("矢印")]
+    [SerializeField] private GameObject arrowUp;
+    [SerializeField] private GameObject arrowDown;
+    [SerializeField] private GameObject arrowLeft;
+    [SerializeField] private GameObject arrowRight;
+
     private TutorialStep currentStep = TutorialStep.Step1;
 
     enum TutorialStep
@@ -46,11 +53,16 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         tutorialPanel.SetActive(true);
-        tutorialText.text = "家の倉庫へようこそ！\n\nここでは、あなたの家の倉庫を管理できます。\n\nまずは、倉庫の中身を確認しましょう。";
+        nextButton.onClick.AddListener(NextStep);
+        bodyCustomButton.onClick.AddListener(OnBodyCustomClicked);
+        setButton.onClick.AddListener(OnSetButtonClicked);
+        NextStep();
     }
     private void OnEnable()
     {
-        nextButton.onClick.AddListener(NextStep);
+        PlayerData.OnAnyPartEquipped += CheckAllPartsEquipped;
+
+
         playButton.interactable = false;
         shopButton.interactable = false;
         bodyButton.interactable = false;
@@ -67,6 +79,7 @@ public class TutorialManager : MonoBehaviour
     }
     private void OnDisable()
     {
+        PlayerData.OnAnyPartEquipped -= CheckAllPartsEquipped;
         nextButton.onClick.RemoveListener(NextStep);
 
     }
@@ -76,23 +89,62 @@ public class TutorialManager : MonoBehaviour
         switch (currentStep)
         {
             case TutorialStep.Step1:
-                tutorialText.text = "家の倉庫へようこそ！\n\nここでは、あなたの家の倉庫を管理できます。\n\nまずは、倉庫の中身を確認しましょう。";
+                tutorialText.text = "家の倉庫へようこそ！\n\nここでは、あなたの機体を管理できます。\n\nまずは、ボディ倉庫の中身を確認しましょう。";
                 tutorialPanel.SetActive(true);
                 currentStep++;
                 break;
             case TutorialStep.Step2:
-                tutorialText.text = "倉庫の中身を確認するには、倉庫のアイコンをクリックしてください。\n\n倉庫の中身が表示されます。";
+                tutorialText.text = "ボディ倉庫の中身を確認するには、倉庫のアイコンをクリックしてください。\n\nボディ倉庫の中身が表示されます。";
+                var arrowDownPrefab = Instantiate(arrowDown, new Vector3(290, 360, 0), Quaternion.identity, tutorialPanel.transform);
+                // 上下に動かすアニメーション（ローカル座標で動かすなら DOLocalMoveY）
+                arrowDownPrefab.transform
+                    .DOMoveY(arrowDownPrefab.transform.position.y - 20f, 0.5f)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetEase(Ease.InOutSine);
                 bodyCustomButton.interactable = true;
+                break;
+            case TutorialStep.Step3:
+                tutorialText.text = "次に、パーツを選択して装備しよう。\n\nボディを選択して、装備ボタンをクリックしてください。";
+                bodyCustomButton.interactable = false;
+                setButton.interactable = true;
+                break;
+            case TutorialStep.Step4:
+                tutorialText.text = "装備が完了しました！\n\nでは、他のパーツを装備してみましょう。";
+                customCloseButton.interactable = true;
                 rocketCustomButton.interactable = true;
                 tireCustomButton.interactable = true;
                 wingCustomButton.interactable = true;
-                currentStep++;
                 break;
-            case TutorialStep.Step3:
-                tutorialText.text = "qqqqqqqqqqqqqqqqq";
-                currentStep++;
+            case TutorialStep.Step5:
+                tutorialText.text = "すべてのパーツを装備しました！\n\nでは、大空へ飛び立ちましょう！！";
                 break;
         }
     }
 
+    void OnBodyCustomClicked()
+    {
+        if (currentStep == TutorialStep.Step2)
+        {
+            currentStep++;
+            NextStep();
+        }
+    }
+
+    void OnSetButtonClicked()
+    {
+        if (currentStep == TutorialStep.Step3)
+        {
+            currentStep++;
+            NextStep();
+        }
+    }
+    private void CheckAllPartsEquipped()
+    {
+        if (currentStep == TutorialStep.Step4 &&
+            PlayerData.Instance.HasAllRequiredPartsEquipped())
+        {
+            currentStep++;
+            NextStep();
+        }
+    }
 }

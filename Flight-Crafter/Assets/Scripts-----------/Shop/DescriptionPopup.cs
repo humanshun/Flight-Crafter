@@ -15,7 +15,7 @@ public class DescriptionPopup : MonoBehaviour
     public void Show(PartData part, CurrentPartPopup currentPartPopup)
     {
         customPlayer = GameManager.Instance.Player;
-        
+
         popupRoot.SetActive(true);
         nameText.text = part.partName;
 
@@ -56,8 +56,6 @@ public class DescriptionPopup : MonoBehaviour
                 AddStatus(PartType.Wing, wing.airControl.displayName, wing.airControl.value);
                 break;
         }
-
-        partSetButton.onClick.RemoveAllListeners(); // 既存のリスナーを削除
         partSetButton.onClick.AddListener(() => ButtonClick(part, currentPartPopup));
     }
 
