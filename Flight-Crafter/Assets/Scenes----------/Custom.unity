@@ -795,6 +795,10 @@ MonoBehaviour:
   wingCustomButton: {fileID: 753362913}
   customCloseButton: {fileID: 135347031}
   setButton: {fileID: 1119279039}
+  arrowUp: {fileID: 2093975050210714659, guid: 9002fe1eeddf4f84b92f34459e09af30, type: 3}
+  arrowDown: {fileID: 7079825026208001025, guid: b17b96e2131351f448a3056ab65359f2, type: 3}
+  arrowLeft: {fileID: 2107025133401414386, guid: 8d246d9bf4eb9694784992adfa69b68a, type: 3}
+  arrowRight: {fileID: 1364197607929844379, guid: e296c13c629cef849ac07a24ccc5003a, type: 3}
 --- !u!1 &1759887205
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,8 +2,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
-using System.Security;
-using Unity.VisualScripting;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -34,6 +32,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject arrowDown;
     [SerializeField] private GameObject arrowLeft;
     [SerializeField] private GameObject arrowRight;
+    private GameObject arrowPrefab;
 
     private TutorialStep currentStep = TutorialStep.Step1;
 
@@ -95,28 +94,52 @@ public class TutorialManager : MonoBehaviour
                 break;
             case TutorialStep.Step2:
                 tutorialText.text = "ボディ倉庫の中身を確認するには、倉庫のアイコンをクリックしてください。\n\nボディ倉庫の中身が表示されます。";
-                var arrowDownPrefab = Instantiate(arrowDown, new Vector3(290, 360, 0), Quaternion.identity, tutorialPanel.transform);
-                // 上下に動かすアニメーション（ローカル座標で動かすなら DOLocalMoveY）
-                arrowDownPrefab.transform
-                    .DOMoveY(arrowDownPrefab.transform.position.y - 20f, 0.5f)
-                    .SetLoops(-1, LoopType.Yoyo)
-                    .SetEase(Ease.InOutSine);
+                if (arrowPrefab == null)
+                {
+                    arrowPrefab = Instantiate(arrowDown, new Vector3(290, 340, 0), Quaternion.identity, tutorialPanel.transform);
+                    arrowPrefab.transform
+                        .DOMoveY(arrowPrefab.transform.position.y - 20f, 0.5f)
+                        .SetLoops(-1, LoopType.Yoyo)
+                        .SetEase(Ease.InOutSine);
+                }
                 bodyCustomButton.interactable = true;
                 break;
             case TutorialStep.Step3:
-                tutorialText.text = "次に、パーツを選択して装備しよう。\n\nボディを選択して、装備ボタンをクリックしてください。";
+                tutorialText.text = "次に、パーツを選択して装備しよう!\n\nボディを選択して、装備ボタンをクリックしてください。";
+                if (arrowPrefab != null)
+                {
+                    Destroy(arrowPrefab.gameObject);
+                    arrowPrefab = Instantiate(arrowRight, new Vector3(1050, 900, 0), Quaternion.identity, tutorialPanel.transform);
+                    arrowPrefab.transform
+                        .DOMoveX(arrowPrefab.transform.position.x + 20f, 0.5f)
+                        .SetLoops(-1, LoopType.Yoyo)
+                        .SetEase(Ease.InOutSine);
+                }
                 bodyCustomButton.interactable = false;
                 setButton.interactable = true;
                 break;
             case TutorialStep.Step4:
-                tutorialText.text = "装備が完了しました！\n\nでは、他のパーツを装備してみましょう。";
+                tutorialText.text = "装備が完了しました!\n\nでは、他のパーツを装備してみましょう。";
+                if (arrowPrefab != null)
+                {
+                    Destroy(arrowPrefab.gameObject);
+                }
                 customCloseButton.interactable = true;
                 rocketCustomButton.interactable = true;
                 tireCustomButton.interactable = true;
                 wingCustomButton.interactable = true;
                 break;
             case TutorialStep.Step5:
-                tutorialText.text = "すべてのパーツを装備しました！\n\nでは、大空へ飛び立ちましょう！！";
+                tutorialText.text = "すべてのパーツを装備しました!\n\nでは、大空へ飛び立ちましょう!";
+                setButton.interactable = false;
+                bodyCustomButton.interactable = false;
+                rocketCustomButton.interactable = false;
+                tireCustomButton.interactable = false;
+                wingCustomButton.interactable = false;
+                break;
+            case TutorialStep.Step6:
+                tutorialText.text = "すべてのパーツを装備しました!\n\nでは、大空へ飛び立ちましょう!";
+                
                 break;
         }
     }
