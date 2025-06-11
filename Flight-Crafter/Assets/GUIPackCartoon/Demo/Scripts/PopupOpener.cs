@@ -3,6 +3,7 @@
 // A Copy of the Asset Store EULA is available at http://unity3d.com/company/legal/as_terms.
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ricimi
 {
@@ -12,6 +13,7 @@ namespace Ricimi
     {
         // ポップアップのプレハブを格納するためのパブリック変数
         public GameObject popupPrefab;
+        [SerializeField] private Button button;
 
         // キャンバスを格納するための保護された変数
         protected Canvas m_canvas;
@@ -21,6 +23,8 @@ namespace Ricimi
         {
             // 親オブジェクトからCanvasコンポーネントを取得し、m_canvasに格納
             m_canvas = GetComponentInParent<Canvas>();
+
+            button.onClick.AddListener(OpenPopup);
         }
 
         // ポップアップを生成して表示するためのメソッド

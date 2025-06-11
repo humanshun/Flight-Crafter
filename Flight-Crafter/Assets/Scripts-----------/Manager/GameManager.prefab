@@ -46,3 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 5584681483970083634, guid: facac8d484b0356488ec38c70911ee7d, type: 3}
   inGamePlayer: {fileID: 5068569638428690978, guid: 7fc8d921f92144a45b92a6d94f896b20, type: 3}
+  gameOvarPopup: {fileID: 0}
+  tutorialCustomPopup1: {fileID: 2046390619993013700, guid: 60d8ad82c4171264a93a7f2efd71daba, type: 3}
+  tutorialInGamePopup: {fileID: 634472722028821122, guid: 42b53052210eb0b438465ab1210e436c, type: 3}
+  isGameOver: 0
+  isTutorialCustom: 0
+  isTutorialInGame: 0

@@ -4,9 +4,16 @@ using DG.Tweening;
 
 public class TutorialInGame : MonoBehaviour
 {
+    [SerializeField] private TutorialInGame tutorialPopup;
     [SerializeField] private Button[] tutorialPanels;
     [SerializeField] private GameObject caretDownImage;
     private int currentStep = 0;
+
+    private void Awake()
+    {
+        GameManager.Instance.TutorialInGamePopup(tutorialPopup);
+        Debug.Log("TutorialInGameからGameManagerに登録");
+    }
 
     void Start()
     {

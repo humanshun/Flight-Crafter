@@ -3,8 +3,10 @@ using UnityEngine.UI;
 
 public class ShopCanvasManager : MonoBehaviour
 {
+    [SerializeField] private Canvas myCanvas;
     [SerializeField] private Button shopButton;
     [SerializeField] private Button playButton;
+    [SerializeField] private Button settingsButton;
     [SerializeField] private GameObject partShopPopup;
     [SerializeField] private Button shopCloseButton;
     [SerializeField] private GameObject partCustomPopup;
@@ -17,8 +19,6 @@ public class ShopCanvasManager : MonoBehaviour
 
     [SerializeField] private GameObject desctiptionPopupPrefab;
     [SerializeField] private GameObject coinText;
-
-    
 
     private void Start()
     {
@@ -41,6 +41,7 @@ public class ShopCanvasManager : MonoBehaviour
         partCustomPopup.SetActive(false);
         shopButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(false);
+        settingsButton.gameObject.SetActive(false);
         coinText.SetActive(true);
     }
 
@@ -50,6 +51,7 @@ public class ShopCanvasManager : MonoBehaviour
         partCustomPopup.SetActive(true);
         shopButton.gameObject.SetActive(true);
         playButton.gameObject.SetActive(true);
+        settingsButton.gameObject.SetActive(true);
         coinText.SetActive(true);
     }
 
@@ -57,6 +59,7 @@ public class ShopCanvasManager : MonoBehaviour
     {
         shopButton.gameObject.SetActive(true);
         playButton.gameObject.SetActive(true);
+        settingsButton.gameObject.SetActive(true);
         desctiptionPopupPrefab.SetActive(false);
         coinText.SetActive(true);
     }
@@ -65,6 +68,7 @@ public class ShopCanvasManager : MonoBehaviour
     {
         shopButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(false);
+        settingsButton.gameObject.SetActive(false);
         desctiptionPopupPrefab.SetActive(false);
         coinText.SetActive(false);
     }

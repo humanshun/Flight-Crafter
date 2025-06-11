@@ -18,12 +18,19 @@ public class GameManager : MonoBehaviour
 
     private InGameUI score;
 
+    private Canvas canvas;
     public GameOverPopup gameOvarPopup;
+    public TutorialCustom1 tutorialCustomPopup1;
+    public TutorialInGame tutorialInGamePopup;
     public bool isGameOver = false;
+
+    //ゲーム進行フラグ
+    public bool isTutorialCustom = false;
+    public bool isTutorialInGame = false;
 
     void Start()
     {
-        // すでにCustomシーンが読み込まれていた場合に備える
+        // // すでにCustomシーンが読み込まれていた場合に備える
         if (SceneManager.GetActiveScene().name == "Custom")
         {
             OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
@@ -43,8 +50,20 @@ public class GameManager : MonoBehaviour
     {
         gameOvarPopup = popup;
     }
+    public void TutorialCustomPopup1(TutorialCustom1 popup)
+    {
+        tutorialCustomPopup1 = popup;
+    }
 
-
+    public void TutorialInGamePopup(TutorialInGame popup)
+    {
+        tutorialInGamePopup = popup;
+        Debug.Log("GameManagerにTutorialInGamePopupが登録されました");
+    }
+    public void Canvas(Canvas inCanvas)
+    {
+        canvas = inCanvas;
+    }
     void Awake()
     {
         // シングルトンパターン：すでに存在していれば自分を破棄、いなければ自分をInstanceとして残す
@@ -70,6 +89,7 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log($"シーンが読み込まれました: {scene.name}");
         isGameOver = false; // シーンが読み込まれたらゲームオーバー状態をリセット
 
         if (scene.name == "Custom")
@@ -81,6 +101,18 @@ public class GameManager : MonoBehaviour
                 Destroy(playerInstance.gameObject); // 既存のインスタンスを削除
             }
             playerInstance = Instantiate(player, spawnPosition, Quaternion.identity);
+
+            if (tutorialCustomPopup1 != null)
+            {
+                tutorialCustomPopup1.gameObject.SetActive(false); // チュートリアルポップアップを非表示にする
+            }
+
+            if (!isTutorialCustom && tutorialCustomPopup1 != null)
+            {
+                tutorialCustomPopup1.gameObject.SetActive(true); // チュートリアルポップアップを表示
+                tutorialCustomPopup1.DisableAllButtons();
+                isTutorialCustom = true; // チュートリアルが開始されたことを記録
+            }
         }
         else if (scene.name == "InGame")
         {
@@ -92,6 +124,18 @@ public class GameManager : MonoBehaviour
             }
             inGamePlayerInstance = Instantiate(inGamePlayer, spawnPosition, Quaternion.identity);
             OnInGamePlayerSpawned?.Invoke(inGamePlayerInstance); // イベントを発火して、InGamePlayerが生成されたことを通知
+            if (tutorialInGamePopup != null)
+            {
+                tutorialInGamePopup.gameObject.SetActive(false); // チュートリアルポップアップを非表示にする
+                Debug.Log("チュートリアルInGame非表示にする");
+            }
+
+            if (!isTutorialInGame && tutorialInGamePopup != null)
+            {
+                tutorialInGamePopup.gameObject.SetActive(true);
+                isTutorialInGame = true; // チュートリアルが開始されたことを記録
+                Debug.Log("チュートリアルInGameが開始されました");
+            }
         }
     }
 

@@ -5,12 +5,15 @@ using DG.Tweening;
 
 public class TutorialCustom1 : MonoBehaviour
 {
-    [SerializeField] private GameObject tutorialPopup;
+    [SerializeField] private TutorialCustom1 tutorialPopup;
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private TextMeshProUGUI tutorialText;
     [SerializeField] private Button nextButton;
     [SerializeField] private Button playButton;
     [SerializeField] private GameObject caretDownImage;
+    private bool checkStep1 = false;
+    private bool checkStep2 = false;
+    private bool checkStep3 = false;
     private bool checkStep4 = false;
     private bool checkStep5 = false;
 
@@ -44,6 +47,10 @@ public class TutorialCustom1 : MonoBehaviour
     {
         Step1, Step2, Step3, Step4, Step5
     }
+    private void Awake()
+    {
+        GameManager.Instance.TutorialCustomPopup1(tutorialPopup);
+    }
     private void Start()
     {
         foreach (var arrow in arrowPrefab)
@@ -70,10 +77,9 @@ public class TutorialCustom1 : MonoBehaviour
     private void OnEnable()
     {
         PlayerData.OnAnyPartEquipped += CheckAllPartsEquipped;
-        DisableAllButtons();
     }
 
-    private void DisableAllButtons()
+    public void DisableAllButtons()
     {
         playButton.interactable = false;
         shopButton.interactable = false;
@@ -108,14 +114,22 @@ public class TutorialCustom1 : MonoBehaviour
             case TutorialStep.Step2:
                 SetTutorialText("ボディ倉庫の中身を確認するには、倉庫のアイコンをクリックしてください。\n\nボディ倉庫の中身が表示されます。");
                 caretDownImage.SetActive(false);
-                ShowArrow(0, Vector3.down, 20f);
+                if (!checkStep2)
+                {
+                    ShowArrow(0, Vector3.down, 20f);
+                }
+                checkStep2 = true;
 
                 bodyCustomButton.interactable = true;
                 break;
             case TutorialStep.Step3:
                 SetTutorialText("次に、パーツを選択して装備しよう!\n\nボディを選択して、装備ボタンをクリックしてください。");
                 HideArrow(0);
-                ShowArrow(4, Vector3.right, 20f);
+                if (!checkStep3)
+                {
+                    ShowArrow(4, Vector3.right, 20f);
+                }
+                checkStep3 = true;
 
                 bodyCustomButton.interactable = false;
                 setButton.interactable = true;
