@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System;
 using System.Collections;
+using Unity.Mathematics;
 
 public class PlayerController2 : MonoBehaviour
 /*
@@ -75,6 +76,7 @@ public class PlayerController2 : MonoBehaviour
     private float invincibleTime = 1.0f; // 無敵時間
     private float blinkInterval = 0.1f; // 点滅間隔
     private bool isInvincible = false; // 無敵状態かどうか
+    private bool rocketPermanentlyDisabled = false;
     private SpriteRenderer[] spriteRenderers; // スプライトレンダラー
 
     //死んだかどうか
@@ -95,7 +97,7 @@ public class PlayerController2 : MonoBehaviour
     {
         // Rigidbody2D を取得
         rb = GetComponent<Rigidbody2D>();
-        
+
         StartCoroutine(WaitAndInitSprites());
     }
     private IEnumerator WaitAndInitSprites()
@@ -115,7 +117,7 @@ public class PlayerController2 : MonoBehaviour
         playerAngle = transform.localRotation.eulerAngles.z;
 
         //ブーストメソッド
-        OnLeftShiftClick();
+        OnSpaceClick();
 
         //地面に接触しているかどうかを確認
         GroundCheck();
@@ -139,6 +141,8 @@ public class PlayerController2 : MonoBehaviour
 
         // プレイヤーの向きを制御する
         PlayerAngle();
+
+        RotateToMoveDirectionWithControl();
     }
 
     // プレイヤーのパーツ性能を集計//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -233,14 +237,16 @@ public class PlayerController2 : MonoBehaviour
     }
 
     //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-    public void OnLeftShiftClick()
+    public void OnSpaceClick()
     {
         if (isDead) return; // ゲームオーバー中なら何もしない
+        if (rocketPermanentlyDisabled) return; // ← 追加
+        if (inWater) return; // 水中ではロケットを使用できない
         // ロケットの噴射時間が終了しているか、ロケットを使用できない
         if (!finishRocketTime) return;
 
         // 左シフトを押したときに
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.Space))
         {
             // ブーストしてる秒数をカウントして
             crrentRocketTime += Time.deltaTime;
@@ -266,11 +272,11 @@ public class PlayerController2 : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             StartRocketEffect();
         }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        else if (Input.GetKeyUp(KeyCode.Space))
         {
             StopRocketEffect();
         }
@@ -285,6 +291,8 @@ public class PlayerController2 : MonoBehaviour
     // ロケットのエフェクトを停止するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void StopRocketEffect()
     {
+        if (currentRocketThrustInstance == null) return;
+
         ParticleSystem ps = currentRocketThrustInstance.GetComponent<ParticleSystem>();
         if (ps != null)
         {
@@ -347,6 +355,7 @@ public class PlayerController2 : MonoBehaviour
     private void InWater()
     {
         // 水中にいるか判定
+        bool wasInWater = inWater;
         inWater = playerCollider.IsTouchingLayers(waterLayer);
 
         if (inWater)
@@ -356,6 +365,13 @@ public class PlayerController2 : MonoBehaviour
 
             //水中抵抗を再現
             rb.linearDamping = 1.0f;
+
+            // 水に入った瞬間だけ呼ぶ
+            if (!wasInWater)
+            {
+                StopRocketEffect();
+                rocketPermanentlyDisabled = true; // ← 永久封印
+            }
         }
         else
         {
@@ -437,5 +453,24 @@ public class PlayerController2 : MonoBehaviour
         {
             sr.enabled = visible;
         }
+    }
+    
+    private void RotateToMoveDirectionWithControl()
+    {
+        Vector2 velocity = rb.linearVelocity;
+
+        if (velocity.sqrMagnitude < 0.01f)
+            return;
+
+        float moveAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+        float currentAngle = rb.rotation;
+
+        float angleDifference = Mathf.DeltaAngle(currentAngle, moveAngle);
+        float speedFactor = velocity.magnitude * 0.005f;
+        float waterMultiplier = inWater ? 0.01f : 1.0f; // 水中では回転を遅くする
+        
+        float correctionTorque = angleDifference * speedFactor * waterMultiplier;  // ← 補正の強さ（0.1f を好みに調整）
+
+        rb.AddTorque(correctionTorque);
     }
 }

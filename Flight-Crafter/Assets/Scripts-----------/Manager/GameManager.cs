@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         }
         else if (scene.name == "InGame")
         {
-            Vector3 spawnPosition = new Vector3(-3.7f, -30f, 0f);
+            Vector3 spawnPosition = new Vector3(-3.7f, -32f, 0f);
 
             if (inGamePlayerInstance != null)
             {

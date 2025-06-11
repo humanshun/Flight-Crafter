@@ -185,7 +185,13 @@ public class PlayerData : MonoBehaviour
     {
         playerCoins = 10000;
 
-        purchasedParts = new List<string>();
+        purchasedParts = new List<string>
+        {
+            "冷蔵庫段ボール",
+            "ロケット花火",
+            "キャスター",
+            "段ボール"
+        };
         currentParts = new Dictionary<PartType, string>();
 
         if (File.Exists(SavePath))

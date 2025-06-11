@@ -1,14 +1,10 @@
 fileFormatVersion: 2
-guid: 7240c0d166eb849899d1bbc12c3d2d36
-AssetOrigin:
-  serializedVersion: 1
-  productId: 48850
-  packageName: Cartoon GUI Pack
-  packageVersion: 2.0.4
-  assetPath: Assets/GUIPackCartoon/Demo/Sprites/Buttons/Square/Blue.png
-  uploadId: 671655
+guid: 23d11b9041e4bf24a93fe13c2407f175
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7288807674691737988
+    second: car-side-solid (1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -50,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 128, y: 128, z: 128, w: 128}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -72,7 +68,7 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
@@ -102,13 +98,35 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: car-side-solid (1)_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 31
+        width: 640
+        height: 450
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 489542e56fb072560800000000000000
+      internalID: 7288807674691737988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
