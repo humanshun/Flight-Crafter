@@ -7,6 +7,7 @@ public class TutorialInGame : MonoBehaviour
     [SerializeField] private TutorialInGame tutorialPopup;
     [SerializeField] private Button[] tutorialPanels;
     [SerializeField] private GameObject caretDownImage;
+    [SerializeField] private TutorialInGameCheckList tutorialInGameCheckList;
     private int currentStep = 0;
 
     private void Awake()
@@ -41,16 +42,19 @@ public class TutorialInGame : MonoBehaviour
         tutorialPanels[currentStep].gameObject.SetActive(false);
         caretDownImage.SetActive(false);
         currentStep++;
-
+        if (currentStep == 3)
+        {
+            tutorialInGameCheckList.CheckList();
+        }
         if (currentStep < tutorialPanels.Length)
-        {
-            tutorialPanels[currentStep].gameObject.SetActive(true);
-            caretDownImage.SetActive(true);
-        }
-        else
-        {
-            Debug.Log("チュートリアル終了");
-        }
+            {
+                tutorialPanels[currentStep].gameObject.SetActive(true);
+                caretDownImage.SetActive(true);
+            }
+            else
+            {
+                Debug.Log("チュートリアル終了");
+            }
     }
     private void StartCaretAnimation()
     {

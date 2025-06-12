@@ -15,6 +15,10 @@ public class PlayerData : MonoBehaviour
     // コインが変化したときに発火するイベント
     public static event System.Action<int> OnCoinsChanged;
 
+    //チュートリアル進行イベント
+    public static event System.Action OnPartPurchased;
+    public static event System.Action OnEquippedNonInitialPart;
+
     // 購入済みパーツのリスト（パーツ名で管理）
     private List<string> purchasedParts = new List<string>();
 
@@ -64,6 +68,7 @@ public class PlayerData : MonoBehaviour
 
             // イベントを発火
             OnCoinsChanged?.Invoke(playerCoins);
+            OnPartPurchased?.Invoke();
 
             return true;
         }
@@ -90,6 +95,9 @@ public class PlayerData : MonoBehaviour
         currentParts[part.partType] = part.resaurceFileName;
         SavePlayerData(); // 保存を反映
         OnAnyPartEquipped?.Invoke(); // 装備したら通知
+
+        // 判定処理を追加
+        CheckEquippedParts();
     }
 
     public void RemoveCurrentPart(PartType partType)
@@ -245,4 +253,26 @@ public class PlayerData : MonoBehaviour
 
         return (distanceUpdated, altitudeUpdated);
     }
+
+    private void CheckEquippedParts()
+    {
+        foreach (var kvp in currentParts)
+        {
+            string equippedPartName = kvp.Value;
+
+            if (!initialParts.Contains(equippedPartName))
+            {
+                Debug.Log("初期パーツ以外が装備されています！");
+                OnEquippedNonInitialPart?.Invoke();
+                return;
+            }
+        }
+    }
+    private readonly HashSet<string> initialParts = new HashSet<string>
+    {
+        "冷蔵庫段ボール",
+        "ロケット花火",
+        "キャスター",
+        "段ボール"
+    };
 }

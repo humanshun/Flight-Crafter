@@ -16,6 +16,7 @@ public class GameOverPopup : MonoBehaviour
     [SerializeField] private GameObject maxAltitudeText; // 最高高度表示用テキスト
     [SerializeField] private GameObject distanceCrown;
     [SerializeField] private GameObject altitudeCrown;
+    [SerializeField] private TutorialInGameCheckList tutorialPanel;
 
     void Start()
     {
@@ -31,6 +32,8 @@ public class GameOverPopup : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
+            tutorialPanel.gameObject.SetActive(true);
+            tutorialPanel.CheckList();
             UpdateScoreDisplay();
 
             distanceCrown.SetActive(distanceUpdated);

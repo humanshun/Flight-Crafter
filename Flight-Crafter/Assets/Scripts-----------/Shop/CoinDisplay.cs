@@ -1,30 +1,43 @@
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class CoinDisplay : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField] private AddCoinEfect addCoinEfect;
 
-    void OnEnable()
-    {
-        // イベント登録
-        PlayerData.OnCoinsChanged += UpdateCoinDisplay;
-    }
+    [SerializeField] private float interval = 0.08f; // 1枚加算するごとの間隔
+    [SerializeField] private float startDelay = 1.55f;
 
-    void OnDisable()
-    {
-        // イベント解除（忘れずに！）
-        PlayerData.OnCoinsChanged -= UpdateCoinDisplay;
-    }
+    private int currentCoin = 0;
+    public int earnedCoins = 0;
 
     void Start()
     {
-        // 初期表示
-        coinText.text = PlayerData.Instance.playerCoins.ToString();
+        currentCoin = PlayerData.Instance.playerCoins;
+        coinText.text = currentCoin.ToString();
     }
 
-    private void UpdateCoinDisplay(int newCoinValue)
+    public void AnimateAddCoins()
     {
-        coinText.text = newCoinValue.ToString();
+        StartCoroutine(AddCoinsRoutine());
+    }
+
+    private IEnumerator AddCoinsRoutine()
+    {
+        yield return new WaitForSeconds(startDelay); // 開始前に待機
+
+        int targetCoin = currentCoin + earnedCoins;
+
+        while (currentCoin < targetCoin)
+        {
+            currentCoin++;
+            coinText.text = currentCoin.ToString();
+            yield return new WaitForSeconds(interval);
+        }
+
+        // 念のため最終値をセット（途中スキップとかの対策）
+        coinText.text = targetCoin.ToString();
     }
 }

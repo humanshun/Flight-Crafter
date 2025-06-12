@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     //ゲーム進行フラグ
     public bool isTutorialCustom = false;
     public bool isTutorialInGame = false;
+    public bool isBuyPart = false;
+    public bool isChangePart = false;
+    public bool isClearTutorial = false;
 
     void Start()
     {
@@ -58,7 +61,6 @@ public class GameManager : MonoBehaviour
     public void TutorialInGamePopup(TutorialInGame popup)
     {
         tutorialInGamePopup = popup;
-        Debug.Log("GameManagerにTutorialInGamePopupが登録されました");
     }
     public void Canvas(Canvas inCanvas)
     {
@@ -75,6 +77,8 @@ public class GameManager : MonoBehaviour
             // ↓ この登録を一度だけ行う
             SceneManager.sceneLoaded -= OnSceneLoaded; // ← まず念のため削除
             SceneManager.sceneLoaded += OnSceneLoaded; // シーンが読み込まれたときのイベントを登録
+            PlayerData.OnPartPurchased += HandlePartPurchased;
+            PlayerData.OnEquippedNonInitialPart += HandleChangePart;
         }
         else
         {
@@ -85,11 +89,12 @@ public class GameManager : MonoBehaviour
     {
         // シーンが破棄されるときにイベントを解除
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        PlayerData.OnPartPurchased -= HandlePartPurchased;
+        PlayerData.OnEquippedNonInitialPart -= HandleChangePart;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"シーンが読み込まれました: {scene.name}");
         isGameOver = false; // シーンが読み込まれたらゲームオーバー状態をリセット
 
         if (scene.name == "Custom")
@@ -127,14 +132,12 @@ public class GameManager : MonoBehaviour
             if (tutorialInGamePopup != null)
             {
                 tutorialInGamePopup.gameObject.SetActive(false); // チュートリアルポップアップを非表示にする
-                Debug.Log("チュートリアルInGame非表示にする");
             }
 
             if (!isTutorialInGame && tutorialInGamePopup != null)
             {
                 tutorialInGamePopup.gameObject.SetActive(true);
                 isTutorialInGame = true; // チュートリアルが開始されたことを記録
-                Debug.Log("チュートリアルInGameが開始されました");
             }
         }
     }
@@ -147,7 +150,6 @@ public class GameManager : MonoBehaviour
         //もしscoreがnullで無ければ、Coinsを計算して追加
         int earnedCoins = score != null ? score.CalculateCoins() : 0;
         PlayerData.Instance.AddCoins(earnedCoins);
-        Debug.Log($"コイン獲得: {earnedCoins}");
 
         bool distanceUpdated = false;
         bool altitudeUpdated = false;
@@ -169,5 +171,14 @@ public class GameManager : MonoBehaviour
         {
             score.OnGameOver();
         }
+    }
+    private void HandlePartPurchased()
+    {
+        isBuyPart = true;
+    }
+
+    private void HandleChangePart()
+    {
+        isChangePart = true;
     }
 }

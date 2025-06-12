@@ -2609,7 +2609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9200236873128109839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2653,6 +2653,7 @@ MonoBehaviour:
   - {fileID: 39961886760406671}
   - {fileID: 8836478096282162277}
   caretDownImage: {fileID: 3662706711810557912}
+  tutorialInGameCheckList: {fileID: 0}
 --- !u!1 &5106162418894876482
 GameObject:
   m_ObjectHideFlags: 0
