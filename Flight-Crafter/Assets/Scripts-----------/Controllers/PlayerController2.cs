@@ -472,7 +472,7 @@ public class PlayerController2 : MonoBehaviour
 
         float angleDifference = Mathf.DeltaAngle(currentAngle, moveAngle);
         float speedFactor = velocity.magnitude * 0.005f;
-        float waterMultiplier = inWater ? 0.01f : 5.0f; // 水中では回転を遅くする
+        float waterMultiplier = inWater ? 0.01f : 2.0f; // 水中では回転を遅くする
         
         float correctionTorque = angleDifference * speedFactor * waterMultiplier;  // ← 補正の強さ（0.1f を好みに調整）
 

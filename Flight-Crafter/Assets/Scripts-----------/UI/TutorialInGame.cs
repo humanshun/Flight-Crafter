@@ -8,6 +8,7 @@ public class TutorialInGame : MonoBehaviour
     [SerializeField] private Button[] tutorialPanels;
     [SerializeField] private GameObject caretDownImage;
     [SerializeField] private TutorialInGameCheckList tutorialInGameCheckList;
+    private bool tutorial = false;
     private int currentStep = 0;
 
     private void Awake()
@@ -36,9 +37,25 @@ public class TutorialInGame : MonoBehaviour
         StartCaretAnimation();
         caretDownImage.SetActive(true);
     }
+    
+    void Update()
+    {
+        if (tutorial) return;
+        if (Input.GetKeyDown(KeyCode.Return))  // Enterキーでも次へ
+        {
+            NextStep();
+        }
+    }
 
     private void NextStep()
     {
+        if (currentStep >= tutorialPanels.Length)
+        {
+            Debug.Log("チュートリアルはすでに終了しています。");
+            tutorial = true;
+            return;
+        }
+
         tutorialPanels[currentStep].gameObject.SetActive(false);
         caretDownImage.SetActive(false);
         currentStep++;
@@ -47,14 +64,15 @@ public class TutorialInGame : MonoBehaviour
             tutorialInGameCheckList.CheckList();
         }
         if (currentStep < tutorialPanels.Length)
-            {
-                tutorialPanels[currentStep].gameObject.SetActive(true);
-                caretDownImage.SetActive(true);
-            }
-            else
-            {
-                Debug.Log("チュートリアル終了");
-            }
+        {
+            tutorialPanels[currentStep].gameObject.SetActive(true);
+            caretDownImage.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("チュートリアル終了");
+            tutorial = true;
+        }
     }
     private void StartCaretAnimation()
     {
