@@ -60,6 +60,7 @@ public class PlayerController2 : MonoBehaviour
     // プレイヤーの制御に必要なパラメータ
     [SerializeField] private Rigidbody2D rb; // プレイヤーのRigidbody2D
     [SerializeField] private float playerAngle;
+    private bool isRocketKeyDown = false;
     private float crrentRocketTime; //現在のロケット噴射時間
     private bool finishRocketTime = true; //ロケットが使えるかどうか
     [SerializeField] private LayerMask groundLayer; //GroundCheckのBoxCollider2D
@@ -242,12 +243,18 @@ public class PlayerController2 : MonoBehaviour
         if (isDead) return; // ゲームオーバー中なら何もしない
         if (rocketPermanentlyDisabled) return; // ← 追加
         if (inWater) return; // 水中ではロケットを使用できない
-        // ロケットの噴射時間が終了しているか、ロケットを使用できない
-        if (!finishRocketTime) return;
+        if (!finishRocketTime) return; // ロケットの噴射時間が終了しているか、ロケットを使用できない
+
+        bool isKeyHeld = Input.GetKey(KeyCode.Space);
 
         // 左シフトを押したときに
-        if (Input.GetKey(KeyCode.Space))
+        if (isKeyHeld)
         {
+            if (!isRocketKeyDown)
+            {
+                StartRocketEffect();
+                isRocketKeyDown = true;
+            }
             // ブーストしてる秒数をカウントして
             crrentRocketTime += Time.deltaTime;
 
@@ -258,7 +265,6 @@ public class PlayerController2 : MonoBehaviour
                 OnRocketTimeChanged?.Invoke(total_RocketTime - crrentRocketTime);
                 // 回転に基づいて力の方向を計算
                 Vector2 forceDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
-
                 // プレイヤーの正面方向に力を加える
                 rb.AddForce(forceDirection * total_JetThrust, ForceMode2D.Force);
             }
@@ -266,19 +272,18 @@ public class PlayerController2 : MonoBehaviour
             {
                 //ロケット噴射時間が終了
                 finishRocketTime = false;
-
                 //エフェクト停止
                 StopRocketEffect();
+                isRocketKeyDown = false;
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        else
         {
-            StartRocketEffect();
-        }
-        else if (Input.GetKeyUp(KeyCode.Space))
-        {
-            StopRocketEffect();
+            if (isRocketKeyDown)
+            {
+                StopRocketEffect();
+                isRocketKeyDown = false;
+            }
         }
     }
 
@@ -296,7 +301,7 @@ public class PlayerController2 : MonoBehaviour
         ParticleSystem ps = currentRocketThrustInstance.GetComponent<ParticleSystem>();
         if (ps != null)
         {
-            ps.Stop();
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 
@@ -467,7 +472,7 @@ public class PlayerController2 : MonoBehaviour
 
         float angleDifference = Mathf.DeltaAngle(currentAngle, moveAngle);
         float speedFactor = velocity.magnitude * 0.005f;
-        float waterMultiplier = inWater ? 0.01f : 1.0f; // 水中では回転を遅くする
+        float waterMultiplier = inWater ? 0.01f : 5.0f; // 水中では回転を遅くする
         
         float correctionTorque = angleDifference * speedFactor * waterMultiplier;  // ← 補正の強さ（0.1f を好みに調整）
 
