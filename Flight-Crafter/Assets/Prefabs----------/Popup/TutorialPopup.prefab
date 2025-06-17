@@ -628,7 +628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d987e325b92c14cb0a2b4fda5fa450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialPopup: {fileID: 0}
   tutorialPanel: {fileID: 3677432183124593852}
   tutorialText: {fileID: 80234454776151481}
   nextButton: {fileID: 1314153698215337819}

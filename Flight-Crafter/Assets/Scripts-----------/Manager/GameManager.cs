@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // // すでにCustomシーンが読み込まれていた場合に備える
+        // すでにCustomシーンが読み込まれていた場合に備える
         if (SceneManager.GetActiveScene().name == "Custom")
         {
             OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);

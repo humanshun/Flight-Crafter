@@ -5,7 +5,6 @@ using DG.Tweening;
 
 public class TutorialCustom1 : MonoBehaviour
 {
-    [SerializeField] private TutorialCustom1 tutorialPopup;
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private TextMeshProUGUI tutorialText;
     [SerializeField] private Button nextButton;
@@ -47,12 +46,17 @@ public class TutorialCustom1 : MonoBehaviour
     {
         Step1, Step2, Step3, Step4, Step5
     }
-    private void Awake()
-    {
-        GameManager.Instance.TutorialCustomPopup1(tutorialPopup);
-    }
     private void Start()
     {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TutorialCustomPopup1(this);
+        }
+        else
+        {
+            Debug.LogError("GameManagerが先に起動していません！");
+        }
+
         foreach (var arrow in arrowPrefab)
         {
             arrow.SetActive(false);
