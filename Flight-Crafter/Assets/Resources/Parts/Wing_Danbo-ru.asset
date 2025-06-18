@@ -29,4 +29,4 @@ MonoBehaviour:
     value: 0.01
   airControl:
     displayName: "\u7A7A\u4E2D\u5236\u5FA1"
-    value: 10
+    value: 30
