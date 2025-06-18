@@ -31,19 +31,6 @@ public class GameManager : MonoBehaviour
     public bool isChangePart = false;
     public bool isClearTutorial = false;
 
-    void Start()
-    {
-        // すでにCustomシーンが読み込まれていた場合に備える
-        if (SceneManager.GetActiveScene().name == "Custom")
-        {
-            OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
-        }
-        else if (SceneManager.GetActiveScene().name == "InGame")
-        {
-            OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
-        }
-    }
-
     public void RegisterScore(InGameUI s)
     {
         score = s;

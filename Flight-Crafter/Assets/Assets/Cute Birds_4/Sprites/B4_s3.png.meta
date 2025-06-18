@@ -2,11 +2,11 @@ fileFormatVersion: 2
 guid: 26f4a7ed18b86714b9f6494601661fc3
 AssetOrigin:
   serializedVersion: 1
-  productId: 234486
-  packageName: Cute Birds 2D - #4
+  productId: 237273
+  packageName: 2D Cute Birds(4 in 1) Mini pack
   packageVersion: 1.0
-  assetPath: Assets/Cute Birds_4/Sprites/B4_s3.png
-  uploadId: 530471
+  assetPath: Assets/Assets/Cute Birds_4/Sprites/B4_s3.png
+  uploadId: 538325
 TextureImporter:
   internalIDToNameTable:
   - first:

@@ -54,7 +54,7 @@ public class TutorialCustom1 : MonoBehaviour
         }
         else
         {
-            Debug.LogError("GameManagerが先に起動していません！");
+            Debug.LogError("GameManagerが先に起動していません");
         }
 
         foreach (var arrow in arrowPrefab)
