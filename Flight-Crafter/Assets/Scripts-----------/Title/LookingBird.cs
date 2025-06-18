@@ -16,7 +16,7 @@ public class LookingBird : MonoBehaviour
         playerSprite.enabled = false;
         SetRight(true);  // 初期状態を右向きにする
         bool isLeft = birdTransform.position.x < transform.position.x;
-         // 現在アクティブなheadを取得
+        // 現在アクティブなheadを取得
         GameObject activeHead = isLeft ? headLeft : headRight;
 
         // 方向ベクトル → 回転角度 → 反映
@@ -60,5 +60,22 @@ public class LookingBird : MonoBehaviour
         headLeft.SetActive(!isRight);
         bodyLeft.SetActive(!isRight);
         footLeft.SetActive(!isRight);
+    }
+    void Set()
+    {
+        headRight.SetActive(false);
+        bodyRight.SetActive(false);
+        footRight.SetActive(false);
+
+        headLeft.SetActive(false);
+        bodyLeft.SetActive(false);
+        footLeft.SetActive(false);
+    }
+
+    public void BackAnim()
+    {
+        Set();
+        playerSprite.enabled = true;
+        this.enabled = false;
     }
 }
