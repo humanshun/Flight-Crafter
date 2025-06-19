@@ -50,4 +50,9 @@ public class CharacterMover : MonoBehaviour
             yield return new WaitForSeconds(step.waitAfterMove);
         }
     }
+
+    public void AnimStop()
+    {
+        animator.speed = 0;
+    }
 }
