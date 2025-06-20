@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class TutorialCustom1 : MonoBehaviour
 {
@@ -51,6 +52,8 @@ public class TutorialCustom1 : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.TutorialCustomPopup1(this);
+            Scene currentScene = SceneManager.GetActiveScene();
+            GameManager.Instance.TutorialShow(currentScene);
         }
         else
         {

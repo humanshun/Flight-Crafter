@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class TutorialInGame : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class TutorialInGame : MonoBehaviour
 
     void Start()
     {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TutorialInGamePopup(this);
+            Scene currentScene = SceneManager.GetActiveScene();
+            GameManager.Instance.TutorialShow(currentScene);
+        }
         for (int i = 0; i < tutorialPanels.Length; i++)
         {
             if (tutorialPanels[i] == null)

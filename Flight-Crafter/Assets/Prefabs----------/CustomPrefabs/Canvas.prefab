@@ -4152,6 +4152,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 423425497873803170}
+  addCoinEfect: {fileID: 0}
+  interval: 0.08
+  startDelay: 1.55
+  earnedCoins: 0
 --- !u!1 &3255882241921845227
 GameObject:
   m_ObjectHideFlags: 0
@@ -11297,10 +11301,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6167401414640992460}
     - target: {fileID: 2046390619993013700, guid: 60d8ad82c4171264a93a7f2efd71daba, type: 3}
-      propertyPath: tutorialPopup
-      value: 
-      objectReference: {fileID: 2192836332444077129}
-    - target: {fileID: 2046390619993013700, guid: 60d8ad82c4171264a93a7f2efd71daba, type: 3}
       propertyPath: bodyCustomButton
       value: 
       objectReference: {fileID: 8854698722584755107}
@@ -11409,17 +11409,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60d8ad82c4171264a93a7f2efd71daba, type: 3}
---- !u!114 &2192836332444077129 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2046390619993013700, guid: 60d8ad82c4171264a93a7f2efd71daba, type: 3}
-  m_PrefabInstance: {fileID: 146569759968309645}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2d987e325b92c14cb0a2b4fda5fa450, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &5136484384308437164 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4990214057000833313, guid: 60d8ad82c4171264a93a7f2efd71daba, type: 3}
