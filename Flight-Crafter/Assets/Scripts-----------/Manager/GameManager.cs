@@ -1,3 +1,4 @@
+using Ricimi;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -153,6 +154,14 @@ public class GameManager : MonoBehaviour
         {
             score.OnGameOver();
         }
+    }
+
+    public void GameClear()
+    {
+        if (isGameOver) return;
+        isGameOver = true;
+        Transition.LoadLevel("Clear", 2.0f, Color.black);
+        Debug.Log("ゲームクリア");
     }
     private void HandlePartPurchased()
     {

@@ -12,14 +12,9 @@ public class TutorialInGame : MonoBehaviour
     private bool tutorial = false;
     private int currentStep = 0;
 
-    private void Awake()
-    {
-        GameManager.Instance.TutorialInGamePopup(tutorialPopup);
-        Debug.Log("TutorialInGameからGameManagerに登録");
-    }
-
     void Start()
     {
+        GameManager.Instance.TutorialInGamePopup(tutorialPopup);
         if (GameManager.Instance != null)
         {
             GameManager.Instance.TutorialInGamePopup(this);

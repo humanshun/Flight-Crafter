@@ -70,7 +70,7 @@ public class PlayerController2 : MonoBehaviour
 
     //水に入ったとき
     [SerializeField] private LayerMask waterLayer; // Waterレイヤーを指定
-    [SerializeField] private CapsuleCollider2D playerCollider; // プレイヤーのCapsuleCollider2D
+    [SerializeField] private BoxCollider2D playerCollider; // プレイヤーのCapsuleCollider2D
     private bool inWater; // 水中にいるかどうか
     float MovY = 0;
 
@@ -82,6 +82,12 @@ public class PlayerController2 : MonoBehaviour
 
     //死んだかどうか
     private bool isDead = false;
+
+    //クリアしたかどうか
+    [SerializeField] private float clearX = 7000f; // ゴール地点X
+    [SerializeField] private float clearSpeedThreshold = 1f; // 停止とみなす速度
+    [SerializeField] private LayerMask runwayLayer; // 滑走路のレイヤー
+    private bool isClear = false;
 
     void Awake()
     {
@@ -133,6 +139,8 @@ public class PlayerController2 : MonoBehaviour
         InWater();
 
         CheckGameOver();
+
+        CheckClear();
     }
 
     void FixedUpdate()
@@ -394,6 +402,24 @@ public class PlayerController2 : MonoBehaviour
             rb.linearVelocity = Vector2.zero; // プレイヤーの速度をゼロにする
             rb.bodyType = RigidbodyType2D.Kinematic; // Rigidbodyをキネマティックにして動かなくする
             rb.constraints = RigidbodyConstraints2D.FreezeAll; // 全ての動きを制限する
+        }
+    }
+
+    private void CheckClear()
+    {
+        if (isClear) return;
+
+        bool reachedGoal = transform.position.x >= clearX;
+        bool isStopped = rb.linearVelocity.magnitude < clearSpeedThreshold;
+        if (reachedGoal && isStopped && groundCheck)
+        {
+            isClear = true;
+
+            rb.linearVelocity = Vector2.zero; // プレイヤーの速度をゼロにする
+            rb.bodyType = RigidbodyType2D.Kinematic; // Rigidbodyをキネマティックにして動かなくする
+            rb.constraints = RigidbodyConstraints2D.FreezeAll; // 全ての動きを制限する
+
+            GameManager.Instance.GameClear();
         }
     }
 
