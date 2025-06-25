@@ -72,7 +72,7 @@ public class TutorialInGame : MonoBehaviour
         }
         else
         {
-            Debug.Log("チュートリアル終了");
+            GameManager.Instance.isClearInGameTutorial = true;
             tutorial = true;
         }
     }

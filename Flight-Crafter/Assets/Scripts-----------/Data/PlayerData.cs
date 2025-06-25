@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
-using NUnit.Framework;
+using UnityEngine.SceneManagement;
 
 // プレイヤーのデータを管理するシングルトンクラス
 public class PlayerData : MonoBehaviour
@@ -53,6 +53,7 @@ public class PlayerData : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
         {
             ResetPlayerData(); // F1キーでデータをリセット
+            SceneManager.LoadScene("Title");
         }
     }
 

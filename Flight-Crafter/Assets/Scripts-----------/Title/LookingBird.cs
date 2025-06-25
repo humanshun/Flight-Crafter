@@ -10,6 +10,19 @@ public class LookingBird : MonoBehaviour
     [SerializeField] private GameObject bodyLeft;
     [SerializeField] private GameObject footLeft;
     [SerializeField] private Transform birdTransform;
+    void OnEnable()
+    {
+        GameManager.OnInGamePlayerSpawned += OnPlayerSpawned;
+    }
+
+    void OnDisable()
+    {
+        GameManager.OnInGamePlayerSpawned -= OnPlayerSpawned;
+    }
+    private void OnPlayerSpawned(CustomPlayer spawnedPlayer)
+    {
+        birdTransform = spawnedPlayer.transform;
+    }
 
     void Start()
     {

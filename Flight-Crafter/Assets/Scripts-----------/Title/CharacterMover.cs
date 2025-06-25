@@ -13,6 +13,7 @@ public class CharacterMover : MonoBehaviour
         public AnimationClip clip;               // 再生するアニメーションクリップ
         public Vector3 startPosition;            // 開始位置
         public Vector3 endPosition;              // 終了位置
+        public Vector3 scale = new Vector3(1, 1, 1);
         public float moveDuration = 1.2f;        // 移動時間
         public float waitBeforeMove = 0.3f;      // アニメーション前の待機
         public float waitAfterMove = 0.5f;       // 移動後の待機
@@ -42,6 +43,8 @@ public class CharacterMover : MonoBehaviour
 
             // ★任意のイベント呼び出し（インスペクターで設定可能）
             step.onStepAction?.Invoke();
+
+            characterTransform.localScale = step.scale;
 
             yield return characterTransform.DOMove(step.endPosition, step.moveDuration)
                 .SetEase(Ease.Linear)

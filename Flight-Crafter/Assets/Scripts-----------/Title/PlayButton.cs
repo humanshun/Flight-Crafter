@@ -1,3 +1,5 @@
+using System;
+using Ricimi;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,10 +17,10 @@ public class PlayButton : MonoBehaviour
         switch (buttonType)
         {
             case ButtonType.NewGame:
-                SceneManager.LoadScene("Custom");
+                Transition.LoadLevel("Custom", 2.0f, Color.black);
                 break;
             case ButtonType.Continue:
-                SceneManager.LoadScene("Custom");
+                Transition.LoadLevel("Custom", 2.0f, Color.black);
                 break;
         }
     }
