@@ -21,17 +21,17 @@ public class GameManager : MonoBehaviour
 
     private Canvas canvas;
     public GameOverPopup gameOvarPopup;
+    public PausePopup pausePopup;
     public TutorialCustom1 tutorialCustomPopup1;
     public TutorialInGame tutorialInGamePopup;
     public bool isGameOver = false;
 
     //ゲーム進行フラグ
-    public bool isTutorialCustom = false;
-    public bool isTutorialInGame = false;
     public bool isBuyPart = false;
     public bool isChangePart = false;
     public bool isClearTutorial = false;
     public bool isClearInGameTutorial = false;
+    public bool isClearCustomTutorial = false;
 
     public void RegisterScore(InGameUI s)
     {
@@ -70,6 +70,25 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject); // すでに存在しているなら自分を削除
         }
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            string sceneName = SceneManager.GetActiveScene().name;
+            if ((sceneName == "InGame"|| sceneName == "Custom") && !isGameOver && pausePopup != null)
+            {
+                if (pausePopup.IsShowing())
+                {
+                    pausePopup.Hide();
+                }
+                else
+                {
+                    pausePopup.Show();
+                }
+            }
+        }
+    }
     void OnDestroy()
     {
         // シーンが破棄されるときにイベントを解除
@@ -90,16 +109,15 @@ public class GameManager : MonoBehaviour
             }
             playerInstance = Instantiate(player, spawnPosition, Quaternion.identity);
 
-            if (!isTutorialCustom)
+            if (isClearCustomTutorial)
             {
-                isTutorialCustom = true;
-                tutorialCustomPopup1.gameObject.SetActive(true); // チュートリアルポップアップを表示
-                tutorialCustomPopup1.DisableAllButtons();
-                isTutorialCustom = true; // チュートリアルが開始されたことを記録
+                tutorialCustomPopup1.gameObject.SetActive(false);
+                return;
             }
             else
             {
-                tutorialCustomPopup1.gameObject.SetActive(false);
+                tutorialCustomPopup1.gameObject.SetActive(true); // チュートリアルポップアップを表示
+                tutorialCustomPopup1.DisableAllButtons();
             }
         }
         else if (scene.name == "InGame")
@@ -117,9 +135,12 @@ public class GameManager : MonoBehaviour
                 tutorialInGamePopup.gameObject.SetActive(false); // チュートリアルポップアップを非表示にする
             }
 
-            if (!isTutorialInGame)
+            if (isClearInGameTutorial)
             {
-                isTutorialInGame = true; // チュートリアルが開始されたことを記録
+                tutorialInGamePopup.gameObject.SetActive(false);
+            }
+            else
+            {
                 tutorialInGamePopup.gameObject.SetActive(true);
             }
         }

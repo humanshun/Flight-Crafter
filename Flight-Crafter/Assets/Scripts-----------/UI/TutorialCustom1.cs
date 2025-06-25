@@ -165,6 +165,7 @@ public class TutorialCustom1 : MonoBehaviour
                     ShowArrow(6, Vector2.right, 20f);
                 }
                 checkStep5 = true;
+                GameManager.Instance.isClearCustomTutorial = true;
                 setButton.interactable = false;
                 bodyCustomButton.interactable = false;
                 rocketCustomButton.interactable = false;
