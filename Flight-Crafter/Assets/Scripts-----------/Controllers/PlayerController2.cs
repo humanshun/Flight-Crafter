@@ -89,6 +89,13 @@ public class PlayerController2 : MonoBehaviour
     [SerializeField] private LayerMask runwayLayer; // 滑走路のレイヤー
     private bool isClear = false;
 
+    // サウンド
+    [SerializeField] private string rocketLoopSFXName = "SE_Rocket"; // SoundData に登録した名前
+    [SerializeField] private string carLoopSFXName = "SE_Car"; // SoundData に登録した名前
+    private bool isCarSFXPlaying = false;
+    [SerializeField] private float maxCarSpeed = 50f; // 最大音量になる速度（好みに応じて調整）
+    [SerializeField] private float minCarVolume = 0.1f;
+    [SerializeField] private float maxCarVolume = 1.0f;
     void Awake()
     {
         Application.targetFrameRate = 60; // フレームレートを60に固定
@@ -132,6 +139,7 @@ public class PlayerController2 : MonoBehaviour
 
         //地上で加速するメソッド
         GroundAddForce();
+        UpdateCarLoopSFX();
 
         // プレイヤーの回転に基づいた右方向を計算
         rightDirection = new Vector2(Mathf.Cos(playerAngle * Mathf.Deg2Rad), Mathf.Sin(playerAngle * Mathf.Deg2Rad));
@@ -301,6 +309,7 @@ public class PlayerController2 : MonoBehaviour
     {
         currentRocketThrustInstance = Instantiate(rocketThrustPrefab, transform);
         currentRocketThrustInstance.transform.localPosition = effectPosition; // 背面に配置
+        AudioManager.Instance.PlayLoopSFX(rocketLoopSFXName);
     }
     // ロケットのエフェクトを停止するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private void StopRocketEffect()
@@ -312,6 +321,7 @@ public class PlayerController2 : MonoBehaviour
         {
             ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
+        AudioManager.Instance.StopLoopSFX();
     }
 
 
@@ -342,6 +352,38 @@ public class PlayerController2 : MonoBehaviour
             rb.AddForce(force, ForceMode2D.Force);
         }
     }
+
+    // 車のループサウンドを更新するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    private void UpdateCarLoopSFX()
+    {
+        float moveThreshold = 0.5f; // 走行とみなす最低速度
+        float currentSpeed = rb.linearVelocity.magnitude;
+        bool shouldPlay = groundCheck && currentSpeed > moveThreshold;
+
+        if (shouldPlay)
+        {
+            // 音が鳴っていなければ再生
+            if (!isCarSFXPlaying)
+            {
+                AudioManager.Instance.PlayCarLoopSFX(carLoopSFXName);
+                isCarSFXPlaying = true;
+            }
+
+            // 音量を速度に応じて調整
+            float t = Mathf.InverseLerp(0f, maxCarSpeed, currentSpeed); // 0～1に正規化
+            float volume = Mathf.Lerp(minCarVolume, maxCarVolume, t);
+            AudioManager.Instance.SetCarLoopVolume(volume);
+        }
+        else
+        {
+            if (isCarSFXPlaying)
+            {
+                AudioManager.Instance.StopCarLoopSFX();
+                isCarSFXPlaying = false;
+            }
+        }
+    }
+
 
     private void GetPartsData()
     {
@@ -486,7 +528,7 @@ public class PlayerController2 : MonoBehaviour
             sr.enabled = visible;
         }
     }
-    
+
     private void RotateToMoveDirectionWithControl()
     {
         Vector2 velocity = rb.linearVelocity;
@@ -500,7 +542,7 @@ public class PlayerController2 : MonoBehaviour
         float angleDifference = Mathf.DeltaAngle(currentAngle, moveAngle);
         float speedFactor = velocity.magnitude * 0.005f;
         float waterMultiplier = inWater ? 0.01f : 2.0f; // 水中では回転を遅くする
-        
+
         float correctionTorque = angleDifference * speedFactor * waterMultiplier;  // ← 補正の強さ（0.1f を好みに調整）
 
         rb.AddTorque(correctionTorque);

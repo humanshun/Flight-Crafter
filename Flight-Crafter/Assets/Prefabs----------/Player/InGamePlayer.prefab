@@ -215,6 +215,11 @@ MonoBehaviour:
   runwayLayer:
     serializedVersion: 2
     m_Bits: 64
+  rocketLoopSFXName: SE_Rocket
+  carLoopSFXName: SE_Car
+  maxCarSpeed: 50
+  minCarVolume: 0.1
+  maxCarVolume: 1
 --- !u!50 &5382125969591630498
 Rigidbody2D:
   serializedVersion: 5
