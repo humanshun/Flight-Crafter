@@ -17,10 +17,10 @@ MonoBehaviour:
   partPrefab: {fileID: 1499030482237402766, guid: 5db5ffaed34980c4b86ace224cf2ff25, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
-    value: 50
+    value: 1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 10000
+    value: 100
   partType: 0
   partDescription: "\u8ECD\u968A\u304B\u3089\u8CB7\u3063\u305F"
   partIconImage: {fileID: -5734459806751876204, guid: 8ffbc1d83ee57f94f815690a51b92fd2, type: 3}
@@ -30,7 +30,7 @@ MonoBehaviour:
   hp:
     displayName: "\u4F53\u529B"
     value: 100
-  rocketPosition: {x: 0, y: 0}
-  wingPosition: {x: 0, y: 0}
-  rightTirePosition: {x: 0, y: 0}
-  leftTirePosition: {x: 0, y: 0}
+  rocketPosition: {x: -4, y: 0.65}
+  wingPosition: {x: -2, y: 0.55}
+  rightTirePosition: {x: 2, y: 0.2}
+  leftTirePosition: {x: -2, y: 0.2}

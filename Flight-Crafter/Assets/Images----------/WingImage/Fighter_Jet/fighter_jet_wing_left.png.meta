@@ -106,12 +106,12 @@ TextureImporter:
       name: fighter_jet_wing_left_0
       rect:
         serializedVersion: 2
-        x: 283
-        y: 727
-        width: 6
-        height: 7
+        x: 290
+        y: 556
+        width: 433
+        height: 201
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -133,7 +133,7 @@ TextureImporter:
         width: 436
         height: 200
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -150,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -159,7 +159,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      fighter_jet_wing_left_0: 4044767157129310203
+      fighter_jet_wing_left_1: 8243001209998312543
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
