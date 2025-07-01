@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rocketParts:
   - {fileID: 11400000, guid: 5502d2dc500ff4741aa948f4ebcc002e, type: 2}
+  - {fileID: 11400000, guid: fe72bf306a1917f4da1d738cdbc0bfca, type: 2}

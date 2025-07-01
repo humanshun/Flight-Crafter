@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56f70f85ef5a41447979281f9d74ad42, type: 3}
-  m_Name: Rocket_RocketHanabi
+  m_Name: Rocket_Jet
   m_EditorClassIdentifier: 
-  partName: "\u30ED\u30B1\u30C3\u30C8\u82B1\u706B"
-  resaurceFileName: Rocket_RocketHanabi
-  partPrefab: {fileID: 764101576814905923, guid: a2d84cf2799a30a43b225eefd8814732, type: 3}
+  partName: "\u30B8\u30A7\u30C3\u30C8\u30A8\u30F3\u30B8\u30F3"
+  resaurceFileName: Rocket_Jet
+  partPrefab: {fileID: 3261696603869150988, guid: 96d84f0cb884fe24c9e161dc062961f4, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
     value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 10
+    value: 1000
   partType: 1
-  partDescription: 
-  partIconImage: {fileID: -5026856115379081334, guid: f302a6d94c3874640aadd27e9f4a3d19, type: 3}
+  partDescription: "\u6700\u9AD8\u7D1A\u30ED\u30B1\u30C3\u30C8\u30A8\u30F3\u30B8\u30F3"
+  partIconImage: {fileID: 7143864667645150342, guid: a81358d2ede63214aa1f94861f913f32, type: 3}
   jetThrust:
     displayName: "\u5674\u5C04\u529B"
-    value: 10
+    value: 50
   jetTime:
     displayName: "\u5674\u5C04\u6642\u9593"
-    value: 10
+    value: 100

@@ -28,6 +28,7 @@ namespace Ricimi
         // ポップアップを閉じる際に呼び出すメソッド
         public void Close()
         {
+            Time.timeScale = 1.0f; // 時間のスケールを元に戻す
             // この GameObject にアタッチされている Animator コンポーネントを取得
             var animator = GetComponent<Animator>();
 
@@ -103,6 +104,7 @@ namespace Ricimi
         // 背景をフェードアウトさせる処理
         private void RemoveBackground()
         {
+            if (m_background == null) return;
             // 背景の Image コンポーネントを取得
             var image = m_background.GetComponent<Image>();
             // Image コンポーネントが存在する場合、0.2秒でフェードアウト（アルファを 0 に）
