@@ -48,15 +48,6 @@ public class PlayerData : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            ResetPlayerData(); // F1キーでデータをリセット
-            SceneManager.LoadScene("Title");
-        }
-    }
-
     // パーツ購入を試みる処理（成功ならtrue）
     public bool TryBuyPart(PartData part, int price)
     {

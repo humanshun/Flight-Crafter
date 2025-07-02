@@ -8,7 +8,6 @@ public class AudioSetting : MonoBehaviour
 
     private void Start()
     {
-        Time.timeScale = 0f;
         float bgm = PlayerPrefs.GetFloat("BGMVolume", 0.5f);
         float sfx = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
 

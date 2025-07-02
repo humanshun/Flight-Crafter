@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource rocketLoopSource;
     [SerializeField] private AudioSource carLoopSource;
     [SerializeField] private AudioSource flyLoopSource;
+    [SerializeField] private AudioSource waterLoopSource; // 水中ループ用のAudioSource
 
     [Header("Mixer")]
     [SerializeField] private AudioMixer audioMixer;
@@ -76,17 +77,37 @@ public class AudioManager : MonoBehaviour
         Debug.LogWarning($"BGM '{soundName}' が見つかりません");
     }
 
-    public void PlaySFX(string soundName)
+    // SFXをPlay/Stop方式で再生・停止する
+    public void PlaySFX(string soundName, float pitch = 1f)
     {
         foreach (var sound in sfxSounds)
         {
             if (sound.soundName == soundName)
             {
-                sfxSource.PlayOneShot(sound.clip, sound.volume);
+                sfxSource.pitch = pitch;
+                sfxSource.clip = sound.clip;
+                sfxSource.volume = sound.volume;
+                sfxSource.loop = false;
+                sfxSource.Play();
                 return;
             }
         }
         Debug.LogWarning($"SFX '{soundName}' が見つかりません");
+    }
+
+    public void StopSFX(string soundName)
+    {
+        foreach (var sound in sfxSounds)
+        {
+            if (sound.soundName == soundName)
+            {
+                if (sfxSource.isPlaying && sfxSource.clip == sound.clip)
+                {
+                    sfxSource.Stop();
+                }
+                return;
+            }
+        }
     }
 
     public async void PlayLoopSFX(string soundName)
@@ -201,4 +222,33 @@ public class AudioManager : MonoBehaviour
     {
         flyLoopSource.volume = Mathf.Clamp01(volume);
     }
+
+    public void PlayWaterLoopSFX(string soundName)
+    {
+        if (waterLoopSource.isPlaying)
+        {
+            return; // すでに再生中なら無視
+        }
+
+        foreach (var sound in sfxSounds)
+        {
+            if (sound.soundName == soundName)
+            {
+                waterLoopSource.clip = sound.clip;
+                waterLoopSource.volume = sound.volume;
+                waterLoopSource.loop = true;
+                waterLoopSource.Play();
+                return;
+            }
+        }
+        Debug.LogWarning($"WaterLoopSFX '{soundName}' が見つかりません");
+    }
+    public void StopWaterLoopSFX()
+    {
+        if (waterLoopSource.isPlaying)
+        {
+            waterLoopSource.Stop();
+        }
+    }
+
 }

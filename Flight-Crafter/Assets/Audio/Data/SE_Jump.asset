@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01729d08af4abc84ebe80df4a72265f4, type: 3}
-  m_Name: BGM_SlowWalk
+  m_Name: SE_Jump
   m_EditorClassIdentifier: 
-  soundName: BGM_SlowWalk
-  clip: {fileID: 8300000, guid: 65a6780a3f16c374dbb5a748ce66c1ac, type: 3}
-  volume: 0
-  loop: 1
+  soundName: SE_Jump
+  clip: {fileID: 8300000, guid: 895735698c60b8c4088e419c0806e956, type: 3}
+  volume: 1
+  loop: 0

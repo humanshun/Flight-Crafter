@@ -92,7 +92,7 @@ public class PlayerController2 : MonoBehaviour
     // サウンド
     [SerializeField] private string rocketLoopSFXName = "SE_Rocket"; // SoundData に登録した名前
     [SerializeField] private string carLoopSFXName = "SE_Car"; // SoundData に登録した名前
-    [SerializeField] private string flyLoopSource = "SE_Fly"; // SoundData に登録した名前
+    [SerializeField] private string flyLoopSFXName = "SE_Fly"; // SoundData に登録した名前
     private bool isCarSFXPlaying = false;
     private bool isFlySFXPlaying = false;
     [SerializeField] private float maxCarSpeed = 50f; // 最大音量になる速度（好みに応じて調整）
@@ -373,7 +373,7 @@ public class PlayerController2 : MonoBehaviour
             }
             if (!isFlySFXPlaying)
             {
-                AudioManager.Instance.PlayFlyLoopSFX(flyLoopSource);
+                AudioManager.Instance.PlayFlyLoopSFX(flyLoopSFXName);
                 isFlySFXPlaying = true;
             }
 
@@ -392,6 +392,11 @@ public class PlayerController2 : MonoBehaviour
             {
                 AudioManager.Instance.StopCarLoopSFX();
                 isCarSFXPlaying = false;
+            }
+            if (isFlySFXPlaying)
+            {
+                AudioManager.Instance.StopFlyLoopSFX();
+                isFlySFXPlaying = false;
             }
         }
     }
@@ -437,13 +442,19 @@ public class PlayerController2 : MonoBehaviour
             // 水に入った瞬間だけ呼ぶ
             if (!wasInWater)
             {
-                AudioManager.Instance.PlaySFX("SE_Water");
+                AudioManager.Instance.PlayWaterLoopSFX("SE_InWater");
+
+                if (rb.linearVelocity.magnitude > 50f)
+                {
+                    AudioManager.Instance.PlaySFX("SE_Water");
+                }
                 StopRocketEffect();
                 rocketPermanentlyDisabled = true; // ← 永久封印
             }
         }
         else
         {
+            AudioManager.Instance.StopWaterLoopSFX();
             //通常抵抗値に戻す
             rb.linearDamping = total_AirResistance;
         }

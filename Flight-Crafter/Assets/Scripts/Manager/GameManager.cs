@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             string sceneName = SceneManager.GetActiveScene().name;
-            if ((sceneName == "InGame"|| sceneName == "Custom") && !isGameOver && pausePopup != null)
+            if ((sceneName == "InGame" || sceneName == "Custom") && !isGameOver && pausePopup != null)
             {
                 if (pausePopup.IsShowing())
                 {
@@ -87,6 +87,12 @@ public class GameManager : MonoBehaviour
                     pausePopup.Show();
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            string sceneName = SceneManager.GetActiveScene().name;
+            PlayerData.Instance.ResetPlayerData(); // F1キーでデータをリセット
+            SceneManager.LoadScene(sceneName);
         }
     }
     void OnDestroy()
@@ -146,6 +152,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ResetDeta()
+    {
+        
+    }
+
     public void GameOver()
     {
         if (isGameOver) return; // すでにゲームオーバーなら何もしない
@@ -175,6 +186,7 @@ public class GameManager : MonoBehaviour
         {
             score.OnGameOver();
         }
+        AudioManager.Instance.StopWaterLoopSFX();
     }
 
     public void GameClear()

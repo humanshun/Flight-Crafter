@@ -545,6 +545,7 @@ GameObject:
   - component: {fileID: 463612459}
   - component: {fileID: 463612462}
   - component: {fileID: 463612463}
+  - component: {fileID: 463612464}
   m_Layer: 0
   m_Name: Penguin
   m_TagString: Untagged
@@ -670,7 +671,19 @@ MonoBehaviour:
     waitAfterMove: 0
     onStepAction:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 463612464}
+          m_TargetAssemblyTypeName: TitleSound, Assembly-CSharp
+          m_MethodName: PlayWalkSound
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.8
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - name: 
     clip: {fileID: 7400000, guid: f316920cffe3d504882f519f757a5efe, type: 2}
     startPosition: {x: -2, y: -2, z: 0}
@@ -681,7 +694,19 @@ MonoBehaviour:
     waitAfterMove: 0
     onStepAction:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 463612464}
+          m_TargetAssemblyTypeName: TitleSound, Assembly-CSharp
+          m_MethodName: StapSound
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - name: 
     clip: {fileID: 7400000, guid: f316920cffe3d504882f519f757a5efe, type: 2}
     startPosition: {x: -2, y: -2, z: 0}
@@ -749,7 +774,19 @@ MonoBehaviour:
     waitAfterMove: 0
     onStepAction:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 463612464}
+          m_TargetAssemblyTypeName: TitleSound, Assembly-CSharp
+          m_MethodName: PlayJumpSound
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
   - name: 
     clip: {fileID: 7400000, guid: f316920cffe3d504882f519f757a5efe, type: 2}
     startPosition: {x: -2, y: -2, z: 0}
@@ -772,29 +809,17 @@ MonoBehaviour:
     onStepAction:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: set_enabled
-          m_Mode: 6
+        - m_Target: {fileID: 463612464}
+          m_TargetAssemblyTypeName: TitleSound, Assembly-CSharp
+          m_MethodName: PlayWalkSound
+          m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
-            m_FloatArgument: 0
+            m_FloatArgument: 0.5
             m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: set_enabled
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
+            m_BoolArgument: 0
           m_CallState: 2
   - name: 
     clip: {fileID: 0}
@@ -810,6 +835,18 @@ MonoBehaviour:
         - m_Target: {fileID: 463612462}
           m_TargetAssemblyTypeName: CharacterMover, Assembly-CSharp
           m_MethodName: AnimStop
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 463612464}
+          m_TargetAssemblyTypeName: TitleSound, Assembly-CSharp
+          m_MethodName: StapSound
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -839,6 +876,21 @@ MonoBehaviour:
   bodyLeft: {fileID: 834125628}
   footLeft: {fileID: 843449256}
   birdTransform: {fileID: 5999396178046617436}
+--- !u!114 &463612464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463612458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b960766a04d3a0142914bc2dbb14b85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpsound: SE_Jump
+  walksound: SE_Walk
+  delay: 1500
 --- !u!1 &513263955
 GameObject:
   m_ObjectHideFlags: 0
@@ -2244,6 +2296,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1193520420
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 27.441483
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.8782058
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.753527
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697690519873440924, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937238952214190920, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
+      propertyPath: m_Name
+      value: PlayerData
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 288192891fc99eb48ba23bab78a8bbe2, type: 3}
 --- !u!1 &1214160159
 GameObject:
   m_ObjectHideFlags: 0
@@ -3630,6 +3739,7 @@ SceneRoots:
   - {fileID: 996480529}
   - {fileID: 1351703125}
   - {fileID: 1623061528739570445}
+  - {fileID: 1193520420}
   - {fileID: 2055318062}
   - {fileID: 594388064}
   - {fileID: 463612461}
