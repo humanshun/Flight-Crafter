@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Ricimi;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        _ = UpdateAsync();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             string sceneName = SceneManager.GetActiveScene().name;
@@ -88,11 +90,18 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+    private async Task UpdateAsync()
+    {
         if (Input.GetKeyDown(KeyCode.F1))
         {
             string sceneName = SceneManager.GetActiveScene().name;
+            if (sceneName == "InGame")
+            {
+                sceneName = "Custom";
+            }
             PlayerData.Instance.ResetPlayerData(); // F1キーでデータをリセット
-            SceneManager.LoadScene(sceneName);
+            await SceneChanger.Instance.ChangeScene(sceneName, 1.0f, 1.0f);
         }
     }
     void OnDestroy()
@@ -151,12 +160,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    public void ResetDeta()
-    {
-        
-    }
-
     public void GameOver()
     {
         if (isGameOver) return; // すでにゲームオーバーなら何もしない

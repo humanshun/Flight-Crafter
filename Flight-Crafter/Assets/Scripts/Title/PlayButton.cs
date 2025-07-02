@@ -12,12 +12,13 @@ public class PlayButton : MonoBehaviour
     }
     [SerializeField] private ButtonType buttonType;
 
-    void OnMouseDown()
+    private async void OnMouseDown()
     {
         switch (buttonType)
         {
             case ButtonType.NewGame:
-                Transition.LoadLevel("Custom", 2.0f, Color.black);
+                PlayerData.Instance.ResetPlayerData();
+                await SceneChanger.Instance.ChangeScene("Custom", 1.0f, 1.0f);
                 break;
             case ButtonType.Continue:
                 Transition.LoadLevel("Custom", 2.0f, Color.black);

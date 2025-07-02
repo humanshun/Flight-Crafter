@@ -184,7 +184,8 @@ public class PlayerData : MonoBehaviour
     public void ResetPlayerData()
     {
         playerCoins = 10000;
-
+        MaxDistance = 0f;
+        MaxAltitude = 0f;
         purchasedParts = new List<string>
         {
             "冷蔵庫段ボール",
@@ -225,7 +226,6 @@ public class PlayerData : MonoBehaviour
     {
         bool distanceUpdated = false;
         bool altitudeUpdated = false;
-
         if (distance > MaxDistance)
         {
             MaxDistance = distance;

@@ -10680,6 +10680,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &933386314
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112631752582751878, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985624411563610307, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
+      propertyPath: m_Name
+      value: SceneManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6a2d376c0b53532439b70680190e4d26, type: 3}
 --- !u!1 &954495148
 GameObject:
   m_ObjectHideFlags: 0
@@ -32755,6 +32812,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1906014731348133451, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1906014731348133451, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 2728147049269527269, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -32775,6 +32840,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 2974742592031109954, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: df67096a9a0a740e2bb55339d78944c0, type: 3}
     - target: {fileID: 3149375365537792767, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -32854,6 +32923,14 @@ PrefabInstance:
     - target: {fileID: 4277281501517495326, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4970883547708479956, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 4970883547708479956, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 5105706701075872389, guid: f25077932d111e04a9de9f2616f5dc35, type: 3}
       propertyPath: m_AnchorMax.y
@@ -35956,6 +36033,7 @@ SceneRoots:
   - {fileID: 2069781251}
   - {fileID: 34808017}
   - {fileID: 1425736731}
+  - {fileID: 933386314}
   - {fileID: 177580680}
   - {fileID: 667825421}
   - {fileID: 1092723062}

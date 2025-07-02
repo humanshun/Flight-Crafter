@@ -22,7 +22,7 @@ MonoBehaviour:
     displayName: "\u91D1\u984D"
     value: 1
   partType: 2
-  partDescription: 
+  partDescription: "\u5BB6\u306E\u6905\u5B50\u304B\u3089\u53D6\u3063\u3066\u304D\u305F"
   partIconImage: {fileID: -8267674591413847557, guid: 004b01c5030ebc34b907075d4910cbaf, type: 3}
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"

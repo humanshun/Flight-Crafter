@@ -54,6 +54,13 @@ public class TutorialCustom1 : MonoBehaviour
             GameManager.Instance.TutorialCustomPopup1(this);
             Scene currentScene = SceneManager.GetActiveScene();
             GameManager.Instance.TutorialShow(currentScene);
+            // クリア済みならチュートリアルUIを非表示にしてreturn
+            if (GameManager.Instance.isClearCustomTutorial)
+            {
+                tutorialPanel.SetActive(false);
+                this.gameObject.SetActive(false);
+                return;
+            }
         }
         else
         {
