@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class TitleButton : MonoBehaviour
 {
-    [SerializeField] private TitleManager titleManager;  // アタッチしておく
+    [HideInInspector]
+    public TitleManager titleManager;  // 外部から直接アサイン不可
     [SerializeField] private TitleManager.TitleState targetState;  // 遷移先
-    void Start()
+
+    public void SetTitleManager(TitleManager manager)
     {
-        titleManager = FindFirstObjectByType<TitleManager>();
+        titleManager = manager;
     }
 
     void OnMouseDown()

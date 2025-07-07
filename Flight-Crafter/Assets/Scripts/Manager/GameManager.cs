@@ -192,11 +192,11 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.StopWaterLoopSFX();
     }
 
-    public void GameClear()
+    public async void GameClear()
     {
         if (isGameOver) return;
         isGameOver = true;
-        Transition.LoadLevel("Clear", 2.0f, Color.black);
+        await SceneChanger.Instance.ChangeScene("Clear", 1.0f, 1.0f);
         Debug.Log("ゲームクリア");
     }
     private void HandlePartPurchased()

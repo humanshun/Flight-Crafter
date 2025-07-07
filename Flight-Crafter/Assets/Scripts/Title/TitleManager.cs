@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TitleManager : MonoBehaviour
@@ -15,9 +16,16 @@ public class TitleManager : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     private TitleState currentState = TitleState.Title;
     private GameObject currentBord;
+    private TitleManager titleManager;
     private MenuManager menuManager;
     private TitleButton titleButton;
     private bool isChanging = false;
+    private string clickSound = "SE_ButtonLow";
+
+    void Awake()
+    {
+        titleManager = this;
+    }
 
     async void Start()
     {
@@ -25,6 +33,7 @@ public class TitleManager : MonoBehaviour
 
         currentBord = Instantiate(titleBordPrefab, spawnPoint.position, Quaternion.identity);
         menuManager = currentBord.GetComponent<MenuManager>();
+        menuManager.Setting(titleManager);
         currentState = TitleState.Title;
         isChanging = true;
 
@@ -59,19 +68,28 @@ public class TitleManager : MonoBehaviour
         {
             case TitleState.Title:
                 currentBord = Instantiate(titleBordPrefab, spawnPoint.position, Quaternion.identity);
+                menuManager = currentBord.GetComponent<MenuManager>();
+                menuManager.Setting(titleManager);
+                AudioManager.Instance.PlaySFX(clickSound);
                 break;
 
             case TitleState.Setting:
                 currentBord = Instantiate(settingBordPrefab, spawnPoint.position, Quaternion.identity);
+                menuManager = currentBord.GetComponent<MenuManager>();
+                menuManager.Setting(titleManager);
+                AudioManager.Instance.PlaySFX(clickSound);
                 break;
 
             case TitleState.Play:
                 currentBord = Instantiate(playBordPrefab, spawnPoint.position, Quaternion.identity);
+                menuManager = currentBord.GetComponent<MenuManager>();
+                menuManager.Setting(titleManager);
+                AudioManager.Instance.PlaySFX(clickSound);
                 break;
         }
         menuManager = currentBord.GetComponent<MenuManager>();
 
-        await UniTask.Delay(4000); // 1秒待ってから解除（必要に応じて変更）
+        await UniTask.Delay(4000);
         isChanging = false;
     }
 

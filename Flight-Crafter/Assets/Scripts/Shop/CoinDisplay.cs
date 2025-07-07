@@ -35,9 +35,9 @@ public class CoinDisplay : MonoBehaviour
             currentCoin++;
             coinText.text = currentCoin.ToString();
             yield return new WaitForSeconds(interval);
+            AudioManager.Instance.PlaySFX("SE_Coins");
         }
 
-        // 念のため最終値をセット（途中スキップとかの対策）
         coinText.text = targetCoin.ToString();
     }
 }

@@ -7,6 +7,7 @@ public class PausePopup : MonoBehaviour
     [SerializeField] private GameObject pausePopup;
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button titleButton;
     [SerializeField] private Button quitButton;
     private GameObject popupInstance;
     private void Start()
@@ -17,6 +18,7 @@ public class PausePopup : MonoBehaviour
 
         resumeButton.onClick.AddListener(OnClickResume);
         restartButton.onClick.AddListener(OnClickRestart);
+        titleButton.onClick.AddListener(OnClickTitle);
         quitButton.onClick.AddListener(OnClickQuit);
     }
     public bool IsShowing()
@@ -42,22 +44,32 @@ public class PausePopup : MonoBehaviour
     }
     private void OnClickResume()
     {
+        AudioManager.Instance.PlaySFX("SE_ButtonLow");
         Hide(); // 時間再開
     }
 
-    private void OnClickRestart()
+    private async void OnClickRestart()
     {
         Time.timeScale = 1f; // 時間再開
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        AudioManager.Instance.PlaySFX("SE_ButtonLow");
+        await SceneChanger.Instance.ChangeScene(SceneManager.GetActiveScene().name, 0.5f, 0.5f);
+    }
+
+    private async void OnClickTitle()
+    {
+        Time.timeScale = 1f; // 時間再開
+        AudioManager.Instance.PlaySFX("SE_ButtonLow");
+        await SceneChanger.Instance.ChangeScene("Title", 0.5f, 0.5f);
     }
 
     private void OnClickQuit()
     {
         Time.timeScale = 1f;
-    #if UNITY_EDITOR
+        AudioManager.Instance.PlaySFX("SE_ButtonLow");
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // エディタ再生を止める
-    #else
+#else
         Application.Quit(); // ビルド版ではアプリ終了
-    #endif
+#endif
     }
 }

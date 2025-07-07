@@ -2845,6 +2845,8 @@ MonoBehaviour:
   bord: Setting
   characterBird1: {fileID: 96785895263061975}
   characterBird2: {fileID: 748904098771229175}
+  buttons:
+  - {fileID: 441353628888706853}
 --- !u!114 &2122027903434378175
 MonoBehaviour:
   m_ObjectHideFlags: 0

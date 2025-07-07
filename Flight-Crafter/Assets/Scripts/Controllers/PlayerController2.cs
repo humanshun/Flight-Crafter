@@ -27,20 +27,20 @@ public class PlayerController2 : MonoBehaviour
         空中コントロール（空中での回転力）
 */
 {
-    // パーツのプレハブーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== パーツのプレハブ =====
     public GameObject rocketThrustPrefab; // エフェクトのプレハブ
     public GameObject dieEffectPrefab; // 死亡エフェクトのプレハブ
     public Vector2 effectPosition;
     private GameObject currentRocketThrustInstance;
     private GameObject currentDieEffectInstance;
 
-    // 各パーツデータを保持するクラスへの参照ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== 各パーツデータ参照 =====
     private BodyData bodyData; // 本体のデータ
     private RocketData rocketData; // ロケットのデータ
     private TireData tireData; // タイヤのデータ
     private WingData wingData; // 翼のデータ
 
-    // パーツごとの合計値を計算・保持するための変数ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== パーツごとの合計値 =====
     private float total_Weight; // 総重量
     private float total_AirResistance; //総空気抵抗
     private float total_Health; // 総体力
@@ -49,15 +49,15 @@ public class PlayerController2 : MonoBehaviour
     private float total_AirControl; //空中コントロール
     private float total_RocketTime; // ロケットの合計噴射時間
 
-    // プレイヤーゲッター
+    // ===== プレイヤーゲッター =====
     public float TotalHealth => total_Health; // 総体力のゲッター
     public float TotalRocketTime => total_RocketTime; // ロケットの合計噴射時間のゲッター
 
-    //イベント
+    // ===== イベント =====
     public event Action<float> OnHealthChanged;
     public event Action<float> OnRocketTimeChanged;
 
-    // プレイヤーの制御に必要なパラメータ
+    // ===== プレイヤー制御用パラメータ =====
     [SerializeField] private Rigidbody2D rb; // プレイヤーのRigidbody2D
     [SerializeField] private float playerAngle;
     private bool isRocketKeyDown = false;
@@ -68,37 +68,45 @@ public class PlayerController2 : MonoBehaviour
     public bool groundCheck; //Groundについているかどうか
     private Vector2 rightDirection;// プレイヤーの回転に基づいた右方向
 
-    //水に入ったとき
+    // ===== 水判定・水中用 =====
     [SerializeField] private LayerMask waterLayer; // Waterレイヤーを指定
     [SerializeField] private BoxCollider2D playerCollider; // プレイヤーのCapsuleCollider2D
     private bool inWater; // 水中にいるかどうか
     float MovY = 0;
 
+    // ===== 水中物理パラメータ =====
+    [SerializeField] private float waterBuoyancyForce = 30.0f; // 水中で上向きに加える力
+    [SerializeField] private float waterLinearDamping = 1.0f;  // 水中での抵抗値
+
+    // ===== 無敵・点滅・エフェクト =====
     private float invincibleTime = 1.0f; // 無敵時間
-    private float blinkInterval = 0.1f; // 点滅間隔
-    private bool isInvincible = false; // 無敵状態かどうか
-    private bool rocketPermanentlyDisabled = false;
+    private float blinkInterval = 0.1f;   // 点滅間隔
+    private bool isInvincible = false;    // 無敵状態かどうか
+    private bool rocketPermanentlyDisabled = false; // ロケット永久封印
     private SpriteRenderer[] spriteRenderers; // スプライトレンダラー
 
-    //死んだかどうか
-    private bool isDead = false;
+    // ===== 死亡・クリア判定 =====
+    private bool isDead = false; // 死亡状態かどうか
 
-    //クリアしたかどうか
     [SerializeField] private float clearX = 7000f; // ゴール地点X
     [SerializeField] private float clearSpeedThreshold = 1f; // 停止とみなす速度
     [SerializeField] private LayerMask runwayLayer; // 滑走路のレイヤー
-    private bool isClear = false;
+    private bool isClear = false; // クリア状態かどうか
 
-    // サウンド
-    [SerializeField] private string rocketLoopSFXName = "SE_Rocket"; // SoundData に登録した名前
-    [SerializeField] private string carLoopSFXName = "SE_Car"; // SoundData に登録した名前
-    [SerializeField] private string flyLoopSFXName = "SE_Fly"; // SoundData に登録した名前
+    // ===== サウンド関連 =====
+    [SerializeField] private string rocketLoopSFXName = "SE_Rocket"; // SoundDataに登録した名前
+    [SerializeField] private string carLoopSFXName = "SE_Car";      // SoundDataに登録した名前
+    [SerializeField] private string flyLoopSFXName = "SE_Fly";      // SoundDataに登録した名前
     private bool isCarSFXPlaying = false;
     private bool isFlySFXPlaying = false;
-    [SerializeField] private float maxCarSpeed = 50f; // 最大音量になる速度（好みに応じて調整）
+    [SerializeField] private float maxCarSpeed = 50f; // 最大音量になる速度
     [SerializeField] private float maxFlySpeed = 200f;
     [SerializeField] private float minVolume = 0.1f;
     [SerializeField] private float maxVolume = 1.0f;
+
+    // ===== 姿勢安定化用パラメータ =====
+    [SerializeField] private float timeToZero = 0.2f;  // 角速度を0にするまでの時間（秒）
+    private const float targetAngularVelocity = 0f;
     void Awake()
     {
         Application.targetFrameRate = 60; // フレームレートを60に固定
@@ -110,7 +118,7 @@ public class PlayerController2 : MonoBehaviour
         UpdateStats();
     }
 
-    void Start()//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    void Start()
     {
         // Rigidbody2D を取得
         rb = GetComponent<Rigidbody2D>();
@@ -123,11 +131,11 @@ public class PlayerController2 : MonoBehaviour
 
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
     }
-    void Update() //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    void Update()
     {
-        if (!GameManager.Instance.isClearInGameTutorial) return;
         // ゲームオーバー中なら一切の入力処理を無視
         if (GameManager.Instance != null && GameManager.Instance.isGameOver) return;
+        if (!GameManager.Instance.isClearInGameTutorial) return;
 
         MovY = Input.GetAxis("Vertical");
 
@@ -166,7 +174,7 @@ public class PlayerController2 : MonoBehaviour
         RotateToMoveDirectionWithControl();
     }
 
-    // プレイヤーのパーツ性能を集計//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== プレイヤーのパーツ性能を集計 ===== 
     public void UpdateStats()
     {
         total_Weight = 0f;
@@ -217,38 +225,40 @@ public class PlayerController2 : MonoBehaviour
         rb.mass = total_Weight;
     }
 
-    //プレイヤーの方向を変えるメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== プレイヤーの方向や力を加えるメソッド =====
+    /*
+        プレイヤーの空中姿勢制御・揚力付与・回転減衰を行うメソッド。
+        ・地上にいる間や死亡時は何もしない。
+        ・上下入力(MovY)とパーツ性能(total_AirControl)に応じて回転トルクを加える。
+        ・進行方向が下向きのときに揚力（上向きの力）を加え、飛行感を演出。
+        ・角速度（回転の速さ）を徐々に0に近づけて、空中での姿勢を安定させる。
+        → これにより、プレイヤーは空中で直感的かつ自然な操作感を得られる。
+    */
     public void PlayerAngle()
     {
-        if (isDead) return; // ゲームオーバー中なら何もしない
+        if (isDead) return;
         if (groundCheck != false) return;
 
-        // 回転に対するトルクを加える（AddTorqueを使用）
-        // TODO: 回転力の調整
+        // 上下入力とパーツ性能に応じて回転トルクを加える
         float torque = MovY * total_AirControl;  // MovYとtotal_AirControlで回転力を計算
         rb.AddTorque(torque);
 
-        // 垂直方向の力を計算（進行方向が下向きのときの揚力）
+        // 進行方向が下向きのときに揚力（上向きの力）を加える
         float thrustForce = Vector2.Dot(rb.linearVelocity, rb.GetRelativeVector(Vector2.down)) * 2.0f;
-
-        // // 上方向に力を加えるためのベクトルを計算
-        Vector2 relForce = Vector2.up * thrustForce;
-
-        // // Rigidbody2Dに揚力を加える
-        rb.AddForce(rb.GetRelativeVector(relForce));
+        Vector2 relForce = Vector2.up * thrustForce; // 上方向ベクトルに変換
+        rb.AddForce(rb.GetRelativeVector(relForce)); // Rigidbody2Dに揚力を加える
 
         // 現在の角速度を取得
         float currentAngularVelocity = rb.angularVelocity;
 
-        // 0.5秒で角速度を0に近づけるための速度を計算
-        float timeToZero = 0.2f;  // 0.5秒で角速度を0にする
-        float targetAngularVelocity = 0f;
-
-        // 徐々に角速度を0に近づける
-        if (Mathf.Abs(currentAngularVelocity) > 0.01f)  // 角速度が一定の閾値以上なら
+        // 角速度が一定以上なら徐々に0に近づける（姿勢安定化）
+        if (Mathf.Abs(currentAngularVelocity) > 0.01f)
         {
-            // 現在の角速度を徐々に0に向けて減少させる
-            rb.angularVelocity = Mathf.MoveTowards(currentAngularVelocity, targetAngularVelocity, Mathf.Abs(currentAngularVelocity) / timeToZero * Time.deltaTime);
+            rb.angularVelocity = Mathf.MoveTowards(
+                currentAngularVelocity,
+                targetAngularVelocity,
+                Mathf.Abs(currentAngularVelocity) / timeToZero * Time.deltaTime
+            );
         }
         else
         {
@@ -257,7 +267,7 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-    //ロケットメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== ロケットメソッド =====
     public void OnSpaceClick()
     {
         if (isDead) return; // ゲームオーバー中なら何もしない
@@ -307,14 +317,14 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-    // ロケットのエフェクトを開始するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== ロケットのエフェクトを開始するメソッド =====
     private void StartRocketEffect()
     {
         currentRocketThrustInstance = Instantiate(rocketThrustPrefab, transform);
         currentRocketThrustInstance.transform.localPosition = effectPosition; // 背面に配置
-        AudioManager.Instance.PlayLoopSFX(rocketLoopSFXName);
+        AudioManager.Instance.PlayRocketLoopSFX(rocketLoopSFXName);
     }
-    // ロケットのエフェクトを停止するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== ロケットのエフェクトを停止するメソッド =====
     private void StopRocketEffect()
     {
         if (currentRocketThrustInstance == null) return;
@@ -324,11 +334,11 @@ public class PlayerController2 : MonoBehaviour
         {
             ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
-        AudioManager.Instance.StopLoopSFX();
+        AudioManager.Instance.StopRocketLoopSFX();
     }
 
 
-    //地面に接触しているかどうかを確認するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== 地面に接触しているかどうかを確認するメソッド =====
     private void GroundCheck()
     {
         if (groundCheckCollider == null) return;
@@ -336,7 +346,7 @@ public class PlayerController2 : MonoBehaviour
         groundCheck = groundCheckCollider.IsTouchingLayers(groundLayer);
     }
 
-    //車輪メソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== 車輪加速メソッド =====
     private void GroundAddForce()
     {
         // ゲームオーバー中なら一切の入力処理を無視
@@ -356,35 +366,25 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-    // 車のループサウンドを更新するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== 車のループサウンドを更新するメソッド =====
     private void UpdateCarLoopSFX()
     {
         float moveThreshold = 0.5f; // 走行とみなす最低速度
         float currentSpeed = rb.linearVelocity.magnitude;
-        bool shouldPlay = groundCheck && currentSpeed > moveThreshold;
+        bool shouldPlayCar = groundCheck && currentSpeed > moveThreshold;
+        bool shouldPlayFly = currentSpeed > moveThreshold;
 
-        if (shouldPlay)
+        // 車サウンド（地面にいて速度がしきい値超え）
+        if (shouldPlayCar)
         {
-            // 音が鳴っていなければ再生
             if (!isCarSFXPlaying)
             {
                 AudioManager.Instance.PlayCarLoopSFX(carLoopSFXName);
                 isCarSFXPlaying = true;
             }
-            if (!isFlySFXPlaying)
-            {
-                AudioManager.Instance.PlayFlyLoopSFX(flyLoopSFXName);
-                isFlySFXPlaying = true;
-            }
-
-            // 音量を速度に応じて調整
             float t = Mathf.InverseLerp(0f, maxCarSpeed, currentSpeed); // 0～1に正規化
             float carVolume = Mathf.Lerp(minVolume, maxVolume, t);
             AudioManager.Instance.SetCarLoopVolume(carVolume);
-
-            float g = Mathf.InverseLerp(0f, maxFlySpeed, currentSpeed);
-            float flyVolume = Mathf.Lerp(minVolume, maxVolume, g);
-            AudioManager.Instance.SetFlyLoopVolume(flyVolume);
         }
         else
         {
@@ -393,6 +393,22 @@ public class PlayerController2 : MonoBehaviour
                 AudioManager.Instance.StopCarLoopSFX();
                 isCarSFXPlaying = false;
             }
+        }
+
+        // 飛行サウンド（地面関係なく速度がしきい値超え）
+        if (shouldPlayFly)
+        {
+            if (!isFlySFXPlaying)
+            {
+                AudioManager.Instance.PlayFlyLoopSFX(flyLoopSFXName);
+                isFlySFXPlaying = true;
+            }
+            float g = Mathf.InverseLerp(0f, maxFlySpeed, currentSpeed);
+            float flyVolume = Mathf.Lerp(minVolume, maxVolume, g);
+            AudioManager.Instance.SetFlyLoopVolume(flyVolume);
+        }
+        else
+        {
             if (isFlySFXPlaying)
             {
                 AudioManager.Instance.StopFlyLoopSFX();
@@ -424,42 +440,43 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-    // 水中にいるかどうかを判定するメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== 水中にいるかどうかを判定するメソッド =====
     private void InWater()
     {
         // 水中にいるか判定
         bool wasInWater = inWater;
         inWater = playerCollider.IsTouchingLayers(waterLayer);
 
-        if (inWater)
+        if (inWater && !wasInWater)
         {
-            //浮力を再現
-            rb.AddForce(Vector2.up * 30.0f, ForceMode2D.Force);
+            // 水に入った瞬間だけ呼ぶ
+            AudioManager.Instance.PlayWaterLoopSFX("SE_InWater");
+
+            if (rb.linearVelocity.magnitude > 50f)
+            {
+                AudioManager.Instance.PlaySFX("SE_Water");
+            }
+            StopRocketEffect();
+            rocketPermanentlyDisabled = true; // ← 永久封印
 
             //水中抵抗を再現
-            rb.linearDamping = 1.0f;
-
-            // 水に入った瞬間だけ呼ぶ
-            if (!wasInWater)
-            {
-                AudioManager.Instance.PlayWaterLoopSFX("SE_InWater");
-
-                if (rb.linearVelocity.magnitude > 50f)
-                {
-                    AudioManager.Instance.PlaySFX("SE_Water");
-                }
-                StopRocketEffect();
-                rocketPermanentlyDisabled = true; // ← 永久封印
-            }
+            rb.linearDamping = waterLinearDamping;
         }
-        else
+        else if (!inWater && wasInWater)
         {
+            // 水から出た瞬間だけ呼ぶ
             AudioManager.Instance.StopWaterLoopSFX();
             //通常抵抗値に戻す
             rb.linearDamping = total_AirResistance;
         }
+
+        // 毎フレーム浮力は加える（inWater中のみ）
+        if (inWater)
+        {
+            rb.AddForce(Vector2.up * waterBuoyancyForce, ForceMode2D.Force);
+        }
     }
-    // ゲームオーバーのチェックメソッドーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    // ===== ゲームオーバーのチェックメソッド =====
 
     private void CheckGameOver()
     {
@@ -472,6 +489,7 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
+    // ===== クリア判定メソッド =====
     private void CheckClear()
     {
         if (isClear) return;
@@ -490,7 +508,7 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-    // プレイヤーの体力を取得するメソッド
+    // ===== プレイヤーの体力を取得するメソッド =====
     public void TakeDamage(float damage)
     {
         // 無敵状態ならダメージを無視
@@ -516,7 +534,7 @@ public class PlayerController2 : MonoBehaviour
         StartCoroutine(InvincibilityCoroutine());
     }
 
-    // プレイヤーが死亡したときの処理
+    // ===== プレイヤーが死亡したときの処理 =====
     private void Die()
     {
         //プレイヤーを操作できなくする
@@ -526,6 +544,7 @@ public class PlayerController2 : MonoBehaviour
         currentDieEffectInstance.transform.localPosition = effectPosition; // 背面に配置
     }
 
+    // ===== 無敵コルーチン =====
     private IEnumerator InvincibilityCoroutine()
     {
         isInvincible = true;
@@ -545,6 +564,7 @@ public class PlayerController2 : MonoBehaviour
         isInvincible = false;
     }
 
+    // ===== スプライトの表示切替メソッド =====
     private void SetRenderersVisible(bool visible)
     {
         foreach (var sr in spriteRenderers)
@@ -553,6 +573,15 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
+    // ===== 進行方向に回転補正するメソッド =====
+    /*
+        プレイヤーの進行方向（速度ベクトル）と現在の回転角度の差を計算し、
+        その差を補正するトルクを加えることで、機体が進行方向を向くように自動で姿勢制御します。
+        ・速度がほぼゼロの場合は何もしません。
+        ・水中では補正トルクを極端に弱くし、地上や空中では強く補正します。
+        ・速度が速いほど補正トルクも強くなります。
+        これにより、飛行時や走行時に機体が自然に進行方向を向く挙動を実現します。
+    */
     private void RotateToMoveDirectionWithControl()
     {
         Vector2 velocity = rb.linearVelocity;
@@ -560,15 +589,15 @@ public class PlayerController2 : MonoBehaviour
         if (velocity.sqrMagnitude < 0.01f)
             return;
 
-        float moveAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-        float currentAngle = rb.rotation;
+        float moveAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg; // 進行方向の角度
+        float currentAngle = rb.rotation; // 現在の機体の角度
 
-        float angleDifference = Mathf.DeltaAngle(currentAngle, moveAngle);
-        float speedFactor = velocity.magnitude * 0.005f;
-        float waterMultiplier = inWater ? 0.01f : 2.0f; // 水中では回転を遅くする
+        float angleDifference = Mathf.DeltaAngle(currentAngle, moveAngle); // 角度差
+        float speedFactor = velocity.magnitude * 0.005f; // 速度に応じた補正強度
+        float waterMultiplier = inWater ? 0.01f : 2.0f; // 水中なら補正を弱く
 
-        float correctionTorque = angleDifference * speedFactor * waterMultiplier;  // ← 補正の強さ（0.1f を好みに調整）
+        float correctionTorque = angleDifference * speedFactor * waterMultiplier; // 最終的な補正トルク
 
-        rb.AddTorque(correctionTorque);
+        rb.AddTorque(correctionTorque); // トルクを加えて姿勢を補正
     }
 }

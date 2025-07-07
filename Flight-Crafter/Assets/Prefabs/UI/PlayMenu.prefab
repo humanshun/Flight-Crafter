@@ -632,6 +632,10 @@ MonoBehaviour:
   bord: Play
   characterBird1: {fileID: 324927359290556531}
   characterBird2: {fileID: 5774276523393863093}
+  buttons:
+  - {fileID: 5760739789284972066}
+  - {fileID: 5997842459622844715}
+  - {fileID: 1985591554173082720}
 --- !u!1 &5739300435250517976
 GameObject:
   m_ObjectHideFlags: 0

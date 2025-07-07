@@ -9,6 +9,7 @@ public class ShopPartsButton : MonoBehaviour
     [SerializeField] Button rocketButton;
     [SerializeField] Button tireButton;
     [SerializeField] Button wingButton;
+    [SerializeField] Button closeButton;
     [SerializeField] GameObject bodyButtonImage;
     [SerializeField] GameObject rocketButtonImage;
     [SerializeField] GameObject tireButtonImage;
@@ -24,6 +25,7 @@ public class ShopPartsButton : MonoBehaviour
         rocketButton.onClick.AddListener(() => OnButtonClicked(rocketButton, PartType.Rocket));
         tireButton.onClick.AddListener(() => OnButtonClicked(tireButton, PartType.Tire));
         wingButton.onClick.AddListener(() => OnButtonClicked(wingButton, PartType.Wing));
+        closeButton.onClick.AddListener(OnCloseButtonClick);
 
         OnButtonClicked(bodyButton, PartType.Body); // 初期状態の更新
 
@@ -32,8 +34,9 @@ public class ShopPartsButton : MonoBehaviour
 
     void OnButtonClicked(Button selectedButton, PartType selectedType)
     {
+        AudioManager.Instance.PlaySFX("SE_ButtonLow");
         (Button, GameObject)[] buttons =
-        { 
+        {
             (bodyButton, bodyButtonImage),
             (rocketButton, rocketButtonImage),
             (tireButton, tireButtonImage),
@@ -57,7 +60,7 @@ public class ShopPartsButton : MonoBehaviour
         // 選ばれたカテゴリのパーツを表
         UpdatePartListUI(selectedType);
 
-        
+
     }
     void UpdatePartListUI(PartType partType)
     {
@@ -94,5 +97,11 @@ public class ShopPartsButton : MonoBehaviour
                 setupItem.Setup(part); // ← ここでデータを渡す
             }
         }
+    }
+
+    private void OnCloseButtonClick()
+    {
+        AudioManager.Instance.PlaySFX("SE_Close");
+        gameObject.SetActive(false);
     }
 }

@@ -1,3 +1,5 @@
+using Ricimi;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,12 +22,16 @@ public class ShopCanvasManager : MonoBehaviour
     [SerializeField] private GameObject desctiptionPopupPrefab;
     [SerializeField] private GameObject coinText;
 
+
+    public GameObject settingPopupPrefab;
+
     private void Start()
     {
         // ボタンにイベントリスナーを追加
         shopButton.onClick.AddListener(OnShopButtonClicked);
-
         shopCloseButton.onClick.AddListener(OnShopCloseButtonClicked);
+        playButton.onClick.AddListener(OnPlayButtonClicked);
+        settingsButton.onClick.AddListener(OnSettingsButtonClicked);
         customCloseButton.onClick.AddListener(OnCustomCloseButtonClicked);
 
         bodyButton.onClick.AddListener(CustomButtonOnClick);
@@ -37,6 +43,7 @@ public class ShopCanvasManager : MonoBehaviour
 
     private void OnShopButtonClicked()
     {
+        AudioManager.Instance.PlaySFX("SE_ButtonClick");
         partShopPopup.SetActive(true);
         partCustomPopup.SetActive(false);
         shopButton.gameObject.SetActive(false);
@@ -47,6 +54,7 @@ public class ShopCanvasManager : MonoBehaviour
 
     private void OnShopCloseButtonClicked()
     {
+        AudioManager.Instance.PlaySFX("SE_Close");
         partShopPopup.SetActive(false);
         partCustomPopup.SetActive(true);
         shopButton.gameObject.SetActive(true);
@@ -57,6 +65,7 @@ public class ShopCanvasManager : MonoBehaviour
 
     private void OnCustomCloseButtonClicked()
     {
+        AudioManager.Instance.PlaySFX("SE_Close");
         shopButton.gameObject.SetActive(true);
         playButton.gameObject.SetActive(true);
         settingsButton.gameObject.SetActive(true);
@@ -66,10 +75,28 @@ public class ShopCanvasManager : MonoBehaviour
 
     private void CustomButtonOnClick()
     {
+        AudioManager.Instance.PlaySFX("SE_ButtonClick");
         shopButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(false);
         settingsButton.gameObject.SetActive(false);
         desctiptionPopupPrefab.SetActive(false);
         coinText.SetActive(false);
+    }
+
+    private async void OnPlayButtonClicked()
+    {
+        AudioManager.Instance.PlaySFX("SE_ButtonClick");
+        await SceneChanger.Instance.ChangeScene("InGame", 1.0f, 3.0f);
+    }
+
+    private void OnSettingsButtonClicked()
+    {
+        AudioManager.Instance.PlaySFX("SE_ButtonClick");
+        var popup = Instantiate(settingPopupPrefab);
+        popup.SetActive(true);
+        // ポップアップのスケールをゼロに設定（後でアニメーションで拡大するため）
+        popup.transform.localScale = Vector3.zero;
+        // ポップアップをキャンバスの子オブジェクトとして設定
+        popup.transform.SetParent(myCanvas.transform, false);
     }
 }

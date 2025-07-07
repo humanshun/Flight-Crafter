@@ -103,6 +103,7 @@ public class DescriptionPopup : MonoBehaviour
 
     public void ButtonClick(PartData part, CurrentPartPopup currentPartPopup)
     {
+        AudioManager.Instance.PlaySFX("SE_ButtonLow");
         string currentName = PlayerData.Instance.GetCurrentPartName(part.partType);
         if (!string.IsNullOrEmpty(currentName) && currentName != part.partName)
         {

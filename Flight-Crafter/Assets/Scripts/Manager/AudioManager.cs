@@ -110,7 +110,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public async void PlayLoopSFX(string soundName)
+    public async void PlayRocketLoopSFX(string soundName)
     {
         if (rocketLoopSource.isPlaying && rocketLoopSource.clip != null && rocketLoopSource.clip.name == soundName)
         {
@@ -132,7 +132,7 @@ public class AudioManager : MonoBehaviour
         Debug.LogWarning($"ループSFX '{soundName}' が見つかりません");
     }
 
-    public async void StopLoopSFX()
+    public async void StopRocketLoopSFX()
     {
         if (rocketLoopSource.isPlaying)
         {

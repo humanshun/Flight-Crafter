@@ -48,6 +48,7 @@ public class PartCustom : MonoBehaviour
     }
     private void OnButtonClick(Button selectedButton, PartType selectedType)
     {
+        AudioManager.Instance.PlaySFX("SE_ButtonLow");
         partCostom.SetActive(true); // Contentをアクティブにする
         // Contentを全クリア
         foreach (Transform child in contentTransform)
@@ -156,6 +157,7 @@ public class PartCustom : MonoBehaviour
 
     private void CloseButtonClick()
     {
+        AudioManager.Instance.PlaySFX("SE_Close");
         partCostom.SetActive(false); // Contentを非アクティブにする
         bodyPopupChangeImage.gameObject.SetActive(false);
         rocketPopupChangeImage.gameObject.SetActive(false);
