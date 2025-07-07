@@ -824,6 +824,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1348660741641846520, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348660741641846520, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348660741641846520, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685394358988652064, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685394358988652064, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685394358988652064, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685394358988652064, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096678155450990213, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096678155450990213, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096678155450990213, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096678155450990213, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2206652566295765356, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -840,7 +884,40 @@ PrefabInstance:
       propertyPath: m_Value
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6933846131742691972, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933846131742691972, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933846131742691972, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933846131742691972, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067958702616310780, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067958702616310780, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067958702616310780, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067958702616310780, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3606998585835956229, guid: 0111e175a924b4f4485eaa424798c938, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
