@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8603626773533519896}
+  - component: {fileID: 1101308254461068624}
   - component: {fileID: 6323544276470904105}
   - component: {fileID: 6226110272371502378}
   - component: {fileID: 8644245054263283001}
   - component: {fileID: 609501936999561873}
-  - component: {fileID: 1101308254461068624}
   m_Layer: 0
   m_Name: Enemy_Bird_2
   m_TagString: Untagged
@@ -36,6 +36,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1101308254461068624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6061421971747145538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b2f9797eb93c1a46ac3d0a4a4b7d06c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 100
+  moveSpeed: 9
+  attackPower: 5
+  selfDamageOnCollision: 5
 --- !u!212 &6323544276470904105
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -176,19 +192,3 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 2.53
---- !u!114 &1101308254461068624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6061421971747145538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b2f9797eb93c1a46ac3d0a4a4b7d06c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHP: 100
-  moveSpeed: 9
-  attackPower: 5
-  selfDamageOnCollision: 5

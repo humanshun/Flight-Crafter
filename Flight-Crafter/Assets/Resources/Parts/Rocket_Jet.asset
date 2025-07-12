@@ -29,4 +29,4 @@ MonoBehaviour:
     value: 50
   jetTime:
     displayName: "\u5674\u5C04\u6642\u9593"
-    value: 100
+    value: 20
