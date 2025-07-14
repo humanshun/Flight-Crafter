@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     private CustomPlayer inGamePlayerInstance;
     public CustomPlayer InGamePlayer => inGamePlayerInstance;
 
+    public InGameUI InGameUI => score;
+
     // シングルトンインスタンス
     public static GameManager Instance;
 

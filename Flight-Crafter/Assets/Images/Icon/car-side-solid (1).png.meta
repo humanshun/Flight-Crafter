@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      car-side-solid (1)_0: 7288807674691737988
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

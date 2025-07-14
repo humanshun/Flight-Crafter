@@ -31,6 +31,7 @@ public class InGameUI : MonoBehaviour
 
     [SerializeField] private GameObject playerUI;
 
+    private int collectionCoins = 0; // 収集したコインの数
     private float initialHealth = 1f; // 初期ヘルス
     private float initialRocketTime = 1f; // 初期ロケット時間
 
@@ -126,9 +127,15 @@ public class InGameUI : MonoBehaviour
 
     }
 
+    public void AddCollectedCoins(int coins)
+    {
+        collectionCoins += coins;
+    }
+
     public int CalculateCoins()
     {
-        return Mathf.FloorToInt(distance / 10f); // 例：1m = 5コイン
+        int baseCoins = Mathf.FloorToInt(distance / 10f);
+        return baseCoins + collectionCoins;
     }
 
     public void OnGameOver()

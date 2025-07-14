@@ -19,7 +19,13 @@ public class EnemyCoinBird : EnemyBase
             if (player != null)
             {
                 // プレイヤーにコインを追加
-                PlayerData.Instance.AddCoins(100);
+                var inGameUI = GameManager.Instance?.InGameUI;
+                if (inGameUI != null)
+                {
+                    inGameUI.AddCollectedCoins(100);
+                }
+                //コインの音を再生
+                AudioManager.Instance.PlaySFX("SE_Coins");
                 
                 Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
                 if (rb != null)

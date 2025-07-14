@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      FlightlessNoMoreTitleImage_0: -2939667293369128055
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

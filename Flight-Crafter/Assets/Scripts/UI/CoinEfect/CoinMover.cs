@@ -6,34 +6,51 @@ public class CoinMover : MonoBehaviour
 {
     private Transform target;
     private float moveDuration;
-    public void Init(Transform targetTransform, float duration)
+    private Action<CoinMover> onComplete;
+    private Sequence seq;
+
+    public bool IsCompleted { get; private set; } = false;
+
+    public void Init(Transform targetTransform, float duration, Action<CoinMover> onCompleteCallback)
     {
         target = targetTransform;
         moveDuration = duration;
+        onComplete = onCompleteCallback;
 
-        Sequence seq = DOTween.Sequence();
+        PlaySequence();
+    }
 
-        // ① 最初にポップ演出（出現時拡大）
+    private void PlaySequence()
+    {
+        seq = DOTween.Sequence();
+
         transform.localScale = Vector3.zero;
         seq.Append(transform.DOScale(1f, 0.2f).SetEase(Ease.OutBack));
+        seq.AppendInterval(0.2f);
 
-        // ② 出現後に少し静止する (ここが追加部分)
-        seq.AppendInterval(0.2f);  // 0.1秒停止（ここは好みで調整）
-
-        // ③ 逆方向に少し移動して弾ける感じにする
         Vector3 direction = (target.position - transform.position).normalized;
         Vector3 reverseOffset = transform.position - direction * 200.0f;
 
         seq.Append(transform.DOMove(reverseOffset, 0.3f).SetEase(Ease.OutQuad));
+        seq.Append(transform.DOMove(target.position, moveDuration).SetEase(Ease.InOutQuad));
 
-        // ④ 目的地に向かって移動開始
-        seq.Append(transform.DOMove(target.position, moveDuration)
-            .SetEase(Ease.InOutQuad));
-
-        // ⑤ 目的地に着いたら消滅
         seq.OnComplete(() =>
         {
+            IsCompleted = true;
+            onComplete?.Invoke(this);
             Destroy(gameObject);
+            AudioManager.Instance.PlaySFX("SE_Coins");
         });
+    }
+
+    public void SkipToTarget()
+    {
+        if (IsCompleted) return;
+
+        seq?.Kill(); // DOTweenのシーケンスを中断
+        transform.position = target.position;
+        IsCompleted = true;
+        onComplete?.Invoke(this);
+        Destroy(gameObject);
     }
 }

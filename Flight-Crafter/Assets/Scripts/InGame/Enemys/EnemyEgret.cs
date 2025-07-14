@@ -35,6 +35,7 @@ public class EnemyEgret : EnemyBase
         // 向き・回転・フラグをリセット
         isAttackWaiting = false;
         attackDirection = Vector2.zero;
+        transform.localScale = new Vector3(2, 2, 2);
         transform.rotation = Quaternion.identity;
     }
 

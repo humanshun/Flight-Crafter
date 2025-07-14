@@ -5,6 +5,7 @@ using System.Data.SqlTypes;
 using System;
 using System.Collections;
 using Unity.Mathematics;
+using Cysharp.Threading.Tasks;
 
 public class PlayerController2 : MonoBehaviour
 /*
@@ -531,7 +532,7 @@ public class PlayerController2 : MonoBehaviour
             }
         }
 
-        StartCoroutine(InvincibilityCoroutine());
+        _ = InvincibilityCoroutine();
     }
 
     // ===== プレイヤーが死亡したときの処理 =====
@@ -545,7 +546,7 @@ public class PlayerController2 : MonoBehaviour
     }
 
     // ===== 無敵コルーチン =====
-    private IEnumerator InvincibilityCoroutine()
+    private async UniTask InvincibilityCoroutine()
     {
         isInvincible = true;
 
@@ -554,9 +555,9 @@ public class PlayerController2 : MonoBehaviour
         while (timer < invincibleTime)
         {
             SetRenderersVisible(false);
-            yield return new WaitForSeconds(blinkInterval);
+            await UniTask.Delay((int)(blinkInterval * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
             SetRenderersVisible(true);
-            yield return new WaitForSeconds(blinkInterval);
+            await UniTask.Delay((int)(blinkInterval * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
 
             timer += blinkInterval * 2;
         }

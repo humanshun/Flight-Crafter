@@ -646,7 +646,6 @@ MonoBehaviour:
   coinPosition: {fileID: 4669528599843004969}
   addCoinPosition: {fileID: 8252327406721976590}
   spawnRadius: 70
-  moveSpeed: 5
 --- !u!1 &1717759279589206030
 GameObject:
   m_ObjectHideFlags: 0
@@ -6507,7 +6506,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 122836, guid: 1534d84d87334244cb01410e04cacab5, type: 3}
       propertyPath: m_Name
-      value: EndGame
+      value: GameOverPopup
       objectReference: {fileID: 0}
     - target: {fileID: 22443118, guid: 1534d84d87334244cb01410e04cacab5, type: 3}
       propertyPath: m_Pivot.x

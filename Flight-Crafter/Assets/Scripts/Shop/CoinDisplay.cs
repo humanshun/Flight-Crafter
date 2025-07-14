@@ -1,17 +1,20 @@
 using TMPro;
 using UnityEngine;
-using System.Collections;
+using Cysharp.Threading.Tasks;
 
 public class CoinDisplay : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private AddCoinEfect addCoinEfect;
 
-    [SerializeField] private float interval = 0.08f; // 1枚加算するごとの間隔
+    [SerializeField] private float interval = 0.08f;
     [SerializeField] private float startDelay = 1.55f;
 
     private int currentCoin = 0;
     public int earnedCoins = 0;
+
+    private bool isSkipping = false;
+    private bool isAnimating = false;
 
     void Start()
     {
@@ -21,23 +24,58 @@ public class CoinDisplay : MonoBehaviour
 
     public void AnimateAddCoins()
     {
-        StartCoroutine(AddCoinsRoutine());
+        if (isAnimating)
+        {
+            return;
+        }
+
+        isSkipping = false;
+        _ = AddCoinsRoutineAsync(); // 非同期で実行
     }
 
-    private IEnumerator AddCoinsRoutine()
+    private async UniTaskVoid AddCoinsRoutineAsync()
     {
-        yield return new WaitForSeconds(startDelay); // 開始前に待機
+        isAnimating = true;
+
+        await UniTask.Delay((int)(startDelay * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
 
         int targetCoin = currentCoin + earnedCoins;
 
-        while (currentCoin < targetCoin)
+        if (isSkipping)
         {
-            currentCoin++;
+            currentCoin = targetCoin;
             coinText.text = currentCoin.ToString();
-            yield return new WaitForSeconds(interval);
-            AudioManager.Instance.PlaySFX("SE_Coins");
+        }
+        else
+        {
+            while (currentCoin < targetCoin)
+            {
+                if (isSkipping)
+                {
+                    await UniTask.Delay((int)(startDelay * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
+                    currentCoin = targetCoin;
+                    coinText.text = currentCoin.ToString();
+                    break;
+                }
+
+                currentCoin++;
+                coinText.text = currentCoin.ToString();
+
+                await UniTask.Delay((int)(interval * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
+            }
         }
 
-        coinText.text = targetCoin.ToString();
+        isAnimating = false;
+    }
+
+    public void SkipCoinAnimation()
+    {
+        isSkipping = true;
+    }
+
+    public void AddCoinsImmediately(int amount)
+    {
+        currentCoin += amount;
+        coinText.text = currentCoin.ToString();
     }
 }
