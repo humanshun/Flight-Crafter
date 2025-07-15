@@ -2150,9 +2150,9 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   player: {fileID: 0}
   minHeight: 0
-  maxHeight: 50000
+  maxHeight: 20000
   startColor: {r: 0.15566039, g: 0.7450428, b: 1, a: 1}
-  endColor: {r: 0.015665963, g: 0, b: 0.254717, a: 1}
+  endColor: {r: 0.014786683, g: 0.0026414988, b: 0.19999999, a: 1}
 --- !u!4 &177580680
 Transform:
   m_ObjectHideFlags: 0
@@ -2777,6 +2777,64 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &205789584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 205789586}
+  - component: {fileID: 205789585}
+  m_Layer: 0
+  m_Name: ItemSpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &205789585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205789584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1597b7193617c5b458f54774041894f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPosition: {fileID: 0}
+  spawnPrefabs:
+  - prefab: {fileID: 617554430363916335, guid: d79981c506732d54e8ed3c947e8c0fc5, type: 3}
+    instanceCount: 1
+  - prefab: {fileID: 3788173965293492389, guid: ebcb1b039a4f86d4aad8c45118628874, type: 3}
+    instanceCount: 1
+  - prefab: {fileID: 8731778179919717119, guid: cdfb79b269b796b469684bf3466f4dcd, type: 3}
+    instanceCount: 1
+  spawnRadius: 1000
+  reSpawnDistance: 500
+  minDistanceBetweenObjects: 100
+  minDistanceFromPlayer: 400
+  spawnOnlyInFront: 1
+  spawnFrontAngle: 90
+--- !u!4 &205789586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205789584}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 156.00757, y: -1.8064995, z: -1.1696186}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &217429233
 GameObject:
   m_ObjectHideFlags: 0
@@ -8208,14 +8266,17 @@ MonoBehaviour:
   playerPosition: {fileID: 0}
   spawnPrefabs:
   - prefab: {fileID: 1307840750251382, guid: 9762f7ea17ffeed4f89e6a321f218772, type: 3}
-    spawnProbability: 1
+    instanceCount: 40
   - prefab: {fileID: 1100775569455626, guid: 4358a191dd805314ba07fdcae4aacb5e, type: 3}
-    spawnProbability: 1
+    instanceCount: 40
   - prefab: {fileID: 1661913791315870, guid: 7100b3187e9c30846923faf39c1c3900, type: 3}
-    spawnProbability: 1
-  prefabCount: 30
-  spawnRadius: 400
-  reSpawnDistance: 300
+    instanceCount: 40
+  spawnRadius: 1000
+  reSpawnDistance: 500
+  minDistanceBetweenObjects: 100
+  minDistanceFromPlayer: 400
+  spawnOnlyInFront: 1
+  spawnFrontAngle: 90
 --- !u!1 &670486733
 GameObject:
   m_ObjectHideFlags: 0
@@ -12544,7 +12605,7 @@ GameObject:
   - component: {fileID: 1092723062}
   - component: {fileID: 1092723061}
   m_Layer: 0
-  m_Name: EnemSpawnManager
+  m_Name: EnemySpawnManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12565,28 +12626,31 @@ MonoBehaviour:
   playerPosition: {fileID: 0}
   spawnPrefabs:
   - prefab: {fileID: 3881297349789417743, guid: 51b4222ad78b65e4f9188d32c27cceea, type: 3}
-    spawnProbability: 0.774
+    instanceCount: 6
   - prefab: {fileID: 6061421971747145538, guid: 598a074928230d642999187f20283753, type: 3}
-    spawnProbability: 0.045
+    instanceCount: 6
   - prefab: {fileID: 5628179200545352070, guid: 658553b38e4f64941b1a9cd6f0e0a169, type: 3}
-    spawnProbability: 0.056
+    instanceCount: 6
   - prefab: {fileID: 4006516679783149635, guid: e8d0a7feff429734b9112b4517bb8af5, type: 3}
-    spawnProbability: 0.04
+    instanceCount: 6
   - prefab: {fileID: 3566831473680813097, guid: 668f425a37f223549bb8f448eb7c4b50, type: 3}
-    spawnProbability: 0.045
+    instanceCount: 6
   - prefab: {fileID: 3178658300138129498, guid: c1ade4d8241f6a34ca4d21de01cd2f39, type: 3}
-    spawnProbability: 0.032
+    instanceCount: 6
   - prefab: {fileID: 6874333704887974663, guid: c4ea8282d77ceed42b14a6da2b2e2544, type: 3}
-    spawnProbability: 0.045
+    instanceCount: 2
   - prefab: {fileID: 8102159617227858095, guid: 11b7ac0d86ff3484985146ca77ba5724, type: 3}
-    spawnProbability: 0.04
+    instanceCount: 2
   - prefab: {fileID: 7379346669855497275, guid: ea2337769a5f0754783329ae788fdbda, type: 3}
-    spawnProbability: 0.077
+    instanceCount: 2
   - prefab: {fileID: 8940565494534228492, guid: 3e4e7f4232e044e4080a2447f8e65a46, type: 3}
-    spawnProbability: 0.045
-  prefabCount: 20
-  spawnRadius: 400
-  reSpawnDistance: 300
+    instanceCount: 2
+  spawnRadius: 1000
+  reSpawnDistance: 500
+  minDistanceBetweenObjects: 100
+  minDistanceFromPlayer: 400
+  spawnOnlyInFront: 1
+  spawnFrontAngle: 90
 --- !u!4 &1092723062
 Transform:
   m_ObjectHideFlags: 0
@@ -16655,6 +16719,10 @@ PrefabInstance:
     - target: {fileID: 4737102203840616651, guid: 1ed14ad266ad3f8428cf2220288b7f78, type: 3}
       propertyPath: m_Name
       value: AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7255325203242213764, guid: 1ed14ad266ad3f8428cf2220288b7f78, type: 3}
+      propertyPath: m_Volume
+      value: 0.25474703
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36062,6 +36130,7 @@ SceneRoots:
   - {fileID: 177580680}
   - {fileID: 667825421}
   - {fileID: 1092723062}
+  - {fileID: 205789586}
   - {fileID: 1718692202}
   - {fileID: 8214874763399779098}
   - {fileID: 1729821731}

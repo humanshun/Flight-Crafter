@@ -1,12 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// スポーン確率付きのPrefabデータ
+// Prefabごとに生成数を指定
 [System.Serializable]
 public class SpawnablePrefab
 {
     public GameObject prefab;
-    [Range(0f, 1f)] public float spawnProbability = 1f;
+    public int instanceCount = 10; // 何個生成するか指定
 }
 
 public class SpawnPoolManager : MonoBehaviour
@@ -15,11 +15,20 @@ public class SpawnPoolManager : MonoBehaviour
     public SpawnablePrefab[] spawnPrefabs;
 
     [Header("表示設定")]
-    public int prefabCount = 50;
-    public float spawnRadius = 500f;
-    public float reSpawnDistance = 400f;
+    public float spawnRadius = 1000f;       // プレイヤーを中心にランダムスポーンする範囲
+    public float reSpawnDistance = 500f;    // 半径外に出たオブジェクトの再スポーン距離
 
-    private List<GameObject> activeClouds = new List<GameObject>();
+    [Header("スポーン間隔設定")]
+    public float minDistanceBetweenObjects = 50f; // 既存オブジェクトとの最小距離
+
+    [Header("プレイヤーとの距離制御")]
+    public float minDistanceFromPlayer = 100f;    // プレイヤーから最低でもこれ以上離す
+
+    [Header("スポーン方向設定")]
+    public bool spawnOnlyInFront = true;          // trueならプレイヤー前方のみスポーン
+    public float spawnFrontAngle = 90f;           // 前方の角度(°)
+
+    private List<GameObject> activeObjects = new List<GameObject>();
     private Queue<GameObject> prefabPool = new Queue<GameObject>();
 
     private bool initialized = false;
@@ -38,12 +47,15 @@ public class SpawnPoolManager : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < prefabCount; i++)
+        // Prefabごとに指定された個数を生成
+        foreach (var p in spawnPrefabs)
         {
-            GameObject prefab = GetRandomPrefabByProbability();
-            GameObject obj = Instantiate(prefab);
-            obj.SetActive(false);
-            prefabPool.Enqueue(obj);
+            for (int i = 0; i < p.instanceCount; i++)
+            {
+                GameObject obj = Instantiate(p.prefab);
+                obj.SetActive(false);
+                prefabPool.Enqueue(obj);
+            }
         }
     }
 
@@ -53,28 +65,33 @@ public class SpawnPoolManager : MonoBehaviour
 
         int maxSpawnAttempts = 100; // 無限ループ防止
         int spawnAttempts = 0;
-        while (activeClouds.Count < prefabCount && spawnAttempts < maxSpawnAttempts)
+
+        // プールに余りがあればスポーンする
+        while (prefabPool.Count > 0 && spawnAttempts < maxSpawnAttempts)
         {
             SpawnInitialCloud();
             spawnAttempts++;
         }
 
-        for (int i = activeClouds.Count - 1; i >= 0; i--)
+        // 半径外に出たものはプールに戻して、新しい場所にリスポーン
+        for (int i = activeObjects.Count - 1; i >= 0; i--)
         {
-            GameObject obj = activeClouds[i];
-            if (obj == null) // ★追加：破棄されたオブジェクトの対策
+            GameObject obj = activeObjects[i];
+            if (obj == null) // 破棄されたオブジェクト対策
             {
-                activeClouds.RemoveAt(i);
+                activeObjects.RemoveAt(i);
                 continue;
             }
+
             float distance = Vector2.Distance(obj.transform.position, playerPosition.position);
 
             if (distance > spawnRadius)
             {
                 obj.SetActive(false);
                 prefabPool.Enqueue(obj);
-                activeClouds.RemoveAt(i);
+                activeObjects.RemoveAt(i);
 
+                // プールに戻したら、新しい位置で再配置
                 SpawnCloudOutsideRadius();
             }
         }
@@ -93,21 +110,41 @@ public class SpawnPoolManager : MonoBehaviour
 
         do
         {
+            // プレイヤーの周囲からランダムに選ぶ
             offset = Random.insideUnitCircle * spawnRadius;
+
+            // プレイヤーの進行方向の前方だけに絞る場合
+            if (spawnOnlyInFront)
+            {
+                Vector2 forward = GetPlayerForward();
+                float angleToCandidate = Vector2.Angle(forward, offset);
+                if (angleToCandidate > spawnFrontAngle * 0.5f)
+                {
+                    attempts++;
+                    continue; // 前方角度外ならやり直し
+                }
+            }
+
             y = playerPosition.position.y + offset.y;
+            Vector2 candidatePos = new Vector2(playerPosition.position.x + offset.x, y);
+
+            // Y座標が最低値以上 & 既存オブジェクト/プレイヤーから十分離れていれば採用
+            if (y >= minYThreshold && IsPositionValid(candidatePos))
+            {
+                obj.transform.position = new Vector3(candidatePos.x, candidatePos.y, 0f);
+                obj.SetActive(true);
+                activeObjects.Add(obj);
+                found = true;
+                break;
+            }
+
             attempts++;
-            if (y >= minYThreshold) found = true;
-        } while (!found && attempts < 10);
+        } while (!found && attempts < 20);
 
         if (!found)
         {
-            prefabPool.Enqueue(obj); // 位置が見つからなければ戻す
-            return;
+            prefabPool.Enqueue(obj); // 見つからなかったら戻す
         }
-
-        obj.transform.position = new Vector3(playerPosition.position.x + offset.x, y, 0f);
-        obj.SetActive(true);
-        activeClouds.Add(obj);
     }
 
     void SpawnCloudOutsideRadius()
@@ -116,48 +153,41 @@ public class SpawnPoolManager : MonoBehaviour
 
         GameObject obj = prefabPool.Dequeue();
 
-        Vector2 playerDir = Vector2.right; // デフォルトは右向き
-        if (playerPosition.TryGetComponent<Rigidbody2D>(out var rb))
-        {
-            if (rb.linearVelocity.sqrMagnitude > 0.1f)
-                playerDir = rb.linearVelocity.normalized;
-        }
+        Vector2 playerDir = GetPlayerForward();
 
         Vector2 offset;
         float y;
         int attempts = 0;
+        bool found = false;
 
         do
         {
-            // 進行方向±60度くらいの範囲で雲を出す
-            float angle = Mathf.Atan2(playerDir.y, playerDir.x) + Random.Range(-Mathf.PI / 3, Mathf.PI / 3);
+            // プレイヤー進行方向を中心に±spawnFrontAngle/2の範囲にスポーン
+            float baseAngle = Mathf.Atan2(playerDir.y, playerDir.x);
+            float randomAngle = baseAngle + Random.Range(-Mathf.Deg2Rad * spawnFrontAngle / 2, Mathf.Deg2Rad * spawnFrontAngle / 2);
+
             float distance = Random.Range(spawnRadius + 50f, reSpawnDistance);
-            offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
+            offset = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle)) * distance;
+
             y = playerPosition.position.y + offset.y;
+            Vector2 candidatePos = new Vector2(playerPosition.position.x + offset.x, y);
+
+            if (y >= minYThreshold && IsPositionValid(candidatePos))
+            {
+                obj.transform.position = new Vector3(candidatePos.x, candidatePos.y, 0f);
+                obj.SetActive(true);
+                activeObjects.Add(obj);
+                found = true;
+                break;
+            }
+
             attempts++;
-        } while (y < minYThreshold && attempts < 10);
+        } while (!found && attempts < 20);
 
-        // Prefabが変わる場合はここで差し替え（再利用時は不要）
-        // cloud = ReplaceCloudPrefabIfNeeded(cloud);
-
-        obj.transform.position = new Vector3(playerPosition.position.x + offset.x, y, 0f);
-        obj.SetActive(true);
-        activeClouds.Add(obj);
-    }
-
-    // 確率に応じてPrefabを選ぶ
-    private GameObject GetRandomPrefabByProbability()
-    {
-        float total = 0f;
-        foreach (var p in spawnPrefabs) total += p.spawnProbability;
-        float r = Random.Range(0f, total);
-        float accum = 0f;
-        foreach (var p in spawnPrefabs)
+        if (!found)
         {
-            accum += p.spawnProbability;
-            if (r <= accum) return p.prefab;
+            prefabPool.Enqueue(obj); // 見つからなければ戻す
         }
-        return spawnPrefabs[spawnPrefabs.Length - 1].prefab; // フォールバック
     }
 
     private void OnPlayerSpawned(CustomPlayer spawnedPlayer)
@@ -165,9 +195,52 @@ public class SpawnPoolManager : MonoBehaviour
         playerPosition = spawnedPlayer.transform;
         initialized = true;
 
-        for (int i = 0; i < prefabCount; i++)
+        // プレイヤーがスポーンしたら、プールにあるだけ全部初期スポーン
+        int spawnAttempts = 0;
+        int maxSpawnAttempts = prefabPool.Count;
+
+        while (prefabPool.Count > 0 && spawnAttempts < maxSpawnAttempts)
         {
             SpawnInitialCloud();
+            spawnAttempts++;
         }
+    }
+
+    private bool IsPositionValid(Vector2 candidatePos)
+    {
+        // プレイヤーとの距離チェック
+        if (playerPosition != null)
+        {
+            float playerDist = Vector2.Distance(candidatePos, playerPosition.position);
+            if (playerDist < minDistanceFromPlayer)
+            {
+                return false; // プレイヤーに近すぎるので無効
+            }
+        }
+
+        // 既存オブジェクトとの距離チェック
+        foreach (var obj in activeObjects)
+        {
+            if (obj == null) continue;
+
+            float dist = Vector2.Distance(candidatePos, obj.transform.position);
+            if (dist < minDistanceBetweenObjects)
+            {
+                return false; // 近すぎるので無効
+            }
+        }
+        return true; // 全部OK
+    }
+
+    // プレイヤーの進行方向ベクトルを取得
+    private Vector2 GetPlayerForward()
+    {
+        Vector2 forward = Vector2.right; // デフォルトは右向き
+        if (playerPosition.TryGetComponent<Rigidbody2D>(out var rb))
+        {
+            if (rb.linearVelocity.sqrMagnitude > 0.1f)
+                forward = rb.linearVelocity.normalized;
+        }
+        return forward;
     }
 }

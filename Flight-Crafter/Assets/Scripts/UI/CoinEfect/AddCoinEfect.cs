@@ -1,8 +1,9 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using System.Collections;
+using System.Threading;
 using System.Collections.Generic;
 
-public class AddCoinEfect : MonoBehaviour
+public class AddCoinEffect : MonoBehaviour
 {
     [SerializeField] private CoinDisplay coinDisplay;
     [SerializeField] private Transform canvas;
@@ -13,55 +14,85 @@ public class AddCoinEfect : MonoBehaviour
 
     private List<CoinMover> activeCoins = new List<CoinMover>();
     private bool isSkipping = false;
+
+    // UniTask用のキャンセル管理
+    private CancellationTokenSource spawnCts;
+
     void Update()
-{
-    if (Input.GetMouseButtonDown(0))
     {
-        SkipAllAnimations(); // ← スキップ呼び出し
+        if (Input.GetMouseButtonDown(0))
+        {
+            SkipAllAnimations();
+        }
     }
-}
 
     public void AddCoin(int earnedCoins)
     {
-        StartCoroutine(SpawnCoins(earnedCoins));
+        // 前回のタスクが動いてたら止める
+        spawnCts?.Cancel();
+        spawnCts = new CancellationTokenSource();
+
+        // UniTask版スポーン
+        SpawnCoinsAsync(earnedCoins, spawnCts.Token).Forget();
+
+        // コインUI演出
         coinDisplay.AnimateAddCoins();
     }
 
-    private IEnumerator SpawnCoins(int count)
+    private async UniTaskVoid SpawnCoinsAsync(int count, CancellationToken token)
     {
         for (int i = 0; i < count; i++)
         {
+            if (token.IsCancellationRequested || isSkipping) break;
+
+            // ランダム位置に生成
             Vector2 randomOffset = Random.insideUnitCircle * spawnRadius;
             Vector2 spawnPos = (Vector2)coinPosition.position + randomOffset;
 
-            GameObject coin = Instantiate(coinPrefab, spawnPos, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)), canvas);
-            CoinMover mover = coin.AddComponent<CoinMover>();
+            GameObject coin = Instantiate(
+                coinPrefab,
+                spawnPos,
+                Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)),
+                canvas
+            );
 
+            CoinMover mover = coin.AddComponent<CoinMover>();
             mover.Init(addCoinPosition, 1f, OnCoinArrived);
             activeCoins.Add(mover);
 
+            // スキップしてない場合だけ待つ
             if (!isSkipping)
-                yield return new WaitForSeconds(0.05f); // 通常は時間差で出す
+            {
+                try
+                {
+                    await UniTask.Delay(50, cancellationToken: token);
+                }
+                catch
+                {
+                    // キャンセルされたら即終了
+                    break;
+                }
+            }
         }
     }
 
-    // スキップ処理：すべて即ゴールに
     public void SkipAllAnimations()
     {
+        if (isSkipping) return; // 二重スキップ防止
         isSkipping = true;
 
+        // コインUI演出も即終了
         coinDisplay.SkipCoinAnimation();
 
-        // ここでコピーしてからループする（元のリストが変更されても安全）
+        // すべての飛んでるコインを即ゴールへ
         foreach (var coin in activeCoins.ToArray())
         {
             if (coin != null && !coin.IsCompleted)
-                coin.SkipToTarget();
+                coin.SkipToTarget(); // 即到着するように実装済みならここで終わる
         }
 
-        activeCoins.Clear();
+        activeCoins.Clear(); // もう演出なし
     }
-
 
     private void OnCoinArrived(CoinMover coin)
     {

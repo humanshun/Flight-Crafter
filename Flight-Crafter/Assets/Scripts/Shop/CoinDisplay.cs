@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 public class CoinDisplay : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI coinText;
-    [SerializeField] private AddCoinEfect addCoinEfect;
+    [SerializeField] private AddCoinEffect addCoinEffect;
 
     [SerializeField] private float interval = 0.08f;
     [SerializeField] private float startDelay = 1.55f;
@@ -70,7 +70,16 @@ public class CoinDisplay : MonoBehaviour
 
     public void SkipCoinAnimation()
     {
+        // スキップフラグON
         isSkipping = true;
+
+        // すぐに最終値を反映
+        int targetCoin = currentCoin + earnedCoins;
+        currentCoin = targetCoin;
+        coinText.text = currentCoin.ToString();
+
+        // もう演出は終わったことにする
+        isAnimating = false;
     }
 
     public void AddCoinsImmediately(int amount)

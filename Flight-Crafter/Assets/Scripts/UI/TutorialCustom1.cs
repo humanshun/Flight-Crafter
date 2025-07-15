@@ -11,7 +11,7 @@ public class TutorialCustom1 : MonoBehaviour
     [SerializeField] private Button nextButton;
     [SerializeField] private Button playButton;
     [SerializeField] private GameObject caretDownImage;
-    private bool checkStep1 = false;
+    // private bool checkStep1 = false;
     private bool checkStep2 = false;
     private bool checkStep3 = false;
     private bool checkStep4 = false;

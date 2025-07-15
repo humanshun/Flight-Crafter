@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyDuck : EnemyBase
 {
     [SerializeField] private float jumpForce = 100f;
+    [SerializeField] private float speedForce = 50f;
     protected override void Start()
     {
         base.Start();
@@ -22,7 +23,7 @@ public class EnemyDuck : EnemyBase
                 Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y + jumpForce);
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x + speedForce, rb.linearVelocity.y + jumpForce);
                 }
             }
         }

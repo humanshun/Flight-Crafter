@@ -601,4 +601,50 @@ public class PlayerController2 : MonoBehaviour
 
         rb.AddTorque(correctionTorque); // トルクを加えて姿勢を補正
     }
+
+    // ===== プレイヤーの体力を回復するメソッド =====
+    public void Heal(float healAmount)
+    {
+        if (isDead) return; // 死亡時は回復しない
+
+        float beforeHealth = total_Health;
+
+        // 回復量を加算
+        total_Health += healAmount;
+
+        // 最大体力はパーツ構成で決まるなら「最大値を保持」しておくべき
+        // 例えば bodyData.hp.value がベースならこんな感じ
+        float maxHealth = 0f;
+        if (bodyData != null) maxHealth += bodyData.hp.value;
+        // 他のパーツが体力に影響するなら加算
+
+        // 最大体力を超えないようにクランプ
+        total_Health = Mathf.Min(total_Health, maxHealth);
+
+        Debug.Log($"回復: {healAmount}, 体力 {beforeHealth} → {total_Health}");
+
+        // UI に更新を通知
+        OnHealthChanged?.Invoke(total_Health);
+    }
+    
+    // ===== ロケット噴射時間を回復するメソッド =====
+    public void RecoverRocketTime(float recoverAmount)
+    {
+        if (rocketPermanentlyDisabled) return;
+
+        float before = total_RocketTime - crrentRocketTime; // 残り時間
+
+        // 消費した時間を減らす（＝残り時間を増やす）
+        crrentRocketTime -= recoverAmount;
+        if (crrentRocketTime < 0f) crrentRocketTime = 0f;
+
+        float after = total_RocketTime - crrentRocketTime;
+
+        Debug.Log($"ロケット回復: {recoverAmount}, 残り噴射時間 {before} → {after}");
+
+        OnRocketTimeChanged?.Invoke(after);
+
+        // 使えない状態なら再度使えるようにする
+        finishRocketTime = true;
+    }
 }

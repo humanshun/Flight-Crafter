@@ -15,7 +15,7 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI distanceText;  // 距離表示UI
     [SerializeField] private TextMeshProUGUI altitudeText;  // 高度表示UI
     [SerializeField] private CoinDisplay coinDisplay;      // コイン表示UI
-    [SerializeField] private AddCoinEfect addCoinEfect;
+    [SerializeField] private AddCoinEffect addCoinEffect;
     [SerializeField] private float startX = 250f;           // 計測開始X座標
     [SerializeField] private Slider slider; // スクロールバー
     private float goal = 7000f; // ゴール地点のX座標
@@ -144,8 +144,8 @@ public class InGameUI : MonoBehaviour
         altitudeText.gameObject.SetActive(false);
         coinDisplay.earnedCoins = CalculateCoins();
         coinDisplay.gameObject.SetActive(true); // ゲームオーバー時にコイン表示を有効化
-        addCoinEfect.gameObject.SetActive(true);
-        addCoinEfect.AddCoin(CalculateCoins());
+        addCoinEffect.gameObject.SetActive(true);
+        addCoinEffect.AddCoin(CalculateCoins());
         slider.gameObject.SetActive(false); // スクロールバーを非表示にする
         playerUI.SetActive(false); // プレイヤーUIを非表示にする
     }

@@ -2458,7 +2458,7 @@ MonoBehaviour:
   distanceText: {fileID: 3325496682171347285}
   altitudeText: {fileID: 2061968747620271672}
   coinDisplay: {fileID: 3524451284736110229}
-  addCoinEfect: {fileID: 4498620490881721015}
+  addCoinEffect: {fileID: 4498620490881721015}
   startX: 250
   slider: {fileID: 4478764163292027159}
   healthSlider: {fileID: 7886963816715610605}
@@ -4582,7 +4582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 5321291682548588158}
-  addCoinEfect: {fileID: 4498620490881721015}
+  addCoinEffect: {fileID: 0}
   interval: 0.05
   startDelay: 1.6
   earnedCoins: 0
