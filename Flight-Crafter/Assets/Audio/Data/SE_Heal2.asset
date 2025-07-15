@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01729d08af4abc84ebe80df4a72265f4, type: 3}
-  m_Name: BGM_SlowWalk
+  m_Name: SE_Heal2
   m_EditorClassIdentifier: 
-  soundName: BGM_SlowWalk
-  clip: {fileID: 8300000, guid: 65a6780a3f16c374dbb5a748ce66c1ac, type: 3}
+  soundName: SE_Heal2
+  clip: {fileID: 8300000, guid: f8253f14b7c3a6f4086599a3f6bf5466, type: 3}
   volume: 0.2
-  loop: 1
+  loop: 0

@@ -17,10 +17,11 @@ public class ItemHealth : ItemBase
                 // 体力回復
                 player.Heal(healthAmount);
 
-                // TODO回復音
-                // AudioManager.Instance.PlaySFX("SE_Coins");
+                // 回復音
+                AudioManager.Instance.PlaySFX("SE_Heal");
 
                 // TODOエフェクト
+
                 gameObject.SetActive(false);
             }
         }

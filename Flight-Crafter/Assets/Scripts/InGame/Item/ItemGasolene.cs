@@ -17,8 +17,8 @@ public class ItemGasolene : ItemBase
                 // ロケット時間回復
                 player.RecoverRocketTime(recoverAmount);
 
-                // TODO回復アイテムのSE
-                // AudioManager.Instance.PlaySFX("SE_Fuel");
+                // 回復アイテムのSE
+                AudioManager.Instance.PlaySFX("SE_Heal2");
 
                 // TODOエフェクトを出したいならここでInstantiate
 

@@ -2809,11 +2809,11 @@ MonoBehaviour:
   playerPosition: {fileID: 0}
   spawnPrefabs:
   - prefab: {fileID: 617554430363916335, guid: d79981c506732d54e8ed3c947e8c0fc5, type: 3}
-    instanceCount: 1
+    instanceCount: 2
   - prefab: {fileID: 3788173965293492389, guid: ebcb1b039a4f86d4aad8c45118628874, type: 3}
-    instanceCount: 1
+    instanceCount: 2
   - prefab: {fileID: 8731778179919717119, guid: cdfb79b269b796b469684bf3466f4dcd, type: 3}
-    instanceCount: 1
+    instanceCount: 2
   spawnRadius: 1000
   reSpawnDistance: 500
   minDistanceBetweenObjects: 100
@@ -16719,10 +16719,6 @@ PrefabInstance:
     - target: {fileID: 4737102203840616651, guid: 1ed14ad266ad3f8428cf2220288b7f78, type: 3}
       propertyPath: m_Name
       value: AudioManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7255325203242213764, guid: 1ed14ad266ad3f8428cf2220288b7f78, type: 3}
-      propertyPath: m_Volume
-      value: 0.25474703
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

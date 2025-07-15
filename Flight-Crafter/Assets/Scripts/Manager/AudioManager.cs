@@ -78,7 +78,7 @@ public class AudioManager : MonoBehaviour
     }
 
     // SFXをPlay/Stop方式で再生・停止する
-    public void PlaySFX(string soundName, float pitch = 1f)
+    public void PlaySFX(string soundName, float pitch = 1f, float startTime = 0f)
     {
         foreach (var sound in sfxSounds)
         {
@@ -88,12 +88,17 @@ public class AudioManager : MonoBehaviour
                 sfxSource.clip = sound.clip;
                 sfxSource.volume = sound.volume;
                 sfxSource.loop = false;
+
+                // ★ 再生開始位置を設定
+                sfxSource.time = Mathf.Clamp(startTime, 0f, sound.clip.length);
+
                 sfxSource.Play();
                 return;
             }
         }
         Debug.LogWarning($"SFX '{soundName}' が見つかりません");
     }
+
 
     public void StopSFX(string soundName)
     {

@@ -26,6 +26,7 @@ public class EnemyDuck : EnemyBase
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x + speedForce, rb.linearVelocity.y + jumpForce);
                 }
             }
+            AudioManager.Instance.PlaySFX("SE_Duck", 1f, 0.3f);
         }
     }
 }

@@ -16,7 +16,7 @@ public class ItemCoin : ItemBase
                 inGameUI.AddCollectedCoins(100);
             }
             //コインの音を再生
-            AudioManager.Instance.PlaySFX("SE_Coins");
+            AudioManager.Instance.PlaySFX("SE_Get");
 
             // 取ったら消す
             gameObject.SetActive(false);
