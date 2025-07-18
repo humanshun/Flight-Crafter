@@ -183,15 +183,15 @@ public class PlayerData : MonoBehaviour
 
     public void ResetPlayerData()
     {
-        playerCoins = 10000;
+        playerCoins = 1000000;
         MaxDistance = 0f;
         MaxAltitude = 0f;
         purchasedParts = new List<string>
         {
-            "冷蔵庫段ボール",
+            "紙ボディ",
             "ロケット花火",
             "キャスター",
-            "段ボール"
+            "カミツバサ"
         };
         currentParts = new Dictionary<PartType, string>();
 

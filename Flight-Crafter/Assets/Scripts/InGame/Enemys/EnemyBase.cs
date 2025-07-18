@@ -14,6 +14,8 @@ public abstract class EnemyBase : MonoBehaviour
 
     [Header("衝突時のダメージ")]
     [SerializeField] protected float selfDamageOnCollision = 5f;
+    [Header("鳴き声のSE名")]
+    protected abstract string HitSoundName { get; }
 
     protected virtual void Start()
     {
@@ -61,8 +63,19 @@ public abstract class EnemyBase : MonoBehaviour
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.5f, rb.linearVelocity.y);
                 }
             }
+            PlayHitSound();
         }
-
         TakeDamage(selfDamageOnCollision);
+    }
+
+        protected virtual void PlayHitSound()
+    {
+        if (!string.IsNullOrEmpty(HitSoundName))
+        {
+            // ここはあなたのプロジェクトのSE再生システムに合わせる
+            Debug.Log($"{gameObject.name} が鳴き声を再生: {HitSoundName}");
+
+            AudioManager.Instance.PlaySFX(HitSoundName);
+        }
     }
 }

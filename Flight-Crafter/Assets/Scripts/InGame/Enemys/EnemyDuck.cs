@@ -4,6 +4,8 @@ public class EnemyDuck : EnemyBase
 {
     [SerializeField] private float jumpForce = 100f;
     [SerializeField] private float speedForce = 50f;
+    protected override string HitSoundName => "SE_Duck";
+    
     protected override void Start()
     {
         base.Start();

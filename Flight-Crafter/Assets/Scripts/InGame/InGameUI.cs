@@ -134,7 +134,7 @@ public class InGameUI : MonoBehaviour
 
     public int CalculateCoins()
     {
-        int baseCoins = Mathf.FloorToInt(distance / 10f);
+        int baseCoins = Mathf.FloorToInt(distance);
         return baseCoins + collectionCoins;
     }
 

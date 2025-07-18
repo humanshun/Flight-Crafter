@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: TypeWing
   m_EditorClassIdentifier: 
   wingParts:
+  - {fileID: 11400000, guid: d827b0b9f30072c4d9d01378796ed652, type: 2}
   - {fileID: 11400000, guid: 0b9dcce4078ee4f4583effdd92b0115b, type: 2}
+  - {fileID: 11400000, guid: 817dc08b2dc019848b19b6b5b44a7b6d, type: 2}
+  - {fileID: 11400000, guid: 4308308bf0755b740828b2dae99893c5, type: 2}
+  - {fileID: 11400000, guid: 0a26eabe577e3ee4196a0d335ad39fa1, type: 2}
   - {fileID: 11400000, guid: 9160a9236973fdf478a99c85c215857f, type: 2}

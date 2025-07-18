@@ -14,6 +14,7 @@ public class EnemyEgret : EnemyBase
 
     private Vector2 attackDirection;
     private bool isAttackWaiting = false;
+    protected override string HitSoundName => "SE_Egret";
 
     protected override void Start()
     {

@@ -20,13 +20,13 @@ MonoBehaviour:
     value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 10
+    value: 0
   partType: 1
   partDescription: "\u304D\u308C\u3044\u306A\u82B1\u706B"
-  partIconImage: {fileID: -5026856115379081334, guid: f302a6d94c3874640aadd27e9f4a3d19, type: 3}
+  partIconImage: {fileID: 2662617919679331371, guid: a190d48f54b126d4abdaef41945e1fe1, type: 3}
   jetThrust:
     displayName: "\u5674\u5C04\u529B"
-    value: 10
+    value: 20
   jetTime:
     displayName: "\u5674\u5C04\u6642\u9593"
-    value: 10
+    value: 2

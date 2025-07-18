@@ -4467,7 +4467,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 457.2992, y: 0.00002670288}
+  m_AnchoredPosition: {x: 457.2992, y: -0.0000076293945}
   m_SizeDelta: {x: 898, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1146359091795184274
@@ -4493,7 +4493,7 @@ MonoBehaviour:
   m_CellSize: {x: 200, y: 200}
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 1
-  m_ConstraintCount: 4
+  m_ConstraintCount: 3
 --- !u!114 &2550139205981585223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4910,7 +4910,6 @@ GameObject:
   - component: {fileID: 4274933103343973764}
   - component: {fileID: 3513196714189754758}
   - component: {fileID: 1785009720349653611}
-  - component: {fileID: 3606998585835956229}
   m_Layer: 5
   m_Name: SettingButton
   m_TagString: Untagged
@@ -5005,20 +5004,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3606998585835956229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4359892247921748387}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 729d3571ed7354ba184275ba6042151c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popupPrefab: {fileID: 8605453408222845194, guid: 536f10db63dcb484ea178377883b361e, type: 3}
-  button: {fileID: 3513196714189754758}
 --- !u!1 &4393714599346745078
 GameObject:
   m_ObjectHideFlags: 0
