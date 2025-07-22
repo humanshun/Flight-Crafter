@@ -20,13 +20,13 @@ MonoBehaviour:
     value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 500
+    value: 100
   partType: 1
   partDescription: "PESA\u3068\u5171\u540C\u958B\u767A\u3057\u305F"
   partIconImage: {fileID: 3585359984692496149, guid: ff31a927e7897a24ba95988b4ffa301c, type: 3}
   jetThrust:
     displayName: "\u5674\u5C04\u529B"
-    value: 30
+    value: 35
   jetTime:
     displayName: "\u5674\u5C04\u6642\u9593"
-    value: 10
+    value: 8

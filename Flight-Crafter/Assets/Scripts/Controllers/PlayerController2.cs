@@ -75,7 +75,8 @@ public class PlayerController2 : MonoBehaviour
     private bool inWater; // 水中にいるかどうか
     float MovY = 0;
 
-    // ===== 水中物理パラメータ =====
+    // ===== 水中物理パラメータ =====]
+    [SerializeField] private float waterSurfaceY = -40f; // 水面の高さ
     [SerializeField] private float waterBuoyancyForce = 30.0f; // 水中で上向きに加える力
     [SerializeField] private float waterLinearDamping = 1.0f;  // 水中での抵抗値
 
@@ -238,14 +239,14 @@ public class PlayerController2 : MonoBehaviour
     public void PlayerAngle()
     {
         if (isDead) return;
-        if (groundCheck != false) return;
+        if (groundCheck) return;
 
         // 上下入力とパーツ性能に応じて回転トルクを加える
         float torque = MovY * total_AirControl;  // MovYとtotal_AirControlで回転力を計算
         rb.AddTorque(torque);
 
         // 進行方向が下向きのときに揚力（上向きの力）を加える
-        float thrustForce = Vector2.Dot(rb.linearVelocity, rb.GetRelativeVector(Vector2.down)) * 2.0f;
+        float thrustForce = Vector2.Dot(rb.linearVelocity, rb.GetRelativeVector(Vector2.down));
         Vector2 relForce = Vector2.up * thrustForce; // 上方向ベクトルに変換
         rb.AddForce(rb.GetRelativeVector(relForce)); // Rigidbody2Dに揚力を加える
 
@@ -359,7 +360,6 @@ public class PlayerController2 : MonoBehaviour
         if (input != 0)
         {
             // 入力に基づいて力を計算
-            //　TODO: 加速力の調整
             Vector2 force = rightDirection * input * total_Torque;
 
             // 力を加える
@@ -474,7 +474,48 @@ public class PlayerController2 : MonoBehaviour
         // 毎フレーム浮力は加える（inWater中のみ）
         if (inWater)
         {
-            rb.AddForce(Vector2.up * waterBuoyancyForce, ForceMode2D.Force);
+            ApplyRealisticBuoyancy();
+        }
+    }
+
+    // 水中で浮力を加えるメソッド
+    private void ApplyRealisticBuoyancy()
+    {
+        // プレイヤーの上下の位置を計算
+        float bottomY = transform.position.y - playerCollider.bounds.extents.y;
+        float topY = transform.position.y + playerCollider.bounds.extents.y;
+        float height = topY - bottomY;
+
+        float submergedRatio = 0f;
+
+        // プレイヤーが完全に水面の上
+        if (bottomY > waterSurfaceY)
+        {
+            submergedRatio = 0f;
+        }
+        // プレイヤーが完全に水中
+        else if (topY < waterSurfaceY)
+        {
+            submergedRatio = 1f;
+        }
+        // 半分だけ浸かってる場合
+        else
+        {
+            float submergedHeight = waterSurfaceY - bottomY;
+            submergedRatio = Mathf.Clamp01(submergedHeight / height);
+        }
+
+        if (submergedRatio > 0f)
+        {
+            // プレイヤーの重さに比例した浮力（重さと釣り合う）
+            float gravityForce = rb.mass * Mathf.Abs(Physics2D.gravity.y);
+            float buoyancyForce = gravityForce * submergedRatio;
+
+            // 上方向に浮力を加える
+            rb.AddForce(Vector2.up * buoyancyForce, ForceMode2D.Force);
+
+            // 水の粘性抵抗 → 水中の動きを鈍くする
+            rb.linearVelocity *= Mathf.Lerp(1f, 0.9f, submergedRatio);
         }
     }
     // ===== ゲームオーバーのチェックメソッド =====

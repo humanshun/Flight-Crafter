@@ -26,7 +26,7 @@ MonoBehaviour:
   partIconImage: {fileID: 2662617919679331371, guid: a190d48f54b126d4abdaef41945e1fe1, type: 3}
   jetThrust:
     displayName: "\u5674\u5C04\u529B"
-    value: 20
+    value: 30
   jetTime:
     displayName: "\u5674\u5C04\u6642\u9593"
     value: 2

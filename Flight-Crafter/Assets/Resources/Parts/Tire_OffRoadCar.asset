@@ -17,10 +17,10 @@ MonoBehaviour:
   partPrefab: {fileID: 4626000334631893574, guid: 0608694858c1e184180d705ec4ad1718, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
-    value: 0
+    value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 4000
+    value: 700
   partType: 2
   partDescription: "\u7802\u5229\u9053\u306B\u5F37\u3044"
   partIconImage: {fileID: -4396800592175294226, guid: c1c9c36759a5dc54cb0ad8616c518bd1, type: 3}
@@ -29,4 +29,4 @@ MonoBehaviour:
     value: 0.01
   torque:
     displayName: "\u5730\u4E0A\u52A0\u901F\u5EA6"
-    value: 10
+    value: 500

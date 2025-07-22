@@ -20,7 +20,7 @@ MonoBehaviour:
     value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 3000
+    value: 1000
   partType: 1
   partDescription: "PESA\u3068\u5171\u540C\u958B\u767A\u3057\u305F"
   partIconImage: {fileID: -5744353553764559467, guid: d4e8bf1d4e6e4ee4e870df7bf7694cf8, type: 3}
