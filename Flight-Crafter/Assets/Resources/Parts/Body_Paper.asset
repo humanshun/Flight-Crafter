@@ -26,7 +26,7 @@ MonoBehaviour:
   partIconImage: {fileID: -4521150189165848909, guid: 9be1a42f341b00040b2533c738d71bda, type: 3}
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"
-    value: 0.1
+    value: 0.15
   hp:
     displayName: "\u4F53\u529B"
     value: 5

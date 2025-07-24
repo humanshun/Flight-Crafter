@@ -20,13 +20,13 @@ MonoBehaviour:
     value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 100
+    value: 5000
   partType: 2
   partDescription: "\u666E\u901A\u306E\u30BF\u30A4\u30E4"
   partIconImage: {fileID: -6366932757495806460, guid: 520c1547563a38946931386086a68b7b, type: 3}
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"
-    value: 0.1
+    value: 0.05
   torque:
     displayName: "\u5730\u4E0A\u52A0\u901F\u5EA6"
-    value: 350
+    value: 35

@@ -20,7 +20,7 @@ MonoBehaviour:
     value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 1000
+    value: 10000
   partType: 0
   partDescription: "\u6C34\u4E2D\u62B5\u6297\u304C\u5C11\u306A\u3044"
   partIconImage: {fileID: -4032481707582436298, guid: 5fe02ee676471cc4d83d663fd3bcace9, type: 3}

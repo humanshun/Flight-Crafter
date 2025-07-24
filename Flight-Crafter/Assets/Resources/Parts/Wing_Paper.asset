@@ -20,7 +20,7 @@ MonoBehaviour:
     value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 10
+    value: 0
   partType: 3
   partDescription: "\u8EFD\u3044\u304C\u8106\u3044"
   partIconImage: {fileID: -8926382406018718195, guid: 264b23ae29be84d4fa99a4c8d8d77ded, type: 3}
@@ -29,4 +29,4 @@ MonoBehaviour:
     value: 0.1
   airControl:
     displayName: "\u7A7A\u4E2D\u5236\u5FA1"
-    value: 30
+    value: 10

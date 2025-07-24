@@ -5,45 +5,33 @@ using System.Collections.Generic;
 
 public class AddCoinEffect : MonoBehaviour
 {
-    [SerializeField] private CoinDisplay coinDisplay;
-    [SerializeField] private Transform canvas;
-    [SerializeField] private GameObject coinPrefab;
-    [SerializeField] private Transform coinPosition;
-    [SerializeField] private Transform addCoinPosition;
-    [SerializeField] private float spawnRadius = 20.0f;
+    [SerializeField] private Transform canvas;        // コインを生成するUIの親Transform
+    [SerializeField] private GameObject coinPrefab;   // 生成するコインのプレハブ
+    [SerializeField] private Transform coinPosition;  // コインが飛び出す起点の位置
+    [SerializeField] private Transform addCoinPosition; // コインが集まる最終位置
+    [SerializeField] private float spawnRadius = 20.0f; // コインがランダムに散らばる半径
 
     private List<CoinMover> activeCoins = new List<CoinMover>();
-    private bool isSkipping = false;
-
-    // UniTask用のキャンセル管理
     private CancellationTokenSource spawnCts;
 
-    void Update()
+    /// <summary>
+    /// コイン飛ばし演出を開始
+    /// </summary>
+    public void Play(int count)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            SkipAllAnimations();
-        }
-    }
-
-    public void AddCoin(int earnedCoins)
-    {
-        // 前回のタスクが動いてたら止める
+        // 既存演出をキャンセル
         spawnCts?.Cancel();
         spawnCts = new CancellationTokenSource();
 
-        // UniTask版スポーン
-        SpawnCoinsAsync(earnedCoins, spawnCts.Token).Forget();
-
-        // コインUI演出
-        coinDisplay.AnimateAddCoins();
+        // 非同期でスポーン開始
+        SpawnCoinsAsync(count, spawnCts.Token).Forget();
     }
 
     private async UniTaskVoid SpawnCoinsAsync(int count, CancellationToken token)
     {
         for (int i = 0; i < count; i++)
         {
-            if (token.IsCancellationRequested || isSkipping) break;
+            if (token.IsCancellationRequested) break;
 
             // ランダム位置に生成
             Vector2 randomOffset = Random.insideUnitCircle * spawnRadius;
@@ -60,38 +48,32 @@ public class AddCoinEffect : MonoBehaviour
             mover.Init(addCoinPosition, 1f, OnCoinArrived);
             activeCoins.Add(mover);
 
-            // スキップしてない場合だけ待つ
-            if (!isSkipping)
+            // 次のコインを出すまで50ms待つ（演出感を出す）
+            try
             {
-                try
-                {
-                    await UniTask.Delay(50, cancellationToken: token);
-                }
-                catch
-                {
-                    // キャンセルされたら即終了
-                    break;
-                }
+                await UniTask.Delay(50, cancellationToken: token);
+            }
+            catch
+            {
+                break;
             }
         }
     }
 
-    public void SkipAllAnimations()
+    /// <summary>
+    /// 途中でスキップ（飛んでるコインを全て即ゴールに移動）
+    /// </summary>
+    public void Skip()
     {
-        if (isSkipping) return; // 二重スキップ防止
-        isSkipping = true;
+        // コイン生成タスクを止める
+        spawnCts?.Cancel();
 
-        // コインUI演出も即終了
-        coinDisplay.SkipCoinAnimation();
-
-        // すべての飛んでるコインを即ゴールへ
         foreach (var coin in activeCoins.ToArray())
         {
             if (coin != null && !coin.IsCompleted)
-                coin.SkipToTarget(); // 即到着するように実装済みならここで終わる
+                coin.SkipToTarget();
         }
-
-        activeCoins.Clear(); // もう演出なし
+        activeCoins.Clear();
     }
 
     private void OnCoinArrived(CoinMover coin)

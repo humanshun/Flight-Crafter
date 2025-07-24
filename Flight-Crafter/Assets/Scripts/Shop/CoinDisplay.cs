@@ -1,90 +1,86 @@
 using TMPro;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using System;
 
 public class CoinDisplay : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI coinText;
-    [SerializeField] private AddCoinEffect addCoinEffect;
-
     [SerializeField] private float interval = 0.08f;
     [SerializeField] private float startDelay = 1.55f;
 
     private int currentCoin = 0;
-    public int earnedCoins = 0;
 
-    private bool isSkipping = false;
-    private bool isAnimating = false;
+    // 内部状態は外から見なくてOK、外部でステート管理する
+    private bool skipRequested = false;
 
     void Start()
     {
+        // 初期化（プレイヤーデータの所持数を表示）
         currentCoin = PlayerData.Instance.playerCoins;
         coinText.text = currentCoin.ToString();
     }
 
-    public void AnimateAddCoins()
+    /// <summary>
+    /// 指定枚数のコインを1枚ずつ加算する演出
+    /// </summary>
+    public async UniTask PlayCountUpAsync(int earnedCoins, Action onComplete = null)
     {
-        if (isAnimating)
-        {
-            return;
-        }
-
-        isSkipping = false;
-        _ = AddCoinsRoutineAsync(); // 非同期で実行
-    }
-
-    private async UniTaskVoid AddCoinsRoutineAsync()
-    {
-        isAnimating = true;
-
-        await UniTask.Delay((int)(startDelay * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
+        skipRequested = false;
 
         int targetCoin = currentCoin + earnedCoins;
 
-        if (isSkipping)
+        // コインが飛んでくる演出と合わせるための遅延
+        await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: this.GetCancellationTokenOnDestroy());
+
+        while (currentCoin < targetCoin)
         {
-            currentCoin = targetCoin;
-            coinText.text = currentCoin.ToString();
-        }
-        else
-        {
-            while (currentCoin < targetCoin)
+            if (skipRequested)
             {
-                if (isSkipping)
-                {
-                    await UniTask.Delay((int)(startDelay * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
-                    currentCoin = targetCoin;
-                    coinText.text = currentCoin.ToString();
-                    break;
-                }
-
-                currentCoin++;
+                // スキップ要求が来たら即最終値に
+                currentCoin = targetCoin;
                 coinText.text = currentCoin.ToString();
-
-                await UniTask.Delay((int)(interval * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
+                PlayerData.Instance.playerCoins = currentCoin;
+                onComplete?.Invoke();
+                return;
             }
+
+            // 1枚増やす
+            currentCoin++;
+            coinText.text = currentCoin.ToString();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(interval), cancellationToken: this.GetCancellationTokenOnDestroy());
         }
 
-        isAnimating = false;
+        // 最終値をセーブ
+        PlayerData.Instance.playerCoins = currentCoin;
+
+        // 終わったらコールバック通知
+        onComplete?.Invoke();
     }
 
-    public void SkipCoinAnimation()
+    /// <summary>
+    /// 外部から演出をスキップ（即最終値にする）
+    /// </summary>
+    public void Skip(int earnedCoins)
     {
-        // スキップフラグON
-        isSkipping = true;
+        skipRequested = true;
 
-        // すぐに最終値を反映
         int targetCoin = currentCoin + earnedCoins;
         currentCoin = targetCoin;
         coinText.text = currentCoin.ToString();
 
-        // もう演出は終わったことにする
-        isAnimating = false;
+        // プレイヤーデータに反映
+        PlayerData.Instance.playerCoins = currentCoin;
     }
 
+    /// <summary>
+    /// 即座にコインを増やす（アニメーションなし）
+    /// </summary>
     public void AddCoinsImmediately(int amount)
     {
         currentCoin += amount;
         coinText.text = currentCoin.ToString();
+        PlayerData.Instance.playerCoins = currentCoin;
     }
 }

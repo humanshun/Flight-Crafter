@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: "\u30AA\u30D5\u30ED\u30FC\u30C9\u30AB\u30FC"
   resaurceFileName: Tire_OffRoadCar
-  partPrefab: {fileID: 4626000334631893574, guid: 0608694858c1e184180d705ec4ad1718, type: 3}
+  partPrefab: {fileID: 4586035535985663788, guid: 96fcc41d2dfde0c4da687859d6064c58, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
     value: 0.1
   partCost:
     displayName: "\u91D1\u984D"
-    value: 700
+    value: 30000
   partType: 2
   partDescription: "\u7802\u5229\u9053\u306B\u5F37\u3044"
   partIconImage: {fileID: -4396800592175294226, guid: c1c9c36759a5dc54cb0ad8616c518bd1, type: 3}
   airResistance:
     displayName: "\u7A7A\u6C17\u62B5\u6297"
-    value: 0.01
+    value: 0.02
   torque:
     displayName: "\u5730\u4E0A\u52A0\u901F\u5EA6"
-    value: 500
+    value: 45
