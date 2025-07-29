@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6057733311642039333}
   - component: {fileID: 1802603528327896697}
   - component: {fileID: 8661688066855884616}
+  - component: {fileID: -5987362367770122591}
   m_Layer: 0
   m_Name: Body_Flame
   m_TagString: Player
@@ -102,6 +103,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partData: {fileID: 11400000, guid: f615e048112c15546b2013eb8134c76d, type: 2}
+--- !u!114 &-5987362367770122591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482707365894644521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda51afa1bf14284b9df8f466c515fe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyData: {fileID: 11400000, guid: f615e048112c15546b2013eb8134c76d, type: 2}
+  offset: {x: 0, y: -0.24}
 --- !u!1 &2248705293442516499
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8959635671145937648}
   - component: {fileID: 5630717426792812222}
+  - component: {fileID: -5236289486200784735}
   - component: {fileID: 8227024449095725674}
   m_Layer: 0
   m_Name: Body_Jet
@@ -47,6 +48,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partData: {fileID: 11400000, guid: 9c9bb2a408ba6f84c8ab871d9353bbf5, type: 2}
+--- !u!114 &-5236289486200784735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499030482237402766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda51afa1bf14284b9df8f466c515fe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyData: {fileID: 11400000, guid: 9c9bb2a408ba6f84c8ab871d9353bbf5, type: 2}
+  offset: {x: 0, y: -0.25}
 --- !u!60 &8227024449095725674
 PolygonCollider2D:
   m_ObjectHideFlags: 0

@@ -215,6 +215,11 @@ public class PlayerController2 : MonoBehaviour
             total_RocketTime += rocketData.jetTime.value;
         }
 
+        if (bodyData != null && rocketData != null)
+        {
+            effectPosition = bodyData.rocketPosition + rocketData.effectPosition;
+        }
+
         Debug.Log(
             $"総重量     :{total_Weight},\n " +
             $"総空気抵抗  :{total_AirResistance}, \n " +

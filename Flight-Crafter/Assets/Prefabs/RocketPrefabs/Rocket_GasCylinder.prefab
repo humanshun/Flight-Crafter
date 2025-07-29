@@ -97,6 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4165974772128696550}
   - component: {fileID: 8250105513685101394}
+  - component: {fileID: -704499160617837878}
   m_Layer: 0
   m_Name: Rocket_GasCylinder
   m_TagString: Untagged
@@ -133,3 +134,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partData: {fileID: 11400000, guid: 9666d6a41475d2549b760ed08f475d0c, type: 2}
+--- !u!114 &-704499160617837878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770750124365757920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77d25594bb33d2d4187ea0e808165292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rocketData: {fileID: 11400000, guid: 9666d6a41475d2549b760ed08f475d0c, type: 2}

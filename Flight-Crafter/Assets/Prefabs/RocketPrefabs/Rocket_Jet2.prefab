@@ -97,6 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8468997744199552403}
   - component: {fileID: 8551318488943117437}
+  - component: {fileID: 1023152403049595097}
   m_Layer: 0
   m_Name: Rocket_Jet2
   m_TagString: Untagged
@@ -133,3 +134,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partData: {fileID: 11400000, guid: 9f2d80daa09af1c43a703d331d800d02, type: 2}
+--- !u!114 &1023152403049595097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2229662288056423264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77d25594bb33d2d4187ea0e808165292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rocketData: {fileID: 11400000, guid: 9f2d80daa09af1c43a703d331d800d02, type: 2}

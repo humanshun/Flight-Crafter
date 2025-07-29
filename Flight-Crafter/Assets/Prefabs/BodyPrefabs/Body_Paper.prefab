@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5814810350066504823}
   - component: {fileID: 500969789088697793}
   - component: {fileID: 452099127706857780}
+  - component: {fileID: -3335041272650552524}
   m_Layer: 0
   m_Name: Body_Paper
   m_TagString: Player
@@ -102,6 +103,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partData: {fileID: 11400000, guid: c6b69753ffacb874f9f275541fd34160, type: 2}
+--- !u!114 &-3335041272650552524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793632096011125184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda51afa1bf14284b9df8f466c515fe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyData: {fileID: 11400000, guid: c6b69753ffacb874f9f275541fd34160, type: 2}
+  offset: {x: 0, y: -2}
 --- !u!1 &3745890105751396368
 GameObject:
   m_ObjectHideFlags: 0

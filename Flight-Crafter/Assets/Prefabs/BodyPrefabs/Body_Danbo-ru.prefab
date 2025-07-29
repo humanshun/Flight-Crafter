@@ -110,6 +110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8265671339253175318}
   - component: {fileID: 2079547157959232801}
+  - component: {fileID: 4849677369172923475}
   - component: {fileID: 9138496633334223156}
   m_Layer: 0
   m_Name: Body_Danbo-ru
@@ -147,6 +148,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partData: {fileID: 11400000, guid: d37d2e127c58c8a41aab953f149114a9, type: 2}
+--- !u!114 &4849677369172923475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7410604593853858804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda51afa1bf14284b9df8f466c515fe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyData: {fileID: 11400000, guid: d37d2e127c58c8a41aab953f149114a9, type: 2}
+  offset: {x: 0, y: -0.33}
 --- !u!61 &9138496633334223156
 BoxCollider2D:
   m_ObjectHideFlags: 0

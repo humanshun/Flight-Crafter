@@ -10,6 +10,9 @@ public class RocketData : PartData
     [Header("噴射時間")]
     [Tooltip("値が高いほどロケット噴射時間が長くなります。")]
     public JetTime jetTime; //ロケット噴射時間
+    
+    [Header("エフェクトの位置（ローカル座標）")]
+    public Vector2 effectPosition;
 
     [System.Serializable]
     public class JetThrust
