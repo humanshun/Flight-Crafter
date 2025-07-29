@@ -640,7 +640,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0737263676878443aeb5f4021428364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinDisplay: {fileID: 3524451284736110229}
   canvas: {fileID: 2558092919497828423}
   coinPrefab: {fileID: 5592077648453027198, guid: c028a9a76da54b34abea0c990b2ccb66, type: 3}
   coinPosition: {fileID: 4669528599843004969}
@@ -1587,6 +1586,53 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 14.46
+--- !u!1 &3362223140194862164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 425271543891135852}
+  - component: {fileID: 3231332832304151228}
+  m_Layer: 0
+  m_Name: CoinUIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &425271543891135852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3362223140194862164}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -44.623657, y: 157.27814, z: -4.6571045}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2583056189304449601}
+  m_Father: {fileID: 2558092919497828423}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3231332832304151228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3362223140194862164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff6e16370688b2743888b7dc0e4aaaff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addCoinEffect: {fileID: 4498620490881721015}
+  coinDisplay: {fileID: 3524451284736110229}
 --- !u!1 &3699049226626219693
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,7 +1863,6 @@ Transform:
   m_Children:
   - {fileID: 1123330969161981762}
   - {fileID: 6048728271146778594}
-  - {fileID: 2583056189304449601}
   - {fileID: 5076549795173608822}
   m_Father: {fileID: 2558092919497828423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2362,6 +2407,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 425271543891135852}
   - {fileID: 4055822876538704029}
   - {fileID: 8793122300813922595}
   - {fileID: 1391621003383351851}
@@ -2457,8 +2503,7 @@ MonoBehaviour:
   maxAltitude: 0
   distanceText: {fileID: 3325496682171347285}
   altitudeText: {fileID: 2061968747620271672}
-  coinDisplay: {fileID: 3524451284736110229}
-  addCoinEffect: {fileID: 4498620490881721015}
+  coinUIManager: {fileID: 3231332832304151228}
   startX: 250
   slider: {fileID: 4478764163292027159}
   healthSlider: {fileID: 7886963816715610605}
@@ -4556,17 +4601,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7434916999204755402}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 4.140584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8252327406721976590}
   - {fileID: 5876822682713112907}
-  m_Father: {fileID: 4055822876538704029}
+  m_Father: {fileID: 425271543891135852}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1684, y: 1010}
+  m_AnchoredPosition: {x: 794.9551, y: 308.26556}
   m_SizeDelta: {x: 458.79, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3524451284736110229
@@ -4582,10 +4627,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 5321291682548588158}
-  addCoinEffect: {fileID: 0}
   interval: 0.05
   startDelay: 1.6
-  earnedCoins: 0
 --- !u!1 &7552823319246406583
 GameObject:
   m_ObjectHideFlags: 0

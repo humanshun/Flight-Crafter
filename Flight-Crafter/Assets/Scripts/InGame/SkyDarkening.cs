@@ -9,6 +9,7 @@ public class SkyDarkening : MonoBehaviour
     public float maxHeight = 100f; // 最大高さ
     public Color startColor = Color.cyan; // 開始時の空の色
     public Color endColor = Color.black; // 終了時の空の色
+    public Vector3 playerPosition; // プレイヤーの位置を保存
 
     // このスクリプトが有効になった時に呼ばれる（シーン開始やオブジェクトが有効化された時）
     void OnEnable()
@@ -37,5 +38,7 @@ public class SkyDarkening : MonoBehaviour
         // 高さに応じて色を補間
         float t = (playerHeight - minHeight) / (maxHeight - minHeight);
         mainCamera.backgroundColor = Color.Lerp(startColor, endColor, t);
+
+        playerPosition = player.position;
     }
 }

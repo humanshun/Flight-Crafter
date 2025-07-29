@@ -63,6 +63,7 @@ public class InGameUI : MonoBehaviour
 
     void Start()
     {
+        coinUIManager.gameObject.SetActive(false);
         GameManager.Instance.RegisterScore(this);
     }
 
@@ -137,6 +138,9 @@ public class InGameUI : MonoBehaviour
         // プレイヤーUIも非表示
         slider.gameObject.SetActive(false);
         playerUI.SetActive(false);
+
+        // コインUIを表示（ここでアクティブ化）
+        coinUIManager.gameObject.SetActive(true);
 
         // 獲得コインを計算
         int totalCoins = CalculateCoins();

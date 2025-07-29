@@ -16,9 +16,7 @@ public class CoinUIManager : MonoBehaviour
     private CoinUIState state = CoinUIState.Idle;          // 現在の状態
     private int currentEarnedCoins = 0;                    // 今回の獲得コイン数を保持
 
-    /// <summary>
     /// コイン演出をまとめて開始する
-    /// </summary>
     public void PlayCoinUI(int earnedCoins)
     {
         if (state != CoinUIState.Idle)
@@ -39,44 +37,35 @@ public class CoinUIManager : MonoBehaviour
         coinDisplay.PlayCountUpAsync(earnedCoins, FinishCoinUI).Forget();
     }
 
-    /// <summary>
     /// 演出スキップ（Prefabも数字も即終了）
-    /// </summary>
     public void SkipCoinUI()
     {
         if (state != CoinUIState.Count)
         {
-            Debug.Log("CoinUIManager: 演出中じゃないのでスキップ不要");
+            //演出中じゃないのでスキップ不要
             return;
         }
 
-        Debug.Log("CoinUIManager: 演出スキップ");
-
-        // ✅ AddCoinEffectはSkip()
+        //演出スキップ
+        //AddCoinEffectはSkip
         addCoinEffect.Skip();
 
-        // ✅ CoinDisplayはSkip(earnedCoins)を呼ぶ
+        //CoinDisplayはSkip(earnedCoins)を呼ぶ
         coinDisplay.Skip(currentEarnedCoins);
 
         state = CoinUIState.Skipped;
         FinishCoinUI();
     }
 
-    /// <summary>
     /// 演出終了時（スキップ or 正常完了後）
-    /// </summary>
     private void FinishCoinUI()
     {
         Debug.Log("CoinUIManager: コイン演出終了 → Idleに戻す");
         state = CoinUIState.Idle;
     }
 
-    /// <summary>
     /// 今演出中かどうか
-    /// </summary>
     public bool IsPlaying => state == CoinUIState.Count;
-
-     // ✅ デバッグ用：Oキーでスキップ
     void Update()
     {
         if (IsPlaying && Input.GetMouseButtonDown(0))

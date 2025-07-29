@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
@@ -53,22 +54,22 @@ public abstract class EnemyBase : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             PlayerController2 player = collision.GetComponentInParent<PlayerController2>();
+            Rigidbody2D playerRigidbody = collision.GetComponentInParent<Rigidbody2D>();
             if (player != null)
             {
                 player.TakeDamage(selfDamageOnCollision);
 
-                Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-                if (rb != null)
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.5f, rb.linearVelocity.y);
-                }
+                float weight = player.TotalWeight;
+                float decelerationRate = CalculateDecelerationRate(weight);
+                playerRigidbody.linearVelocity *= decelerationRate;
+
             }
             PlayHitSound();
         }
         TakeDamage(selfDamageOnCollision);
     }
 
-        protected virtual void PlayHitSound()
+    protected virtual void PlayHitSound()
     {
         if (!string.IsNullOrEmpty(HitSoundName))
         {
@@ -77,5 +78,11 @@ public abstract class EnemyBase : MonoBehaviour
 
             AudioManager.Instance.PlaySFX(HitSoundName);
         }
+    }
+
+    private float CalculateDecelerationRate(float weight)
+    {
+        float t = Mathf.InverseLerp(0, 300, weight);
+        return Mathf.Lerp(0.1f, 0.8f, t);
     }
 }

@@ -17,7 +17,7 @@ MonoBehaviour:
   partPrefab: {fileID: 7156139777171862387, guid: 5584402b2042d394f93d56791af83894, type: 3}
   weight:
     displayName: "\u91CD\u91CF"
-    value: 0.1
+    value: 15
   partCost:
     displayName: "\u91D1\u984D"
     value: 500
@@ -29,4 +29,4 @@ MonoBehaviour:
     value: 0.07
   airControl:
     displayName: "\u7A7A\u4E2D\u5236\u5FA1"
-    value: 20
+    value: 40

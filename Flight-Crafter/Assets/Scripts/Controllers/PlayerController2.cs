@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using Unity.Mathematics;
 using Cysharp.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 public class PlayerController2 : MonoBehaviour
 /*
@@ -53,6 +54,7 @@ public class PlayerController2 : MonoBehaviour
     // ===== プレイヤーゲッター =====
     public float TotalHealth => total_Health; // 総体力のゲッター
     public float TotalRocketTime => total_RocketTime; // ロケットの合計噴射時間のゲッター
+    public float TotalWeight => total_Weight;
 
     // ===== イベント =====
     public event Action<float> OnHealthChanged;
@@ -77,7 +79,6 @@ public class PlayerController2 : MonoBehaviour
 
     // ===== 水中物理パラメータ =====]
     [SerializeField] private float waterSurfaceY = -40f; // 水面の高さ
-    [SerializeField] private float waterBuoyancyForce = 30.0f; // 水中で上向きに加える力
     [SerializeField] private float waterLinearDamping = 1.0f;  // 水中での抵抗値
 
     // ===== 無敵・点滅・エフェクト =====
@@ -224,7 +225,7 @@ public class PlayerController2 : MonoBehaviour
             );
 
         rb.linearDamping = total_AirResistance; //空気抵抗。下を向くほどその方向に加速するように。
-        rb.mass = total_Weight;
+        // rb.mass = total_Weight;
     }
 
     // ===== プレイヤーの方向や力を加えるメソッド =====

@@ -30,69 +30,56 @@ public class DescriptionPopup : MonoBehaviour
         {
             case PartType.Body:
                 BodyData body = (BodyData)part;
-                AddStatus(PartType.Body, body.weight.displayName, body.weight.value);
-                AddStatus(PartType.Body, body.hp.displayName, body.hp.value);
-                AddStatus(PartType.Body, body.airResistance.displayName, body.airResistance.value);
+                AddStatus(PartType.Body, StatusType.Weight, body.weight.displayName, body.weight.value);
+                AddStatus(PartType.Body, StatusType.HP, body.hp.displayName, body.hp.value);
+                AddStatus(PartType.Body, StatusType.AirResistance, body.airResistance.displayName, body.airResistance.value * 1000f);
                 break;
 
             case PartType.Rocket:
                 RocketData rocket = (RocketData)part;
-                AddStatus(PartType.Rocket, rocket.weight.displayName, rocket.weight.value);
-                AddStatus(PartType.Rocket, rocket.jetThrust.displayName, rocket.jetThrust.value);
-                AddStatus(PartType.Rocket, rocket.jetTime.displayName, rocket.jetTime.value);
+                AddStatus(PartType.Rocket, StatusType.Weight, rocket.weight.displayName, rocket.weight.value);
+                AddStatus(PartType.Rocket, StatusType.Thrust, rocket.jetThrust.displayName, rocket.jetThrust.value);
+                AddStatus(PartType.Rocket, StatusType.RocketTime, rocket.jetTime.displayName, rocket.jetTime.value);
                 break;
 
             case PartType.Tire:
                 TireData tire = (TireData)part;
-                AddStatus(PartType.Tire, tire.weight.displayName, tire.weight.value);
-                AddStatus(PartType.Tire, tire.airResistance.displayName, tire.airResistance.value);
-                AddStatus(PartType.Tire, tire.torque.displayName, tire.torque.value);
+                AddStatus(PartType.Tire, StatusType.Weight, tire.weight.displayName, tire.weight.value);
+                AddStatus(PartType.Tire, StatusType.AirResistance, tire.airResistance.displayName, tire.airResistance.value * 1000f);
+                AddStatus(PartType.Tire, StatusType.Acceleration, tire.torque.displayName, tire.torque.value);
                 break;
 
             case PartType.Wing:
                 WingData wing = (WingData)part;
-                AddStatus(PartType.Wing, wing.weight.displayName, wing.weight.value);
-                AddStatus(PartType.Wing, wing.airResistance.displayName, wing.airResistance.value);
-                AddStatus(PartType.Wing, wing.airControl.displayName, wing.airControl.value);
+                AddStatus(PartType.Wing, StatusType.Weight, wing.weight.displayName, wing.weight.value);
+                AddStatus(PartType.Wing, StatusType.AirResistance, wing.airResistance.displayName, wing.airResistance.value * 1000f);
+                AddStatus(PartType.Wing, StatusType.AirControl, wing.airControl.displayName, wing.airControl.value);
                 break;
         }
         partSetButton.onClick.AddListener(() => ButtonClick(part, currentPartPopup));
     }
 
-    private void AddStatus(PartType partType, string displayName, float value)
+    private void AddStatus(PartType partType, StatusType statusType, string displayName, float value)
     {
-        float maxValue = GetMaxValue(partType, displayName);
+        float maxValue = GetMaxValue(partType, statusType);
         status = Instantiate(statusBar.gameObject, ContentTransform);
         StatusBar statusBarInstance = status.GetComponent<StatusBar>();
-        statusBarInstance.Setup(partType, displayName, value, maxValue);
+        statusBarInstance.Setup(partType, statusType, displayName, value, maxValue);
     }
 
-    private float GetMaxValue(PartType partType, string displayName)
+    private float GetMaxValue(PartType partType, StatusType statusType)
     {
-        switch (partType)
+        switch (statusType)
         {
-            case PartType.Body: //TODO ディスプレイネームをenumに変更
-                if (displayName == "重量") return 5f;
-                if (displayName == "体力") return 100f;
-                if (displayName == "空気抵抗") return 0.3f;
-                break;
-            case PartType.Rocket:
-                if (displayName == "重量") return 5f;
-                if (displayName == "噴射力") return 500f;
-                if (displayName == "噴射時間") return 100f;
-                break;
-            case PartType.Tire:
-                if (displayName == "重量") return 5f;
-                if (displayName == "空気抵抗") return 0.3f;
-                if (displayName == "地上加速度") return 50f;
-                break;
-            case PartType.Wing:
-                if (displayName == "重量") return 5f;
-                if (displayName == "空気抵抗") return 0.3f;
-                if (displayName == "空中制御") return 100f;
-                break;
+            case StatusType.Weight: return 100f;
+            case StatusType.AirResistance: return 150f;
+            case StatusType.HP: return 50f;
+            case StatusType.Thrust: return 50f;
+            case StatusType.RocketTime: return 30f;
+            case StatusType.Acceleration: return 50f;
+            case StatusType.AirControl: return 100f;
+            default: return 1f;
         }
-        return 1f; // デフォルトで割れないように1にしておく
     }
 
 

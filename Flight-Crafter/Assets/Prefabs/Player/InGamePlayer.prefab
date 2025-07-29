@@ -210,6 +210,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16
   playerCollider: {fileID: 2022885800860828953}
+  waterSurfaceY: -40
+  waterLinearDamping: 1
   clearX: 7000
   clearSpeedThreshold: 1
   runwayLayer:
@@ -217,11 +219,12 @@ MonoBehaviour:
     m_Bits: 64
   rocketLoopSFXName: SE_Rocket
   carLoopSFXName: SE_Car
-  flyLoopSource: SE_Fly
+  flyLoopSFXName: SE_Fly
   maxCarSpeed: 50
   maxFlySpeed: 200
   minVolume: 0.1
   maxVolume: 1
+  timeToZero: 0.2
 --- !u!50 &5382125969591630498
 Rigidbody2D:
   serializedVersion: 5
