@@ -31,6 +31,7 @@ public class GameOverPopup : MonoBehaviour
     {
         if (gameOverPanel != null)
         {
+            AudioManager.Instance.PlaySFX("SE_Win");
             gameOverPanel.SetActive(true);
             tutorialPanel.gameObject.SetActive(true);
             tutorialPanel.CheckList();

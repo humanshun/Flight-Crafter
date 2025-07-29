@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01729d08af4abc84ebe80df4a72265f4, type: 3}
   m_Name: SE_Cash
   m_EditorClassIdentifier: 
-  soundName: 
-  clip: {fileID: 0}
+  soundName: SE_Cash
+  clip: {fileID: 8300000, guid: 6fe130dedbe0ee441a57906ce2977b02, type: 3}
   volume: 1
   loop: 0

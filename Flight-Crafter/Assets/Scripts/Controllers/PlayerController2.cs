@@ -137,6 +137,7 @@ public class PlayerController2 : MonoBehaviour
     void Update()
     {
         // ゲームオーバー中なら一切の入力処理を無視
+        if (GameManager.Instance != null && GameManager.Instance.IsPaused) return;
         if (GameManager.Instance != null && GameManager.Instance.isGameOver) return;
         if (!GameManager.Instance.isClearInGameTutorial) return;
 

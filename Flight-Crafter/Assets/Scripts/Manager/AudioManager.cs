@@ -255,5 +255,24 @@ public class AudioManager : MonoBehaviour
             waterLoopSource.Stop();
         }
     }
+    public void PauseAllAudio()
+    {
+        bgmSource.Pause();
+        sfxSource.Pause();
+        rocketLoopSource.Pause();
+        carLoopSource.Pause();
+        flyLoopSource.Pause();
+        waterLoopSource.Pause();
+    }
+
+    public void ResumeAllAudio()
+    {
+        bgmSource.UnPause();
+        sfxSource.UnPause();
+        rocketLoopSource.UnPause();
+        carLoopSource.UnPause();
+        flyLoopSource.UnPause();
+        waterLoopSource.UnPause();
+    }
 
 }

@@ -222,6 +222,7 @@ public class GameManager : MonoBehaviour
         {
             openedPopups.Add(popup);
             UpdateTimeScale();
+            PauseAllAudio();
         }
     }
 
@@ -231,6 +232,10 @@ public class GameManager : MonoBehaviour
         {
             openedPopups.Remove(popup);
             UpdateTimeScale();
+            if (openedPopups.Count == 0)
+            {
+                ResumeAllAudio();
+            }
         }
     }
 
@@ -239,10 +244,12 @@ public class GameManager : MonoBehaviour
         if (openedPopups.Count > 0)
         {
             Time.timeScale = 0f;
+            isPaused = true;
         }
         else
         {
             Time.timeScale = 1f;
+            isPaused = false;
         }
     }
     public void CloseAllPopups()
@@ -251,5 +258,14 @@ public class GameManager : MonoBehaviour
         {
             popup.Close();
         }
+    }
+    private void PauseAllAudio()
+    {
+        AudioManager.Instance?.PauseAllAudio();
+    }
+
+    private void ResumeAllAudio()
+    {
+        AudioManager.Instance?.ResumeAllAudio();
     }
 }
