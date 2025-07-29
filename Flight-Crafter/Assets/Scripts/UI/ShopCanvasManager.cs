@@ -21,9 +21,8 @@ public class ShopCanvasManager : MonoBehaviour
 
     [SerializeField] private GameObject desctiptionPopupPrefab;
     [SerializeField] private GameObject coinText;
-
-
     public GameObject settingPopupPrefab;
+    private GameObject settingsPopupInstance;
 
     private void Start()
     {
@@ -92,11 +91,20 @@ public class ShopCanvasManager : MonoBehaviour
     private void OnSettingsButtonClicked()
     {
         AudioManager.Instance.PlaySFX("SE_ButtonClick");
-        var popup = Instantiate(settingPopupPrefab);
-        popup.SetActive(true);
-        // ポップアップのスケールをゼロに設定（後でアニメーションで拡大するため）
-        popup.transform.localScale = Vector3.zero;
-        // ポップアップをキャンバスの子オブジェクトとして設定
-        popup.transform.SetParent(myCanvas.transform, false);
+
+        // すでに存在している場合は再アクティブ化だけ
+        if (settingsPopupInstance != null)
+        {
+            if (!settingsPopupInstance.activeSelf)
+            {
+                settingsPopupInstance.SetActive(true);
+            }
+            return;
+        }
+
+        // 存在していなければ生成
+        settingsPopupInstance = Instantiate(settingPopupPrefab);
+        settingsPopupInstance.transform.SetParent(myCanvas.transform, false);
+        settingsPopupInstance.transform.localScale = Vector3.one;
     }
 }

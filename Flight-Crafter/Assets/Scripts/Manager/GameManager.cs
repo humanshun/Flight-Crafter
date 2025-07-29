@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Ricimi;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
     public bool isClearTutorial = false;
     public bool isClearInGameTutorial = false;
     public bool isClearCustomTutorial = false;
+
+
+    private readonly List<BasePopup> openedPopups = new();
+    private bool isPaused = false;
+    public bool IsPaused => isPaused;
 
     public void RegisterScore(InGameUI s)
     {
@@ -82,13 +87,13 @@ public class GameManager : MonoBehaviour
             string sceneName = SceneManager.GetActiveScene().name;
             if ((sceneName == "InGame" || sceneName == "Custom") && !isGameOver && pausePopup != null)
             {
-                if (pausePopup.IsShowing())
+                if (openedPopups.Count > 0)
                 {
-                    pausePopup.Hide();
+                    CloseAllPopups(); // すべてのポップアップを閉じる
                 }
-                else
+                else if (pausePopup != null)
                 {
-                    pausePopup.Show();
+                    pausePopup.Show(); // ポーズポップアップを開く
                 }
             }
         }
@@ -209,5 +214,42 @@ public class GameManager : MonoBehaviour
     private void HandleChangePart()
     {
         isChangePart = true;
+    }
+
+    public void RegisterPopup(BasePopup popup)
+    {
+        if (!openedPopups.Contains(popup))
+        {
+            openedPopups.Add(popup);
+            UpdateTimeScale();
+        }
+    }
+
+    public void UnregisterPopup(BasePopup popup)
+    {
+        if (openedPopups.Contains(popup))
+        {
+            openedPopups.Remove(popup);
+            UpdateTimeScale();
+        }
+    }
+
+    private void UpdateTimeScale()
+    {
+        if (openedPopups.Count > 0)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
+    public void CloseAllPopups()
+    {
+        foreach (var popup in openedPopups.ToArray()) // コピーしてループ（変更を避ける）
+        {
+            popup.Close();
+        }
     }
 }
