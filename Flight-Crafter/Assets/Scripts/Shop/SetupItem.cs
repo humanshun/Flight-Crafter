@@ -59,6 +59,7 @@ public class SetupItem : MonoBehaviour
         {
             PlayerData.Instance.SavePurchasedPart(currentPart); // JSONに保存
             UpdateButtonVisual(); // 最新状態をUIに反映
+            AudioManager.Instance.PlaySFX("SE_Cash");
 
             Debug.Log("アイテムの購入に成功しました！");
         }

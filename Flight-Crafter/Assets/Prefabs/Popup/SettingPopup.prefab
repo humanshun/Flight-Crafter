@@ -3992,7 +3992,7 @@ GameObject:
   - component: {fileID: 1514345323842916384}
   - component: {fileID: 7311932081213628107}
   - component: {fileID: 5316487339800576857}
-  - component: {fileID: 9088297373859396163}
+  - component: {fileID: 4648195354957766033}
   m_Layer: 5
   m_Name: SettingPopup
   m_TagString: Untagged
@@ -4007,10 +4007,10 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8605453408222845194}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7538951727492147481}
   - {fileID: 4624052373109305128}
@@ -4061,7 +4061,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &9088297373859396163
+--- !u!114 &4648195354957766033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -30,6 +30,7 @@ namespace Ricimi
         {
             // Transition クラスの LoadLevel メソッドを呼び出して、
             // 指定したシーン名、遷移時間、フェードカラーを用いてシーン切り替えを実行します。
+            AudioManager.Instance.PlaySFX("SE_ButtonLow");
             Transition.LoadLevel(scene, duration, color);
         }
     }

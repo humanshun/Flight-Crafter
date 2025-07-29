@@ -85,7 +85,6 @@ GameObject:
   m_Component:
   - component: {fileID: 220682101182052105}
   - component: {fileID: 7589494399868073611}
-  - component: {fileID: 8381584791424465024}
   - component: {fileID: 2581500743618355673}
   m_Layer: 5
   m_Name: SettingButton
@@ -159,33 +158,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6480206045355911653}
-        m_TargetAssemblyTypeName: PausePopup, Assembly-CSharp
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &8381584791424465024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 220682101182052118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 729d3571ed7354ba184275ba6042151c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popupPrefab: {fileID: 8605453408222845194, guid: 536f10db63dcb484ea178377883b361e, type: 3}
-  button: {fileID: 7589494399868073611}
+      m_Calls: []
 --- !u!95 &2581500743618355673
 Animator:
   serializedVersion: 7
@@ -1252,7 +1225,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.00012207031, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &4015159137023903663
@@ -1708,11 +1681,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9151cb96872a04fbac87b899c2ca72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCanvas: {fileID: 0}
   pausePopup: {fileID: 5157634952085554817}
   resumeButton: {fileID: 8411994881330108403}
   restartButton: {fileID: 2164276070612310575}
   titleButton: {fileID: 7247770242498452146}
   quitButton: {fileID: 8313171715408215922}
+  settingsButton: {fileID: 7589494399868073611}
+  settingPopupPrefab: {fileID: 8605453408222845194, guid: 536f10db63dcb484ea178377883b361e, type: 3}
+  closeButton: {fileID: 0}
+  closeButton2: {fileID: 0}
 --- !u!1 &5354670544091314051
 GameObject:
   m_ObjectHideFlags: 0

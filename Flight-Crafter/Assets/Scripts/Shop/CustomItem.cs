@@ -28,6 +28,7 @@ public class CustomItem : MonoBehaviour
     }
     public void OnItemClick(CurrentPartPopup currentPartPopup)
     {
+        AudioManager.Instance.PlaySFX("SE_ButtonLow");
         descriptionPopup.Show(currentPart, currentPartPopup); // ポップアップを表示
         parentCustom.OnCustomItemClick(this);
     }
