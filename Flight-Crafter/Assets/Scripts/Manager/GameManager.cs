@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
     public bool IsPaused => isPaused;
 
+    public bool isTutorial = false;
+
     public void RegisterScore(InGameUI s)
     {
         score = s;

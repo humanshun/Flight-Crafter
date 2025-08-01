@@ -10,7 +10,7 @@ public class LookingBird : MonoBehaviour
     [SerializeField] private GameObject bodyLeft;
     [SerializeField] private GameObject footLeft;
 
-    private Transform birdTransform;
+    public Transform birdTransform;
     private bool isFacingRight = true;
 
     void OnEnable()

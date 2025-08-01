@@ -6235,9 +6235,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 80463157346565198}
     - target: {fileID: 634472722028821122, guid: 42b53052210eb0b438465ab1210e436c, type: 3}
+      propertyPath: stepTriggers.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 634472722028821122, guid: 42b53052210eb0b438465ab1210e436c, type: 3}
       propertyPath: tutorialInGameCheckList
       value: 
       objectReference: {fileID: 393853112652469372}
+    - target: {fileID: 634472722028821122, guid: 42b53052210eb0b438465ab1210e436c, type: 3}
+      propertyPath: 'stepTriggers.Array.data[0]'
+      value: 235
+      objectReference: {fileID: 0}
+    - target: {fileID: 634472722028821122, guid: 42b53052210eb0b438465ab1210e436c, type: 3}
+      propertyPath: 'stepTriggers.Array.data[1]'
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 634472722028821122, guid: 42b53052210eb0b438465ab1210e436c, type: 3}
+      propertyPath: 'stepTriggers.Array.data[2]'
+      value: 240
+      objectReference: {fileID: 0}
     - target: {fileID: 5105672184759328847, guid: 42b53052210eb0b438465ab1210e436c, type: 3}
       propertyPath: m_Name
       value: TutorialInGame
@@ -6723,8 +6739,10 @@ PrefabInstance:
       propertyPath: m_text
       value: 9999Coin
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 1564077544823670578, guid: 1534d84d87334244cb01410e04cacab5, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4535587309043345374, guid: 1534d84d87334244cb01410e04cacab5, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 22443118, guid: 1534d84d87334244cb01410e04cacab5, type: 3}
       insertIndex: 0

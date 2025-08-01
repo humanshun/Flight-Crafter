@@ -200,6 +200,11 @@ public class PlayerData : MonoBehaviour
             File.Delete(SavePath); // セーブファイルを削除
             Debug.Log("セーブデータを削除しました。");
         }
+
+        // 🔽 チュートリアルフラグもリセット
+        PlayerPrefs.DeleteKey("InGameTutorialCompleted");
+        PlayerPrefs.Save();
+
         SavePlayerData(); // 初期化後に保存
         Debug.Log("プレイヤーデータを初期化しました。");
 

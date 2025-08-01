@@ -30,3 +30,4 @@ MonoBehaviour:
   jetTime:
     displayName: "\u5674\u5C04\u6642\u9593"
     value: 9
+  effectPosition: {x: -1.17, y: 0}
