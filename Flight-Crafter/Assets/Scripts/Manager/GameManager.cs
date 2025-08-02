@@ -35,13 +35,13 @@ public class GameManager : MonoBehaviour
     public bool isClearTutorial = false;
     public bool isClearInGameTutorial = false;
     public bool isClearCustomTutorial = false;
+    public bool isTutorial = false;
 
 
     private readonly List<BasePopup> openedPopups = new();
     private bool isPaused = false;
     public bool IsPaused => isPaused;
 
-    public bool isTutorial = false;
 
     public void RegisterScore(InGameUI s)
     {
@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(isTutorial);
         _ = UpdateAsync();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -269,5 +270,17 @@ public class GameManager : MonoBehaviour
     private void ResumeAllAudio()
     {
         AudioManager.Instance?.ResumeAllAudio();
+    }
+
+    public void ResetGameState()
+    {
+        isGameOver = false;
+        isBuyPart = false;
+        isChangePart = false;
+        isClearTutorial = false;
+        isClearInGameTutorial = false;
+        isClearCustomTutorial = false;
+
+        isTutorial = false;
     }
 }

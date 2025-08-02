@@ -201,6 +201,8 @@ public class PlayerData : MonoBehaviour
             Debug.Log("セーブデータを削除しました。");
         }
 
+        GameManager.Instance.ResetGameState(); // ゲームの状態をリセット
+
         // 🔽 チュートリアルフラグもリセット
         PlayerPrefs.DeleteKey("InGameTutorialCompleted");
         PlayerPrefs.Save();
