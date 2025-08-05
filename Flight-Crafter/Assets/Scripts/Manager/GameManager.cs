@@ -83,7 +83,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(isTutorial);
         _ = UpdateAsync();
         if (Input.GetKeyDown(KeyCode.Escape))
         {

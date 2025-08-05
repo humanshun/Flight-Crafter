@@ -63,6 +63,7 @@ public class TutorialInGame : MonoBehaviour
         // 既にチュートリアルが完了していたら処理スキップ
         if (completed == 1)
         {
+            Debug.Log("チュートリアルはすでに完了しています。");
             tutorial = true;
             this.enabled = false;
             Time.timeScale = 1f; // ゲーム進行を通常速度に戻す
@@ -105,8 +106,11 @@ public class TutorialInGame : MonoBehaviour
         }
 
         // 矢印のアニメーション開始
-        StartCaretAnimation();
-        caretDownImage.SetActive(true);
+        if (completed != 1)
+        {
+            StartCaretAnimation();
+            caretDownImage.SetActive(true);
+        }
     }
 
     void Update()

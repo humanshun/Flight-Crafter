@@ -39,8 +39,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -162, y: -101}
-  m_SizeDelta: {x: 250, y: 100}
+  m_AnchoredPosition: {x: -193.4, y: -101}
+  m_SizeDelta: {x: 302.1, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5479432342200909960
 MonoBehaviour:
@@ -352,6 +352,7 @@ RectTransform:
   - {fileID: 845897521770707583}
   - {fileID: 8417982807510343326}
   - {fileID: 2758898350054031626}
+  - {fileID: 8484359343592728259}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -386,6 +387,8 @@ MonoBehaviour:
   iconImage: {fileID: 9003615786589961943}
   active: {fileID: 21300000, guid: 0d02c955b35ed40599bb4aca60216d75, type: 3}
   inactive: {fileID: 21300000, guid: b4b024c6ca6464483b99578de7edfd49, type: 3}
+  ContentTransform: {fileID: 8484359343592728259}
+  statusBar: {fileID: 1605399966784881619, guid: 7de501c9563a47f4ba7355aaf18e031c, type: 3}
 --- !u!114 &493453376292990365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,6 +494,68 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3110542262682415549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8484359343592728259}
+  - component: {fileID: 7157000897270124394}
+  m_Layer: 0
+  m_Name: Status
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8484359343592728259
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3110542262682415549}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.2694998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 821740559397664136}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -70, y: -15}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7157000897270124394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3110542262682415549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 13
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &3883582556548821385
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,8 +899,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 75, y: 0}
-  m_SizeDelta: {x: 650, y: 200}
+  m_AnchoredPosition: {x: 75, y: 69.8}
+  m_SizeDelta: {x: 650, y: 45.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5905285470013868288
 CanvasRenderer:
@@ -865,7 +930,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  m_text: aaaaaaaaaaaaaaaaaaaaaaaaaaa
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 24a82b5b53dc55a4e92886ad6e2f2442, type: 2}
   m_sharedMaterial: {fileID: -7962455686223380346, guid: 24a82b5b53dc55a4e92886ad6e2f2442, type: 2}
@@ -874,8 +939,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294961577
+  m_fontColor: {r: 0.6622641, g: 0.91261584, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
