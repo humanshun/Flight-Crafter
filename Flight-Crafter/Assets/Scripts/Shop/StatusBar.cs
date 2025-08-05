@@ -37,11 +37,11 @@ public class StatusBar : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         switch (status)
         {
             case StatusType.Weight:
-                return "数値が高いほどぶつかったときの減速率が小さくなります。";
+                return "数値が高いほど衝突時の減速率が小さくなります。";
             case StatusType.AirResistance:
                 return "数値が高いほど減速しやすくなります";
             case StatusType.HP:
-                return "数値が高いほどパーツが壊れにくくなります。";
+                return "数値が高いほど壊れにくくなります。";
             case StatusType.Thrust:
                 return "数値が高いほど加速力が高くなります。";
             case StatusType.RocketTime:
