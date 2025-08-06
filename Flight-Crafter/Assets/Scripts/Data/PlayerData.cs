@@ -183,7 +183,7 @@ public class PlayerData : MonoBehaviour
 
     public void ResetPlayerData()
     {
-        playerCoins = 1000000;
+        playerCoins = 440100;
         MaxDistance = 0f;
         MaxAltitude = 0f;
         purchasedParts = new List<string>

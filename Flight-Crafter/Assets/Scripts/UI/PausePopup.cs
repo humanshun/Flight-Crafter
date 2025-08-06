@@ -56,6 +56,7 @@ public class PausePopup : BasePopup
     private async void OnClickRestart()
     {
         Time.timeScale = 1f; // 時間再開
+        AudioManager.Instance.StopAllLoopSFX();
         AudioManager.Instance.PlaySFX("SE_ButtonLow");
         await SceneChanger.Instance.ChangeScene(SceneManager.GetActiveScene().name, 0.5f, 0.5f);
     }
@@ -63,6 +64,7 @@ public class PausePopup : BasePopup
     private async void OnClickTitle()
     {
         Time.timeScale = 1f; // 時間再開
+        AudioManager.Instance.StopAllLoopSFX();
         AudioManager.Instance.PlaySFX("SE_ButtonLow");
         await SceneChanger.Instance.ChangeScene("Title", 0.5f, 0.5f);
     }

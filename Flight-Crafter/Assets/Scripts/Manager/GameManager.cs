@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
         {
             score.OnGameOver();
         }
-        AudioManager.Instance.StopWaterLoopSFX();
+        AudioManager.Instance.StopAllLoopSFX();
     }
 
     public async void GameClear()
@@ -261,12 +261,12 @@ public class GameManager : MonoBehaviour
             popup.Close();
         }
     }
-    private void PauseAllAudio()
+    public void PauseAllAudio()
     {
         AudioManager.Instance?.PauseAllAudio();
     }
 
-    private void ResumeAllAudio()
+    public void ResumeAllAudio()
     {
         AudioManager.Instance?.ResumeAllAudio();
     }

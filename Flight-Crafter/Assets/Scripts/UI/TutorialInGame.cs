@@ -103,6 +103,7 @@ public class TutorialInGame : MonoBehaviour
             stepActive[0] = true;
             Time.timeScale = 0f; // ゲームを一時停止
             GameManager.Instance.isTutorial = true;
+            GameManager.Instance.PauseAllAudio();
         }
 
         // 矢印のアニメーション開始
@@ -168,6 +169,7 @@ public class TutorialInGame : MonoBehaviour
             tutorialPanels[currentStep].gameObject.SetActive(true);
             caretDownImage.SetActive(true);
             stepActive[currentStep] = true;
+            GameManager.Instance.PauseAllAudio();
         }
 
         // 最後のステップに到達したらチュートリアル完了処理
@@ -197,6 +199,7 @@ public class TutorialInGame : MonoBehaviour
             // ゲームを再開
             Time.timeScale = 1f;
             GameManager.Instance.isTutorial = false;
+            GameManager.Instance.ResumeAllAudio();
         }
     }
 

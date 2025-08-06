@@ -44,7 +44,7 @@ public class AudioManager : MonoBehaviour
         SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume", 0.5f));
 
         // ゲーム開始時にBGM再生
-        if (!string.IsNullOrEmpty(bgmSounds[0].soundName))
+        if (!bgmSource.isPlaying && !string.IsNullOrEmpty(bgmSounds[0].soundName))
         {
             PlayBGM(bgmSounds[0].soundName);
         }
@@ -275,4 +275,11 @@ public class AudioManager : MonoBehaviour
         waterLoopSource.UnPause();
     }
 
+    public void StopAllLoopSFX()
+    {
+        rocketLoopSource.Stop();
+        carLoopSource.Stop();
+        flyLoopSource.Stop();
+        waterLoopSource.Stop();
+    }
 }

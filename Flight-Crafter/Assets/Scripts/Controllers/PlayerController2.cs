@@ -589,6 +589,10 @@ public class PlayerController2 : MonoBehaviour
         //プレイヤーを操作できなくする
         isDead = true;
         StopRocketEffect();
+        // ループサウンドをすべて停止
+        AudioManager.Instance.StopCarLoopSFX();
+        AudioManager.Instance.StopFlyLoopSFX();
+        AudioManager.Instance.StopWaterLoopSFX();
         currentDieEffectInstance = Instantiate(dieEffectPrefab, transform);
         currentDieEffectInstance.transform.localPosition = effectPosition; // 背面に配置
     }
