@@ -19,6 +19,13 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private SoundData[] bgmSounds; // BGM用のSoundData
     [SerializeField] private SoundData[] sfxSounds; // SFX用のSound
 
+    // --- 初期化関連キー ---
+    private const string KEY_INIT = "AudioInitialized";
+    private const string KEY_BGM = "BGMVolume";
+    private const string KEY_SFX = "SFXVolume";
+    private const float DEFAULT_BGM = 0.5f;
+    private const float DEFAULT_SFX = 0.5f;
+
 
     private void Awake()
     {
@@ -35,30 +42,55 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        PlayerPrefs.DeleteKey("BGMVolume");
-        PlayerPrefs.DeleteKey("SFXVolume");
-        PlayerPrefs.Save();
+        // ★ 初回起動時だけデフォルト値に設定
+        InitializeAudioPrefsIfFirstLaunch();
 
         // 保存された音量設定を適用
-        SetBGMVolume(PlayerPrefs.GetFloat("BGMVolume", 0.5f));
-        SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume", 0.5f));
+        SetBGMVolume(PlayerPrefs.GetFloat(KEY_BGM, DEFAULT_BGM));
+        SetSFXVolume(PlayerPrefs.GetFloat(KEY_SFX, DEFAULT_SFX));
 
-        // ゲーム開始時にBGM再生
-        if (!bgmSource.isPlaying && !string.IsNullOrEmpty(bgmSounds[0].soundName))
+        // 安全ガード付き自動再生
+        if (bgmSource != null && bgmSounds != null && bgmSounds.Length > 0)
         {
-            PlayBGM(bgmSounds[0].soundName);
+            var first = bgmSounds[0];
+            if (!bgmSource.isPlaying && !string.IsNullOrEmpty(first.soundName) && first.clip != null)
+            {
+                PlayBGM(first.soundName);
+            }
         }
     }
     public void SetBGMVolume(float volume)
     {
-        float dB = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
-        audioMixer.SetFloat("BGMVolume", dB);
+        float v = Mathf.Clamp01(volume);
+        float dB = Mathf.Log10(Mathf.Max(v, 0.0001f)) * 20f;
+
+        if (audioMixer != null)
+        {
+            if (!MixerHasParam("BGMVolume"))
+                Debug.LogWarning("[Audio] Mixerに 'BGMVolume' がExposedされていません");
+            else
+                audioMixer.SetFloat("BGMVolume", dB);
+        }
+
+        PlayerPrefs.SetFloat(KEY_BGM, v);
+        PlayerPrefs.Save();
     }
 
     public void SetSFXVolume(float volume)
     {
-        float dB = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1f)) * 20f;
-        audioMixer.SetFloat("SFXVolume", dB);
+        float v = Mathf.Clamp01(volume);
+        float dB = Mathf.Log10(Mathf.Max(v, 0.0001f)) * 20f;
+
+        if (audioMixer != null)
+        {
+            if (!MixerHasParam("SFXVolume"))
+                Debug.LogWarning("[Audio] Mixerに 'SFXVolume' がExposedされていません");
+            else
+                audioMixer.SetFloat("SFXVolume", dB);
+        }
+
+        PlayerPrefs.SetFloat(KEY_SFX, v);
+        PlayerPrefs.Save();
     }
 
     public void PlayBGM(string soundName)
@@ -67,6 +99,11 @@ public class AudioManager : MonoBehaviour
         {
             if (sound.soundName == soundName)
             {
+                if (sound.clip == null)
+                {
+                    Debug.LogError($"BGM '{soundName}' は見つかったが clip が未設定です");
+                    return;
+                }
                 bgmSource.clip = sound.clip;
                 bgmSource.volume = sound.volume;
                 bgmSource.loop = sound.loop;
@@ -84,14 +121,22 @@ public class AudioManager : MonoBehaviour
         {
             if (sound.soundName == soundName)
             {
+                if (sound.clip == null)
+                {
+                    Debug.LogError($"SFX '{soundName}' は見つかったが clip が未設定です");
+                    return;
+                }
+                if (sfxSource == null)
+                {
+                    Debug.LogError("sfxSource が未割り当てです");
+                    return;
+                }
+
                 sfxSource.pitch = pitch;
                 sfxSource.clip = sound.clip;
                 sfxSource.volume = sound.volume;
                 sfxSource.loop = false;
-
-                // ★ 再生開始位置を設定
                 sfxSource.time = Mathf.Clamp(startTime, 0f, sound.clip.length);
-
                 sfxSource.Play();
                 return;
             }
@@ -117,15 +162,19 @@ public class AudioManager : MonoBehaviour
 
     public async void PlayRocketLoopSFX(string soundName)
     {
-        if (rocketLoopSource.isPlaying && rocketLoopSource.clip != null && rocketLoopSource.clip.name == soundName)
-        {
-            return; // すでに同じ音が再生中なら再生しない
-        }
-
         foreach (var sound in sfxSounds)
         {
             if (sound.soundName == soundName)
             {
+                if (sound.clip == null)
+                {
+                    Debug.LogError($"RocketLoopSFX '{soundName}' は clip 未設定です");
+                    return;
+                }
+
+                // ★ 同一クリップ再生中なら無視
+                if (rocketLoopSource.isPlaying && rocketLoopSource.clip == sound.clip) return;
+
                 rocketLoopSource.clip = sound.clip;
                 rocketLoopSource.loop = true;
                 rocketLoopSource.volume = 0f;
@@ -162,15 +211,17 @@ public class AudioManager : MonoBehaviour
 
     public void PlayCarLoopSFX(string soundName)
     {
-        if (carLoopSource.isPlaying && carLoopSource.clip != null && carLoopSource.clip.name == soundName)
-        {
-            return; // すでに再生中なら無視
-        }
-
         foreach (var sound in sfxSounds)
         {
             if (sound.soundName == soundName)
             {
+                if (sound.clip == null)
+                {
+                    Debug.LogError($"CarLoopSFX '{soundName}' は clip 未設定です");
+                    return;
+                }
+                if (carLoopSource.isPlaying && carLoopSource.clip == sound.clip) return;
+
                 carLoopSource.clip = sound.clip;
                 carLoopSource.volume = sound.volume;
                 carLoopSource.loop = true;
@@ -196,15 +247,17 @@ public class AudioManager : MonoBehaviour
 
     public void PlayFlyLoopSFX(string soundName)
     {
-        if (flyLoopSource.isPlaying && flyLoopSource.clip != null && flyLoopSource.clip.name == soundName)
-        {
-            return;
-        }
-
         foreach (var sound in sfxSounds)
         {
             if (sound.soundName == soundName)
             {
+                if (sound.clip == null)
+                {
+                    Debug.LogError($"FlyLoopSFX '{soundName}' は clip 未設定です");
+                    return;
+                }
+                if (flyLoopSource.isPlaying && flyLoopSource.clip == sound.clip) return;
+
                 flyLoopSource.clip = sound.clip;
                 flyLoopSource.volume = sound.volume;
                 flyLoopSource.loop = true;
@@ -230,15 +283,23 @@ public class AudioManager : MonoBehaviour
 
     public void PlayWaterLoopSFX(string soundName)
     {
-        if (waterLoopSource.isPlaying)
-        {
-            return; // すでに再生中なら無視
-        }
-
         foreach (var sound in sfxSounds)
         {
             if (sound.soundName == soundName)
             {
+                if (sound.clip == null)
+                {
+                    Debug.LogError($"WaterLoopSFX '{soundName}' は clip 未設定です");
+                    return;
+                }
+                if (waterLoopSource == null)
+                {
+                    Debug.LogError("waterLoopSource が未割り当てです");
+                    return;
+                }
+
+                if (waterLoopSource.isPlaying && waterLoopSource.clip == sound.clip) return;
+
                 waterLoopSource.clip = sound.clip;
                 waterLoopSource.volume = sound.volume;
                 waterLoopSource.loop = true;
@@ -257,29 +318,54 @@ public class AudioManager : MonoBehaviour
     }
     public void PauseAllAudio()
     {
-        bgmSource.Pause();
-        sfxSource.Pause();
-        rocketLoopSource.Pause();
-        carLoopSource.Pause();
-        flyLoopSource.Pause();
-        waterLoopSource.Pause();
+        bgmSource?.Pause();
+        sfxSource?.Pause();
+        rocketLoopSource?.Pause();
+        carLoopSource?.Pause();
+        flyLoopSource?.Pause();
+        waterLoopSource?.Pause();
     }
 
     public void ResumeAllAudio()
     {
-        bgmSource.UnPause();
-        sfxSource.UnPause();
-        rocketLoopSource.UnPause();
-        carLoopSource.UnPause();
-        flyLoopSource.UnPause();
-        waterLoopSource.UnPause();
+        bgmSource?.UnPause();
+        sfxSource?.UnPause();
+        rocketLoopSource?.UnPause();
+        carLoopSource?.UnPause();
+        flyLoopSource?.UnPause();
+        waterLoopSource?.UnPause();
     }
 
     public void StopAllLoopSFX()
     {
-        rocketLoopSource.Stop();
-        carLoopSource.Stop();
-        flyLoopSource.Stop();
-        waterLoopSource.Stop();
+        rocketLoopSource?.Stop();
+        carLoopSource?.Stop();
+        flyLoopSource?.Stop();
+        waterLoopSource?.Stop();
+    }
+    private void InitializeAudioPrefsIfFirstLaunch()
+    {
+        if (!PlayerPrefs.HasKey(KEY_INIT))
+        {
+            PlayerPrefs.SetFloat(KEY_BGM, DEFAULT_BGM);
+            PlayerPrefs.SetFloat(KEY_SFX, DEFAULT_SFX);
+            PlayerPrefs.SetInt(KEY_INIT, 1);
+            PlayerPrefs.Save();
+            Debug.Log("[Audio] 初回起動として音量を初期化しました");
+        }
+    }
+    private bool MixerHasParam(string param)
+    {
+        if (audioMixer == null) return false;
+        return audioMixer.GetFloat(param, out _);
+    }
+    [ContextMenu("Reset Audio Prefs (Next Start Initializes)")]
+    private void ResetAudioPrefs()
+    {
+        PlayerPrefs.DeleteKey(KEY_BGM);
+        PlayerPrefs.DeleteKey(KEY_SFX);
+        PlayerPrefs.DeleteKey(KEY_INIT);
+        PlayerPrefs.Save();
+        Debug.Log("[Audio] Audio prefs reset. 次回 Start() で初期化されます。");
     }
 }
